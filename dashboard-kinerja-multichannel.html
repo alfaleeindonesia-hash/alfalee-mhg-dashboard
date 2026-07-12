@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alfalee × MHG — Kinerja Multi-Channel (ATI & Engagement)</title>
+<!--
+=====================================================================
+ HALAMAN 2 — DASHBOARD KINERJA MULTI-CHANNEL (angka matriks kinerja)
+ Pasangan dari "dashboard-kampanye-gabungan.html" (angka Rupiah).
+ - 7 channel + slot custom: IG, WA Channel, WA Group, Telegram, Threads, YouTube, TikTok
+ - Tiap channel: Engagement Rate + metrik jantung + tier (Buruk→Sangat Baik)
+ - Humanitarian ATI (Audience Trust Index) — bobot: Credibility 25 · Engagement 20
+   · Community 20 · Donation 25 · Brand Safety 10  (framework Alfalee/Husein Gaza)
+ - IG live dari Google Sheet tracker (share: anyone with link → Viewer)
+ - Sinkron dua-arah dengan Halaman 1 via localStorage + BroadcastChannel + snapshot JSON:
+     terima  : donorBaru/repeat/nominal & member/event  → mengisi Donation & Community ATI
+     kirim   : reach/ER/link-taps IG → jadi kolom AKTUAL & kalibrasi funnel di Halaman 1
+=====================================================================
+-->
+<style>
+:root{
+ --navy:#1B2A4A;--navy2:#24365C;--navy3:#0F1B33;--paper:#F4F1EA;--card:#FFFFFF;--line:#E4DFD3;
+ --text:#1A2334;--muted:#77808F;--gold:#C9A24B;--gold-l:#E8CE6C;--gray:#9AA0AC;
+ --t0:#C0503F;--t1:#D99A2B;--t2:#3E8E6E;--t3:#2E7D5B;--radius:14px;
+ --live:#2E9E6B;--stale:#B0453B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",Roboto,system-ui,sans-serif;background:var(--paper);color:var(--text);
+ font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;line-height:1.45}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px 64px}
+header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:22px 0 18px;border-bottom:3px solid var(--gold)}
+.head-in{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;gap:3px}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-l);font-weight:600}
+.brand h1{font-weight:700;font-size:24px;letter-spacing:-.01em}
+.brand .sub{font-size:12.5px;color:#9fb0cc;max-width:640px;margin-top:3px}
+.head-r{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.legend{display:flex;gap:12px;font-size:11px;color:#c9d2e0;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.lg{width:9px;height:9px;border-radius:3px;display:inline-block}
+.sync-pill{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;color:#dbe4f0}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--stale)}
+.sync-dot.on{background:var(--live);box-shadow:0 0 0 3px rgba(46,158,107,.25)}
+
+.toolbar{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin-top:20px;display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.sl{display:flex;flex-direction:column;gap:5px}
+.sl label{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.sl input{font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#FAF8F3;color:var(--text);font-weight:500}
+.tb-sp{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:transparent;border:1px solid var(--line);border-radius:8px;padding:8px 13px;font-size:12.5px;color:var(--muted);cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--gold);color:var(--text)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.btn.gold:hover{background:var(--gold-l)}
+.hint{font-size:11px;color:var(--muted);align-self:flex-end}
+
+.sec-head{display:flex;align-items:baseline;gap:12px;margin:28px 0 14px}
+.sec-head .n{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.1em}
+.sec-head h2{font-size:18px;font-weight:700;color:var(--navy)}
+.sec-head .sub{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+/* ATI composite */
+.ati{display:grid;grid-template-columns:300px 1fr;gap:16px}
+@media(max-width:820px){.ati{grid-template-columns:1fr}}
+.ati-score{background:linear-gradient(180deg,var(--navy),var(--navy3));color:#fff;border-radius:var(--radius);padding:22px;text-align:center;position:relative;overflow:hidden;border:1px solid var(--gold)}
+.ati-score .lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l);font-weight:600}
+.ati-score .big{font-size:62px;font-weight:800;line-height:1;margin:8px 0 2px;letter-spacing:-.02em}
+.ati-score .of{font-size:13px;color:#9fb0cc}
+.ati-score .tierlab{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;padding:5px 16px;border-radius:20px}
+.ati-score .tgt{margin-top:14px;font-size:11.5px;color:#b9c4d6;display:flex;gap:8px;align-items:center;justify-content:center}
+.ati-score .tgt input{width:64px;font-size:13px;padding:4px 6px;border-radius:6px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;text-align:center;font-weight:700}
+.ati-comp{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.comp-row{padding:11px 0;border-bottom:1px solid #F0ECE2}
+.comp-row:last-child{border-bottom:0}
+.comp-top{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.comp-name{font-weight:600;font-size:13.5px;flex:1}
+.comp-w{font-size:11px;font-weight:700;color:var(--gold);background:#FBF3DE;border:1px solid #EAD9A8;border-radius:6px;padding:2px 8px}
+.src-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 6px;border-radius:5px;color:#fff}
+.src-auto{background:var(--live)} .src-link{background:#3E6B9E} .src-manual{background:var(--muted)}
+.comp-val{font-weight:800;font-size:16px;width:52px;text-align:right;font-family:inherit}
+.comp-bar{height:8px;background:#EFEBE1;border-radius:6px;overflow:hidden}
+.comp-bar span{display:block;height:100%;border-radius:6px}
+.comp-ctrl{display:flex;align-items:center;gap:9px;margin-top:6px}
+.comp-ctrl input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:5px;border-radius:999px;background:#E4DFD3;cursor:pointer}
+.comp-ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--gold);cursor:grab}
+.comp-ctrl input[type=range]:disabled{opacity:.5}
+.comp-note{font-size:10.5px;color:var(--muted);margin-top:4px}
+
+/* matrix heatmap */
+.mtx-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+table.mtx{width:100%;border-collapse:collapse;font-size:12.5px;min-width:720px}
+table.mtx th{background:var(--navy);color:#fff;padding:10px 12px;text-align:center;font-size:11px;font-weight:600;position:sticky;left:auto}
+table.mtx th.ch{text-align:left}
+table.mtx td{padding:0;text-align:center;border:2px solid #fff}
+table.mtx td.chname{text-align:left;padding:10px 12px;font-weight:600;background:#FAF8F3;font-size:13px;white-space:nowrap}
+table.mtx td.chname small{display:block;color:var(--muted);font-weight:500;font-size:10.5px}
+.cell{padding:11px 8px;color:#fff;font-weight:700;font-size:13px}
+.cell small{display:block;font-weight:500;font-size:9.5px;opacity:.85}
+.cell.empty{background:#EFEBE1!important;color:var(--muted)}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+.cch{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;position:relative;overflow:hidden}
+.cch .edge{position:absolute;left:0;top:0;bottom:0;width:4px}
+.cch .cn{font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:uppercase;margin-bottom:2px}
+.cch .sig{font-size:11px;color:var(--muted)}
+.cch .big{font-size:28px;font-weight:800;margin:5px 0 2px;letter-spacing:-.02em}
+.cch .er{font-size:11.5px;color:var(--muted);margin-bottom:8px}
+.cch .er b{color:var(--text)}
+.cch .tchip{display:inline-flex;gap:6px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:700}
+.cch .live-dot{position:absolute;top:12px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--gray)}
+.cch .live-dot.on{background:var(--live)}
+
+/* accordion detail */
+.accord{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:10px}
+.ahead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;gap:12px}
+.ahead:hover{background:#FCFBF7}
+.aleft{display:flex;align-items:center;gap:11px}
+.aleft .dot{width:11px;height:11px;border-radius:50%}
+.aleft .cname{font-weight:700;font-size:16px}
+.hchip{font-size:11px;color:#5c6472;background:#F0ECE2;padding:2px 10px;border-radius:20px;font-weight:600}
+.aright{display:flex;align-items:center;gap:12px}
+.aright .sl2{font-size:11px;color:var(--muted);text-transform:uppercase}
+.aright .sv{font-weight:800;font-size:15px}
+.caret{transition:.2s;color:var(--muted);font-size:11px}
+.accord.open .caret{transform:rotate(180deg)}
+.abody{display:none}.accord.open .abody{display:block}
+table.det{width:100%;border-collapse:collapse;font-size:13px}
+table.det thead th{background:#FAF8F3;text-align:left;padding:9px 16px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+table.det tbody td{padding:11px 16px;border-bottom:1px solid #F0ECE2}
+table.det tbody tr:last-child td{border-bottom:0}
+.mname2{font-weight:600;font-size:13px}
+.mname2 small{display:block;color:var(--gold);font-weight:600;font-size:10px;text-transform:uppercase;margin-top:2px}
+.dchip{font-size:11px;padding:2px 9px;border-radius:6px;background:#EFEBE1;color:#6b6355;white-space:nowrap}
+.nilai{font-weight:800;font-size:14px}
+.tgtin{width:66px;font-size:12.5px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;text-align:right;background:#EEF4FF}
+.stat{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:12.5px}
+.stat .sdot{width:9px;height:9px;border-radius:50%}
+.manual-in{width:80px;font-size:13px;padding:5px 7px;border:1.5px solid #3E6B9E;border-radius:6px;text-align:right;background:#EEF4FF;font-weight:600}
+
+.addch{background:#fff;border:1px dashed var(--line);border-radius:var(--radius);padding:14px 16px;margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.addch .sl input{border-style:solid}
+.banner{padding:10px 14px;border-radius:10px;margin:14px 0;font-size:12.5px;display:none}
+.banner.err{background:#F7ECEA;border:1px solid #E4B4AC;color:#9A3B2C;display:block}
+.banner.load{background:#EEF2F7;border:1px solid #CBD8E6;color:#3A5578;display:block}
+.banner.ok{background:#E8F3EC;border:1px solid #A9D3B9;color:#2E7D5B;display:block}
+.note{font-size:12px;color:var(--muted);background:#FBF3DE;border:1px solid #EAD9A8;border-radius:10px;padding:11px 14px;margin-top:22px;line-height:1.55}
+.note b{color:#8a6d1f}
+.stamp{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* PRINT */
+@media print{
+ body{background:#fff}
+ .toolbar,.addch,.btn,.comp-ctrl,.aright .caret{display:none!important}
+ .accord .abody{display:block!important}
+ header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .grid{grid-template-columns:repeat(4,1fr)}
+ .wrap{padding-bottom:0}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="head-in">
+    <div class="brand">
+      <span class="eyebrow">Alfalee × MHG — Creator Intelligence</span>
+      <h1>Kinerja Multi-Channel · ATI & Engagement</h1>
+      <p class="sub">Trust Media Asset yang terukur. Humanitarian Audience Trust Index + Engagement Rate tiap channel. Terhubung dua-arah dengan Dashboard Kampanye (Rupiah).</p>
+    </div>
+    <div class="head-r">
+      <span class="sync-pill"><span class="sync-dot" id="syncDot"></span><span id="syncLbl">Menunggu Halaman 1…</span></span>
+      <div class="legend">
+        <span><i class="lg" style="background:var(--t0)"></i>Buruk</span>
+        <span><i class="lg" style="background:var(--t1)"></i>Cukup</span>
+        <span><i class="lg" style="background:var(--t2)"></i>Baik</span>
+        <span><i class="lg" style="background:var(--t3)"></i>Sangat Baik</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <div class="sl"><label>Dari</label><input type="date" id="from"></div>
+    <div class="sl"><label>Sampai</label><input type="date" id="to"></div>
+    <span class="hint">samakan tanggal untuk 1 hari</span>
+    <div class="tb-sp">
+      <button class="btn" id="goKampanye" style="background:var(--navy);border-color:var(--navy);color:#fff">↗ Buka Halaman Kampanye (Rp)</button>
+      <button class="btn" id="reload">↻ Muat ulang data</button>
+      <button class="btn" id="exp">⬇ Export snapshot</button>
+      <button class="btn" id="imp">⬆ Import snapshot</button>
+      <button class="btn gold" id="lock">🔒 Kunci &amp; Simpan PDF</button>
+    </div>
+    <input type="file" id="impFile" accept="application/json" style="display:none">
+  </div>
+
+  <div id="banner" class="banner load">Memuat data channel…</div>
+
+  <!-- ATI COMPOSITE -->
+  <div class="sec-head"><span class="n">01</span><h2>Humanitarian Audience Trust Index (ATI)</h2>
+    <span class="sub">framework proprietary Alfalee · skor 0–100</span></div>
+  <div class="ati">
+    <div class="ati-score" id="atiScore"></div>
+    <div class="ati-comp" id="atiComp"></div>
+  </div>
+
+  <!-- MATRIX -->
+  <div class="sec-head"><span class="n">02</span><h2>Matriks Kinerja Channel × Dimensi</h2>
+    <span class="sub">warna = tier · angka = nilai metrik jantung dimensi</span></div>
+  <div class="mtx-scroll"><table class="mtx" id="matrix"></table></div>
+
+  <!-- CARDS -->
+  <div class="sec-head"><span class="n">03</span><h2>Ringkasan per Channel</h2>
+    <span class="sub">metrik jantung + Engagement Rate</span></div>
+  <div class="grid" id="grid"></div>
+
+  <!-- DETAIL -->
+  <div class="sec-head"><span class="n">04</span><h2>Detail Metrik per Channel</h2>
+    <span class="sub">klik channel · isi kolom Target</span></div>
+  <div id="detail"></div>
+
+  <div class="addch">
+    <div class="sl"><label>Nama channel baru</label><input type="text" id="ncName" placeholder="mis. Facebook Page"></div>
+    <div class="sl"><label>Metrik jantung</label><input type="text" id="ncSig" placeholder="mis. Engagement Rate"></div>
+    <div class="sl"><label>Nilai (%)</label><input type="number" id="ncVal" step="0.1" placeholder="0"></div>
+    <button class="btn gold" id="addCh">+ Tambah channel custom</button>
+  </div>
+
+  <div class="note">
+    <b>Data IG live</b> ditarik dari Google Sheet tracker (butuh share <b>"anyone with link → Viewer"</b>).
+    <b>Telegram/YouTube/TikTok/Threads/WA Channel</b> dari sheet Tracker_Metrik_Sosmed.
+    <b>WA Group &amp; channel custom</b> diisi manual. Komponen <b>Community Action</b> &amp; <b>Donation Conversion</b> ATI
+    otomatis terisi dari Halaman 1 (Kampanye) saat tersambung.
+  </div>
+  <div class="stamp" id="stamp"></div>
+</div>
+
+<script>
+"use strict";
+/* =========================================================
+   SYNC BRIDGE (identik dengan Halaman 1)
+========================================================= */
+const BUS_KEY="alfalee_bus_v1";
+const bc=("BroadcastChannel"in window)?new BroadcastChannel("alfalee_mhg"):null;
+function busRead(){try{return JSON.parse(localStorage.getItem(BUS_KEY))||{}}catch(e){return{}}}
+function busWrite(patch){
+  const cur=busRead();
+  const next=Object.assign({},cur,patch);
+  next._ts=new Date().toISOString();
+  try{localStorage.setItem(BUS_KEY,JSON.stringify(next))}catch(e){}
+  if(bc){try{bc.postMessage(next)}catch(e){}}
+  return next;
+}
+function onBusIn(data){
+  if(!data)return;
+  if(data.fromKampanye){ INCOMING=data.fromKampanye; markSync(true); renderATI(); }
+}
+if(bc)bc.onmessage=e=>onBusIn(e.data);
+window.addEventListener("storage",e=>{if(e.key===BUS_KEY&&e.newValue){try{onBusIn(JSON.parse(e.newValue))}catch(_){}}});
+let INCOMING=null; // {donorBaru,repeatDonor,donasiNominal,donasiTarget,memberBaru,memberTarget,communityEvents}
+function markSync(on){
+  const d=document.getElementById("syncDot"),l=document.getElementById("syncLbl");
+  if(on){d.classList.add("on");l.textContent="Tersambung Halaman 1 (Kampanye)";}
+  else{d.classList.remove("on");l.textContent="Belum tersambung — buka Halaman 1";}
+}
+function publishOut(){ // kirim angka IG ke Halaman 1
+  busWrite({fromKinerja:{
+    igReach:AGG.ig.reach||0, igViews:AGG.ig.views||0, igER:AGG.ig.er||0,
+    igSaveRate:AGG.ig.saveRate||0, igShareRate:AGG.ig.shareRate||0, igCommentRate:AGG.ig.commentRate||0,
+    igLinkTaps:AGG.ig.linkTaps||0, igFollows:AGG.ig.follows||0, igProfileVisits:AGG.ig.profileVisits||0,
+    engagementQualityScore:Math.round(engQualityScore()), ati:Math.round(atiTotal()),
+    updatedAt:new Date().toISOString()
+  }});
+  if(typeof saveState==="function")saveState();
+}
+
+/* =========================================================
+   SHEETS
+========================================================= */
+const IG_SHEET="1j3M-FKdWic1FiRIplBbyz3VpR7wFTQVdeHgxOqsuyC0"; // tracker konten IG (poin 8)
+const SOCIAL_SHEET="1rf1z-es8oBg9G3p9NHxnsUI6oRhcWDjTwp7siBozCGM"; // channel-health lama
+const num=v=>{if(v==null)return 0;const n=parseFloat(String(v).replace(",","."));return isNaN(n)?0:n;};
+/* normalizer rate: paham "6,1%" (string persen), 0.63 (pecahan 0–1), 6.1 (angka persen) → selalu kembalikan persen */
+function pctVal(v){if(v==null)return 0;if(typeof v==="string"&&v.indexOf("%")>=0)return num(v);const n=num(v);return n>0&&n<=1?n*100:n;}
+const TC=["#C0503F","#D99A2B","#3E8E6E","#2E7D5B"], TLABEL=["Buruk","Cukup","Baik","Sangat Baik"];
+
+/* --- channel definitions (social sheet schema, dari channel-health_4) --- */
+const SOCIAL_DEFS={
+ Telegram:{tab:"Telegram",sig:"VPS",metrics:[
+   {label:"VPS (View-per-Subscriber)",dim:"Reach",t:[20,40,60],dir:"up",calc:r=>r[1]?r[2]/r[1]*100:0},
+   {label:"ERR (Engagement by Reach)",dim:"Engagement",t:[2,5,8],dir:"up",calc:r=>r[2]?(num(r[3])+num(r[4])+num(r[5]))/r[2]*100:0},
+   {label:"Forward Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",calc:r=>r[2]?num(r[5])/r[2]*100:0},
+   {label:"Notif-Enabled Ratio",dim:"Komunitas",t:[40,60,75],dir:"up",calc:r=>r[1]?num(r[8])/r[1]*100:0},
+   {label:"Churn Rate",dim:"Retensi",t:[2,5],dir:"down",calc:r=>r[1]?num(r[7])/r[1]*100:0},
+ ]},
+ YouTube:{tab:"YouTube",sig:"Engagement Rate",metrics:[
+   {label:"CTR (Click-Through Rate)",dim:"Distribusi",t:[2,4,8],dir:"up",calc:r=>pctVal(r[4])},
+   {label:"Avg % Viewed (APV)",dim:"Retensi",t:[30,45,60],dir:"up",calc:r=>pctVal(r[5])},
+   {label:"Subscriber Conversion",dim:"Konversi",t:[0.1,0.3,0.7],dir:"up",calc:r=>r[3]?num(r[6])/r[3]*100:0},
+   {label:"Engagement Rate",dim:"Engagement",t:[2,5,10],dir:"up",calc:r=>r[3]?(num(r[7])+num(r[8])+num(r[9]))/r[3]*100:0},
+ ]},
+ TikTok:{tab:"TikTok",sig:"Engagement Rate",metrics:[
+   {label:"Completion Rate",dim:"Retensi",t:[15,30,50],dir:"up",calc:r=>pctVal(r[3])},
+   {label:"Engagement Rate",dim:"Engagement",t:[4,8,12],dir:"up",calc:r=>r[2]?(num(r[5])+num(r[6])+num(r[7])+num(r[8]))/r[2]*100:0},
+   {label:"Save Rate",dim:"Trust",t:[1,2,4],dir:"up",calc:r=>r[2]?num(r[8])/r[2]*100:0},
+   {label:"Share Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",calc:r=>r[2]?num(r[7])/r[2]*100:0},
+   {label:"FYP %",dim:"Distribusi",t:[50,70,85],dir:"up",calc:r=>pctVal(r[4])},
+ ]},
+ Threads:{tab:"Threads",sig:"Interaction Rate",metrics:[
+   {label:"Interaction Rate",dim:"Engagement",t:[2,5,8],dir:"up",calc:r=>r[2]?(num(r[3])+num(r[4])+num(r[5])+num(r[6]))/r[2]*100:0},
+   {label:"Reply-to-View Ratio",dim:"Trust",t:[0.5,1.5,3],dir:"up",calc:r=>r[2]?num(r[4])/r[2]*100:0},
+   {label:"Repost + Quote Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",calc:r=>r[2]?(num(r[5])+num(r[6]))/r[2]*100:0},
+ ]},
+ "WA Channel":{tab:"WA Channel",sig:"View Rate",metrics:[
+   {label:"View Rate",dim:"Retensi",t:[40,60,80],dir:"up",calc:r=>r[2]?num(r[3])/r[2]*100:0},
+   {label:"Reaction Rate",dim:"Engagement",t:[2,4,7],dir:"up",calc:r=>r[3]?num(r[4])/r[3]*100:0},
+   {label:"Forward Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",calc:r=>r[3]?num(r[5])/r[3]*100:0},
+   {label:"Link CTR (UTM)",dim:"Konversi",t:[2,4,7],dir:"up",calc:r=>r[3]?num(r[6])/r[3]*100:0},
+ ]},
+};
+
+/* channel registry: source = ig | social | manual */
+const CHANNELS=[
+ {key:"Instagram",source:"ig",sig:"Engagement Rate",dim:"Engagement"},
+ {key:"WA Channel",source:"social"},
+ {key:"WA Group",source:"manual",sig:"Active-Member Rate",dim:"Komunitas",
+   metrics:[{label:"Active-Member Rate",dim:"Komunitas",t:[10,25,40],dir:"up",val:0},
+            {label:"Message Reply Rate",dim:"Engagement",t:[5,12,20],dir:"up",val:0},
+            {label:"Event Show-up Rate",dim:"Konversi",t:[20,40,60],dir:"up",val:0}]},
+ {key:"Telegram",source:"social"},
+ {key:"Threads",source:"social"},
+ {key:"YouTube",source:"social"},
+ {key:"TikTok",source:"social"},
+];
+
+/* IG metric defs (computed from tracker aggregate; c=aggregate object) */
+const IG_METRICS=[
+ {label:"Engagement Rate",dim:"Engagement",t:[2,5,10],dir:"up",calc:c=>c.reach?(c.likes+c.comments+c.saves+c.shares+c.reposts)/c.reach*100:0},
+ {label:"Save Rate",dim:"Trust",t:[1,2,4],dir:"up",calc:c=>c.reach?c.saves/c.reach*100:0},
+ {label:"Share Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",calc:c=>c.reach?c.shares/c.reach*100:0},
+ {label:"Comment Rate",dim:"Engagement",t:[0.3,0.8,1.5],dir:"up",calc:c=>c.reach?c.comments/c.reach*100:0},
+ {label:"Bio Link Tap Rate",dim:"Konversi",t:[0.5,1,2],dir:"up",calc:c=>c.reach?c.linkTaps/c.reach*100:0},
+ {label:"Follow Rate",dim:"Reach",t:[0.5,1,2],dir:"up",calc:c=>c.reach?c.follows/c.reach*100:0},
+ {label:"Non-Follower Reach %",dim:"Distribusi",t:[40,60,75],dir:"up",calc:c=>c.nonFollowerPct},
+ {label:"Avg Retention (100−Skip) %",dim:"Retensi",t:[30,45,60],dir:"up",calc:c=>100-c.skipRate},
+];
+
+let RAW={}, AGG={ig:{}}, openSet=null, CUSTOM=[];
+
+/* =========================================================
+   GVIZ loader
+========================================================= */
+function gviz(sheetId,opts){
+  return new Promise((res,rej)=>{
+    const cb="cb_"+Math.abs(Math.floor((performance.now()*1000))%1e9)+"_"+(gviz._i=(gviz._i||0)+1);
+    const s=document.createElement("script");
+    const timer=setTimeout(()=>{cleanup();rej(new Error("timeout"))},15000);
+    function cleanup(){clearTimeout(timer);delete window[cb];s.remove();}
+    window[cb]=resp=>{cleanup();try{res((resp.table.rows||[]).map(r=>(r.c||[]).map(c=>c?c.v:null)))}catch(e){rej(e)}};
+    s.onerror=()=>{cleanup();rej(new Error("load fail"))};
+    let url=`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:${cb}&headers=0`;
+    if(opts.tab)url+=`&sheet=${encodeURIComponent(opts.tab)}`; else if(opts.gid!=null)url+=`&gid=${opts.gid}`;
+    if(opts.range)url+=`&range=${opts.range}`;
+    s.src=url; document.head.appendChild(s);
+  });
+}
+
+/* date parsing */
+function pd(v){
+  if(v==null)return null;
+  if(v instanceof Date)return v;
+  if(typeof v==="number")return null;
+  const sv=String(v).trim();
+  let m=sv.match(/^Date\((\d+),(\d+),(\d+)/); if(m)return new Date(+m[1],+m[2],+m[3]);
+  m=sv.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/); if(m)return new Date(+m[3],+m[2]-1,+m[1]); // dd/mm/yyyy
+  const d=new Date(sv); return isNaN(d)?null:d;
+}
+function iso(d){if(!d)return null;const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),dd=String(d.getDate()).padStart(2,"0");return`${y}-${m}-${dd}`;}
+
+async function loadAll(){
+  RAW={};
+  // social channels
+  for(const ch of CHANNELS.filter(c=>c.source==="social")){
+    try{RAW[ch.key]=(await gviz(SOCIAL_SHEET,{tab:SOCIAL_DEFS[ch.key].tab,range:"A5:Z1000"}))
+      .filter(r=>r[0]!=null);}catch(e){RAW[ch.key]=[];}
+  }
+  // instagram tracker (first sheet, gid 0). data mulai baris berisi Views numerik.
+  try{
+    const rows=await gviz(IG_SHEET,{gid:0,range:"A1:AP3000"});
+    RAW["Instagram"]=rows.filter(r=>{const v=num(r[17]);const dt=pd(r[1]);return v>0 && dt;});
+  }catch(e){RAW["Instagram"]=[];}
+}
+
+/* aggregate IG over range */
+function aggregateIG(from,to){
+  const rows=(RAW["Instagram"]||[]).filter(r=>{const d=iso(pd(r[1]));return d&&d>=from&&d<=to;});
+  const A={n:rows.length,reach:0,views:0,likes:0,comments:0,saves:0,shares:0,reposts:0,
+    follows:0,linkTaps:0,profileVisits:0,skipW:0,nfW:0};
+  rows.forEach(r=>{
+    const reach=num(r[18]);
+    A.reach+=reach; A.views+=num(r[17]);
+    A.likes+=num(r[29]); A.comments+=num(r[30]); A.saves+=num(r[35]); A.shares+=num(r[34]); A.reposts+=num(r[33]);
+    A.follows+=num(r[27]); A.linkTaps+=num(r[28]); A.profileVisits+=num(r[26]);
+    A.skipW+=num(r[20])*reach; A.nfW+=num(r[37])*reach;
+  });
+  A.skipRate=A.reach?A.skipW/A.reach:0;
+  A.nonFollowerPct=A.reach?A.nfW/A.reach:0;
+  A.er=A.reach?(A.likes+A.comments+A.saves+A.shares+A.reposts)/A.reach*100:0;
+  A.saveRate=A.reach?A.saves/A.reach*100:0;
+  A.shareRate=A.reach?A.shares/A.reach*100:0;
+  A.commentRate=A.reach?A.comments/A.reach*100:0;
+  return A;
+}
+
+/* tier helpers */
+function tierOf(m){
+  if(m.val==null||isNaN(m.val))return -1;
+  if(m.dir==="down")return m.val<=m.t[0]?2:m.val<=m.t[1]?1:0;
+  return m.val>=m.t[2]?3:m.val>=m.t[1]?2:m.val>=m.t[0]?1:0;
+}
+const tc=i=>i<0?"#9AA0AC":TC[i], tl=i=>i<0?"—":TLABEL[i];
+const fmtv=v=>v==null||isNaN(v)?"—":(Math.round(v*10)/10).toString().replace(".",",")+"%";
+const fmtn=v=>v==null||isNaN(v)?"—":Math.round(v).toLocaleString("id-ID");
+
+/* build per-channel metric list for current range */
+function metricsFor(ch,from,to){
+  if(ch.source==="ig"){
+    const A=aggregateIG(from,to); AGG.ig=A;
+    return IG_METRICS.map(m=>({label:m.label,dim:m.dim,t:m.t,dir:m.dir,val:A.reach?m.calc(A):null}));
+  }
+  if(ch.source==="social"){
+    const def=SOCIAL_DEFS[ch.key];
+    const rows=(RAW[ch.key]||[]).filter(r=>{const d=iso(pd(r[0]));return d&&d>=from&&d<=to;});
+    return def.metrics.map(m=>{let val=null;if(rows.length){const s=rows.map(r=>m.calc(r)).filter(v=>!isNaN(v));val=s.length?s[s.length-1]:null;}return{label:m.label,dim:m.dim,t:m.t,dir:m.dir,val};});
+  }
+  // manual
+  return (ch.metrics||[]).map(m=>({label:m.label,dim:m.dim,t:m.t,dir:m.dir,val:(m.val||m.val===0)?m.val:null}));
+}
+function sigOf(ch,mArr){
+  const sig=ch.sig||(ch.source==="social"?SOCIAL_DEFS[ch.key].sig:null);
+  return mArr.find(m=>sig&&m.label.includes(sig.split(" ")[0]))||mArr[0];
+}
+
+/* =========================================================
+   ATI COMPOSITE
+========================================================= */
+const DIMS=["Reach","Engagement","Distribusi","Konversi","Retensi","Trust","Komunitas"];
+function clamp(x){return Math.max(0,Math.min(100,x));}
+/* Engagement Quality (20%) — auto dari IG: save/share/comment/ER dinormalkan ke benchmark */
+function engQualityScore(){
+  const A=AGG.ig||{};
+  if(!A.reach)return ATI.engManual;
+  const s=[
+    clamp((A.er||0)/10*100),          // ER benchmark 10%
+    clamp((A.saveRate||0)/4*100),     // save 4%
+    clamp((A.shareRate||0)/2*100),    // share 2%
+    clamp((A.commentRate||0)/1.5*100) // comment 1.5%
+  ];
+  return s.reduce((a,b)=>a+b,0)/s.length;
+}
+/* Donation Conversion (25%) — dari Halaman 1 bila ada */
+function donationScore(){
+  if(INCOMING){
+    const t=INCOMING.donasiTarget||500, d=INCOMING.donorBaru||0;
+    const attain=clamp(d/t*100);
+    const repeat=INCOMING.repeatDonor!=null&&d?clamp(INCOMING.repeatDonor/d*100):50;
+    return clamp(attain*0.7+repeat*0.3);
+  }
+  return ATI.donManual;
+}
+/* Community Action (20%) — dari Halaman 1 bila ada */
+function communityScore(){
+  if(INCOMING){
+    const t=INCOMING.memberTarget||1000, m=INCOMING.memberBaru||0;
+    const attain=clamp(m/t*100);
+    const ev=clamp((INCOMING.communityEvents||0)/6*100);
+    return clamp(attain*0.75+ev*0.25);
+  }
+  return ATI.commManual;
+}
+const ATI={
+  weights:{cred:25,eng:20,comm:20,don:25,safe:10},
+  credManual:70, engManual:60, commManual:60, donManual:60, safeManual:85,
+  target:75
+};
+function atiParts(){
+  return [
+    {key:"cred",name:"Humanitarian Credibility",w:25,src:"manual",val:ATI.credManual,note:"kredibilitas · rekam jejak · authority (input)"},
+    {key:"eng", name:"Engagement Quality",     w:20,src:AGG.ig&&AGG.ig.reach?"auto":"manual",val:engQualityScore(),note:"save · share · komentar · reply (IG live)"},
+    {key:"comm",name:"Community Action",       w:20,src:INCOMING?"link":"manual",val:communityScore(),note:"member · event · komunitas (Halaman 1)"},
+    {key:"don", name:"Donation Conversion",    w:25,src:INCOMING?"link":"manual",val:donationScore(),note:"donor baru · repeat · nominal (Halaman 1)"},
+    {key:"safe",name:"Brand Safety",           w:10,src:"manual",val:ATI.safeManual,note:"sentiment · risiko reputasi (input)"},
+  ];
+}
+function atiTotal(){return atiParts().reduce((a,p)=>a+p.w*clamp(p.val)/100,0);}
+function atiTier(v){return v>=80?3:v>=60?2:v>=40?1:0;}
+function renderATI(){
+  const total=atiTotal(),tr=atiTier(total);
+  document.getElementById("atiScore").innerHTML=`
+    <div class="lab">Humanitarian ATI</div>
+    <div class="big" style="color:${TC[tr]==='#C0503F'?'#F0A79B':tc(tr)}">${(Math.round(total*10)/10).toString().replace(".",",")}</div>
+    <div class="of">/ 100</div>
+    <div class="tierlab" style="background:color-mix(in srgb,${tc(tr)} 26%,#0F1B33);color:#fff">${tl(tr)}</div>
+    <div class="tgt">Target ATI <input type="number" id="atiTgt" value="${ATI.target}" min="0" max="100">
+      · ${total>=ATI.target?'<span style="color:#7FD3A6">tercapai ✓</span>':'<span style="color:#F0A79B">−'+(Math.round((ATI.target-total)*10)/10).toString().replace(".",",")+'</span>'}</div>`;
+  const parts=atiParts();
+  document.getElementById("atiComp").innerHTML=parts.map(p=>{
+    const pct=clamp(p.val),col=pct>=80?TC[3]:pct>=60?TC[2]:pct>=40?TC[1]:TC[0];
+    const dis=p.src!=="manual";
+    return `<div class="comp-row">
+      <div class="comp-top">
+        <span class="src-tag src-${p.src}">${p.src==="auto"?"IG live":p.src==="link"?"Halaman 1":"input"}</span>
+        <span class="comp-name">${p.name}</span>
+        <span class="comp-w">${p.w}%</span>
+        <span class="comp-val" style="color:${col}">${Math.round(pct)}</span>
+      </div>
+      <div class="comp-bar"><span style="width:${pct}%;background:${col}"></span></div>
+      <div class="comp-ctrl">
+        <input type="range" min="0" max="100" value="${Math.round(pct)}" data-atikey="${p.key}" ${dis?"disabled":""}>
+      </div>
+      <div class="comp-note">${p.note}${dis?" — otomatis, tak bisa diedit manual":""}</div>
+    </div>`;
+  }).join("");
+  document.getElementById("atiTgt").addEventListener("input",e=>{ATI.target=num(e.target.value);renderATI();});
+  document.querySelectorAll("[data-atikey]").forEach(inp=>inp.addEventListener("input",e=>{
+    const k=e.target.dataset.atikey,v=num(e.target.value);
+    if(k==="cred")ATI.credManual=v; else if(k==="safe")ATI.safeManual=v;
+    else if(k==="eng")ATI.engManual=v; else if(k==="comm")ATI.commManual=v; else if(k==="don")ATI.donManual=v;
+    renderATI(); publishOut();
+  }));
+}
+
+/* =========================================================
+   RENDER matrix + cards + detail
+========================================================= */
+let TARGETS={}; // {channel-metricLabel: value}
+function render(){
+  const from=document.getElementById("from").value, to=document.getElementById("to").value;
+  const allCh=CHANNELS.concat(CUSTOM);
+  const DATA={};
+  allCh.forEach(ch=>DATA[ch.key]=metricsFor(ch,from,to));
+  if(openSet===null)openSet=new Set([allCh[0].key]);
+
+  /* matrix */
+  let mh=`<thead><tr><th class="ch">Channel</th>${DIMS.map(d=>`<th>${d}</th>`).join("")}</tr></thead><tbody>`;
+  allCh.forEach(ch=>{
+    const mArr=DATA[ch.key];
+    mh+=`<tr><td class="chname">${ch.key}<small>${ch.source==="ig"?"IG tracker (live)":ch.source==="social"?"Tracker sosmed (live)":"manual"}</small></td>`;
+    DIMS.forEach(d=>{
+      const ms=mArr.filter(m=>m.dim===d);
+      if(!ms.length){mh+=`<td><div class="cell empty">·</div></td>`;return;}
+      // ambil metrik terbaik-representatif (nilai jantung dimensi = pertama)
+      const m=ms[0],tr=tierOf(m);
+      mh+=`<td><div class="cell" style="background:${tc(tr)}">${fmtv(m.val)}<small>${m.label.split(" ")[0]}</small></div></td>`;
+    });
+    mh+=`</tr>`;
+  });
+  mh+=`</tbody>`;
+  document.getElementById("matrix").innerHTML=mh;
+
+  /* cards */
+  let g="";
+  allCh.forEach(ch=>{
+    const mArr=DATA[ch.key],sm=sigOf(ch,mArr),tr=tierOf(sm);
+    const er=mArr.find(m=>m.label.toLowerCase().includes("engagement")||m.label.toLowerCase().includes("interaction"));
+    const live=(ch.source==="ig"&&AGG.ig.reach)||(ch.source==="social"&&(RAW[ch.key]||[]).length);
+    g+=`<div class="cch"><span class="edge" style="background:${tc(tr)}"></span>
+      <span class="live-dot ${live?'on':''}" title="${live?'data live':'manual/kosong'}"></span>
+      <div class="cn">${ch.key}</div><div class="sig">${sm.label}</div>
+      <div class="big" style="color:${tc(tr)}">${fmtv(sm.val)}</div>
+      <div class="er">ER: <b>${er?fmtv(er.val):'—'}</b>${ch.source==="ig"?` · reach ${fmtn(AGG.ig.reach)}`:''}</div>
+      <span class="tchip" style="background:color-mix(in srgb,${tc(tr)} 14%,#fff);color:${tc(tr)}">${tl(tr)}</span></div>`;
+  });
+  document.getElementById("grid").innerHTML=g;
+
+  /* detail accordion */
+  let det="";
+  allCh.forEach(ch=>{
+    const mArr=DATA[ch.key],sm=sigOf(ch,mArr),str=tierOf(sm);
+    const healthy=mArr.filter(m=>tierOf(m)>=2).length,total=mArr.length;
+    const manual=ch.source==="manual";
+    const rows=mArr.map((m,i)=>{
+      const tr=tierOf(m),tkey=ch.key+"||"+m.label;
+      const valCell=manual
+        ? `<input class="manual-in" type="number" step="0.1" value="${m.val==null?'':m.val}" data-manual="${ch.key}" data-mi="${i}">`
+        : `<span class="nilai">${fmtv(m.val)}</span>`;
+      return `<tr>
+        <td><div class="mname2">${m.label}${m===sm?'<small>metrik jantung</small>':''}</div></td>
+        <td><span class="dchip">${m.dim}</span></td>
+        <td>${valCell}</td>
+        <td><input class="tgtin" type="number" step="0.1" placeholder="target" value="${TARGETS[tkey]!=null?TARGETS[tkey]:''}" data-tgt="${tkey}"></td>
+        <td>${targetStat(m.val,TARGETS[tkey],m.dir)}</td>
+        <td><span class="stat" style="color:${tc(tr)}"><span class="sdot" style="background:${tc(tr)}"></span>${tl(tr)}</span></td>
+      </tr>`;
+    }).join("");
+    det+=`<div class="accord${openSet.has(ch.key)?' open':''}" data-ch="${ch.key}">
+      <div class="ahead">
+        <div class="aleft"><span class="dot" style="background:${tc(str)}"></span>
+          <span class="cname">${ch.key}</span><span class="hchip">${healthy}/${total} metrik sehat</span></div>
+        <div class="aright"><span class="sl2">${sm.label}</span>
+          <span class="sv" style="color:${tc(str)}">${fmtv(sm.val)}</span><span class="caret">▼</span></div>
+      </div>
+      <div class="abody"><table class="det"><thead><tr>
+        <th>Metrik</th><th>Dimensi</th><th>Nilai${manual?' (isi manual)':''}</th><th>Target</th><th>vs Target</th><th>Tier</th>
+      </tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  });
+  document.getElementById("detail").innerHTML=det;
+
+  /* wire */
+  document.querySelectorAll(".accord").forEach(a=>a.querySelector(".ahead").addEventListener("click",()=>{
+    const k=a.dataset.ch; if(openSet.has(k))openSet.delete(k);else openSet.add(k); a.classList.toggle("open");
+  }));
+  document.querySelectorAll("[data-tgt]").forEach(inp=>inp.addEventListener("input",e=>{
+    const v=e.target.value; TARGETS[e.target.dataset.tgt]=v===""?null:num(v); render();
+  }));
+  document.querySelectorAll("[data-manual]").forEach(inp=>inp.addEventListener("input",e=>{
+    const ch=allCh.find(c=>c.key===e.target.dataset.manual); if(ch&&ch.metrics)ch.metrics[+e.target.dataset.mi].val=num(e.target.value); render();
+  }));
+
+  renderATI(); publishOut(); saveState();
+  document.getElementById("stamp").textContent="Rentang "+from+" → "+to;
+}
+function targetStat(val,tgt,dir){
+  if(val==null||tgt==null||isNaN(val))return '<span style="color:var(--muted)">—</span>';
+  const good=dir==="down"?val<=tgt:val>=tgt;
+  const d=val-tgt, ds=(d>=0?"+":"")+(Math.round(d*10)/10).toString().replace(".",",");
+  return `<span style="color:${good?'var(--t2)':'var(--t0)'};font-weight:700">${ds}</span>`;
+}
+
+/* =========================================================
+   snapshot / lock / custom
+========================================================= */
+function snapshot(){
+  return {app:"alfalee-kinerja",ts:new Date().toISOString(),
+    from:document.getElementById("from").value,to:document.getElementById("to").value,
+    ATI:{credManual:ATI.credManual,engManual:ATI.engManual,commManual:ATI.commManual,donManual:ATI.donManual,safeManual:ATI.safeManual,target:ATI.target},
+    TARGETS,CUSTOM,igAgg:AGG.ig,fromKampanye:INCOMING};
+}
+const STATE_KEY="alfalee_kinerja_state";
+let S_FROM=null,S_TO=null,_sv=null;
+function saveState(){clearTimeout(_sv);_sv=setTimeout(()=>{try{localStorage.setItem(STATE_KEY,JSON.stringify(snapshot()))}catch(e){}},350);}
+function restoreState(){try{const s=JSON.parse(localStorage.getItem(STATE_KEY));if(!s)return;
+  if(s.ATI)Object.assign(ATI,s.ATI); if(s.TARGETS)TARGETS=s.TARGETS; if(s.CUSTOM)CUSTOM=s.CUSTOM;
+  if(s.from)S_FROM=s.from; if(s.to)S_TO=s.to;}catch(e){}}
+function doExport(){
+  const blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="alfalee-kinerja-snapshot-"+new Date().toISOString().slice(0,10)+".json";a.click();
+}
+function doImport(obj){
+  try{
+    if(obj.ATI)Object.assign(ATI,obj.ATI);
+    if(obj.TARGETS)TARGETS=obj.TARGETS;
+    if(obj.CUSTOM)CUSTOM=obj.CUSTOM;
+    if(obj.fromKampanye){INCOMING=obj.fromKampanye;markSync(true);}
+    if(obj.from)document.getElementById("from").value=obj.from;
+    if(obj.to)document.getElementById("to").value=obj.to;
+    render();
+    banner("ok","Snapshot dimuat.");
+  }catch(e){banner("err","Snapshot tidak valid.");}
+}
+function banner(cls,msg){const b=document.getElementById("banner");b.className="banner "+cls;b.textContent=msg;if(cls==="ok")setTimeout(()=>b.style.display="none",2500);}
+
+function doLock(){
+  const who=prompt("Kunci rencana kinerja atas nama (untuk stempel PDF):","Tim MHG")||"";
+  const now=new Date();
+  document.getElementById("stamp").innerHTML=
+    `🔒 <b>Rencana kinerja dikunci</b> — ${now.toLocaleString("id-ID")} · oleh ${who||"—"} · versi ${now.getTime().toString(36).toUpperCase()}<br>`+
+    `Snapshot ini adalah acuan tim. Semua channel & ATI di atas tercatat pada rentang ${document.getElementById("from").value} → ${document.getElementById("to").value}.`;
+  setTimeout(()=>window.print(),200);
+}
+
+function addCustom(){
+  const name=document.getElementById("ncName").value.trim();
+  const sig=document.getElementById("ncSig").value.trim()||"Engagement Rate";
+  const val=num(document.getElementById("ncVal").value);
+  if(!name)return;
+  CUSTOM.push({key:name,source:"manual",sig:sig,dim:"Engagement",
+    metrics:[{label:sig,dim:"Engagement",t:[2,5,10],dir:"up",val}]});
+  document.getElementById("ncName").value=document.getElementById("ncVal").value="";document.getElementById("ncSig").value="";
+  openSet.add(name); render();
+}
+
+/* =========================================================
+   INIT
+========================================================= */
+async function boot(){
+  restoreState();
+  banner("load","Memuat data channel (IG + sosmed)…");
+  await loadAll();
+  // set date range dari data yang ada
+  const dates=[];
+  (RAW["Instagram"]||[]).forEach(r=>{const d=iso(pd(r[1]));if(d)dates.push(d);});
+  Object.keys(SOCIAL_DEFS).forEach(k=>(RAW[k]||[]).forEach(r=>{const d=iso(pd(r[0]));if(d)dates.push(d);}));
+  dates.sort();
+  const from=S_FROM||dates[0]||"2026-06-01", to=S_TO||dates[dates.length-1]||"2026-07-31";
+  document.getElementById("from").value=from; document.getElementById("to").value=to;
+  const anyLive=(RAW["Instagram"]||[]).length||Object.keys(SOCIAL_DEFS).some(k=>(RAW[k]||[]).length);
+  if(anyLive){banner("ok","Data live termuat.");}
+  else{banner("err","Data live kosong. Pastikan Sheet di-share 'anyone with link → Viewer' & online. Channel manual tetap bisa diisi.");}
+  render();
+  // sudah ada kiriman dari Halaman 1?
+  const b=busRead(); if(b.fromKampanye){INCOMING=b.fromKampanye;markSync(true);renderATI();}
+}
+document.getElementById("from").addEventListener("change",render);
+document.getElementById("to").addEventListener("change",render);
+document.getElementById("reload").addEventListener("click",boot);
+document.getElementById("exp").addEventListener("click",doExport);
+document.getElementById("imp").addEventListener("click",()=>document.getElementById("impFile").click());
+document.getElementById("impFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{doImport(JSON.parse(rd.result))}catch(_){banner("err","Gagal baca file.");}};rd.readAsText(f);});
+document.getElementById("lock").addEventListener("click",doLock);
+document.getElementById("goKampanye").addEventListener("click",()=>{location.href="alfalee-mhg-dashboard-gabungan.html";});
+document.getElementById("addCh").addEventListener("click",addCustom);
+boot();
+</script>
+</body>
+</html>

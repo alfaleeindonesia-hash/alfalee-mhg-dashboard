@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alfalee × MHG — Dashboard Kampanye (Gabungan)</title>
+<!--
+=====================================================================
+ HALAMAN 1 — DASHBOARD KAMPANYE GABUNGAN (angka Rupiah)
+ Pasangan dari "dashboard-kinerja-multichannel.html" (angka kinerja).
+ Per produk: Framework (TOFU/MOFU/BOFU) + Engine (reverse funnel) +
+ Journey (corong per tahap, badge sumber data) MELEBUR jadi satu.
+ Tambahan: Target-vs-Aktual · Profit/P&L · Kalender editable + matriks ·
+           Kunci & Simpan PDF (timestamp) · sinkron 2-arah dgn Halaman 2.
+ Angka default = dokumen RGI/CMP/2026/07/001 (agregat Rp 204jt, ad spend Rp 51jt).
+ Sinkron: KIRIM donor/member/event → ATI Halaman 2; TERIMA reach/ER/link-taps IG
+          → kolom Aktual & kalibrasi funnel.
+=====================================================================
+-->
+<style>
+  :root{
+    --navy:#1B2A4A; --navy-2:#24365C; --navy-3:#0F1B33;
+    --gold:#C9A227; --gold-light:#E8CE6C;
+    --cream:#F7F4EC; --card:#FFFFFF;
+    --ink:#1B2430; --muted:#5B6675; --line:#DDE2EA;
+    --steel:#3E6B9E;
+    --auto:#2E9E6B; --semi:#C08A1E; --manual:#B0453B;
+    --tofu:#3E6B9E; --mofu:#B8862F; --bofu:#8A3B3B;
+    --good:#2E8E6E; --bad:#C0503F;
+    --live:#2E9E6B; --stale:#B0453B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--cream);color:var(--ink);font-family:'Segoe UI',Roboto,-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:60px;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 20px;}
+  header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 100%);color:#fff;border-bottom:4px solid var(--gold);padding:26px 0 20px;}
+  header .eyebrow{color:var(--gold-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:600;}
+  header h1{margin:6px 0 6px;font-size:24px;}
+  header p{margin:0;color:#C9D3E4;font-size:13.5px;max-width:820px;}
+  .head-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;}
+  .sync-pill{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;color:#dbe4f0;white-space:nowrap;}
+  .sync-dot{width:8px;height:8px;border-radius:50%;background:var(--stale);}
+  .sync-dot.on{background:var(--live);box-shadow:0 0 0 3px rgba(46,158,107,.25);}
+  .doc-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .doc-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:6px 12px;font-size:11.5px;color:#DCE4F0;}
+  .doc-chip b{color:var(--gold-light);}
+
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 0;}
+  .btn{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:8px 13px;font-size:12.5px;cursor:pointer;font-weight:600;}
+  .btn:hover{border-color:var(--gold);color:var(--ink);}
+  .btn.gold{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+  .btn.gold:hover{background:var(--gold-light);}
+
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 18px;}
+  .tab{background:var(--card);border:1px solid var(--line);color:var(--muted);padding:9px 15px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;transition:.15s;}
+  .tab:hover{border-color:var(--gold);color:var(--ink);}
+  .tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .tab.agg[aria-selected="true"]{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+  .tab.util[aria-selected="true"]{background:var(--steel);color:#fff;border-color:var(--steel);}
+
+  section{margin-top:6px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(11,31,58,.06);margin-bottom:18px;}
+  h2{font-size:18px;color:var(--navy);margin:0 0 4px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  h3.ct{font-size:15px;color:var(--navy);margin:0 0 4px;}
+  .tag{font-size:10.5px;background:var(--gold);color:var(--navy);font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.5px;}
+  .desc{color:var(--muted);font-size:13px;margin:2px 0 14px;}
+
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:6px;}
+  .metric{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden;}
+  .metric::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);}
+  .metric.g::before{background:var(--auto);}
+  .metric.p::before{background:var(--steel);}
+  .metric .k{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .metric .v{font-size:22px;font-weight:700;color:var(--navy);margin-top:4px;font-variant-numeric:tabular-nums;line-height:1;}
+  .metric .s{font-size:11px;color:var(--muted);margin-top:3px;}
+
+  .pillar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px;}
+  .pillbadge{font-size:10.5px;font-weight:700;color:#fff;padding:3px 10px;border-radius:20px;}
+  .p-tofu{background:var(--tofu);} .p-mofu{background:var(--mofu);} .p-bofu{background:var(--bofu);}
+
+  /* target vs aktual */
+  .tva{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:14px;}
+  .tva h4{margin:0 0 10px;font-size:13px;color:var(--navy);display:flex;align-items:center;gap:8px;}
+  .tva-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;}
+  .tva-item{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 12px;}
+  .tva-item .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600;}
+  .tva-row{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px;gap:8px;}
+  .tva-row .plan{font-size:12px;color:var(--muted);}
+  .tva-row .plan b{color:var(--navy);font-size:14px;}
+  .tva-item input{width:100%;margin-top:6px;background:#EEF4FF;border:1.5px solid var(--steel);border-radius:6px;padding:6px 8px;font-size:13px;text-align:right;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;}
+  .tva-item input:focus{outline:2px solid var(--gold);}
+  .var{font-size:11.5px;font-weight:700;margin-top:5px;text-align:right;}
+  .var.good{color:var(--good);} .var.bad{color:var(--bad);}
+  .from-kinerja{font-size:10.5px;color:var(--steel);margin-top:4px;text-align:right;}
+
+  .tracks{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-top:8px;}
+  .track{flex:1;min-width:270px;background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:15px;}
+  .track.single{max-width:520px;}
+  .track-title{font-weight:700;font-size:13.5px;color:var(--navy);margin:0 0 2px;}
+  .track-sub{font-size:11.5px;color:var(--muted);margin:0 0 10px;}
+  .topinput{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+  .topinput .chip{width:11px;height:34px;border-radius:4px;flex:none;}
+  .topinput label{display:block;font-size:11px;color:var(--muted);margin:0 0 3px;}
+  .topinput .lead{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  input[type="number"]{width:100%;background:#fff;border:1.5px solid var(--steel);border-radius:8px;color:var(--ink);font-weight:700;font-size:16px;padding:7px 10px;font-variant-numeric:tabular-nums;}
+  input[type="number"]:focus{outline:2px solid var(--gold);}
+  svg.funnel{width:100%;height:auto;display:block;overflow:visible;margin-bottom:4px;}
+  .band-label{font-weight:600;fill:#fff;font-size:11px;}
+  .band-num{font-weight:700;fill:#fff;font-size:14.5px;font-variant-numeric:tabular-nums;}
+  .pill-rect{fill:#fff;stroke:var(--line);}
+  .pill-txt{font-weight:700;font-size:11px;}
+  details.ctrl{margin-top:8px;}
+  details.ctrl>summary{cursor:pointer;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);list-style:none;display:flex;gap:6px;align-items:center;padding:5px 0;font-weight:600;}
+  details.ctrl>summary::-webkit-details-marker{display:none;}
+  details.ctrl>summary::before{content:"▸";color:var(--gold);}
+  details.ctrl[open]>summary::before{content:"▾";}
+  .stage-row{padding:8px 0;border-top:1px solid var(--line);}
+  .stage-row:first-of-type{border-top:0;}
+  .stage-head{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+  .badge{font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 6px;border-radius:5px;flex:none;color:#fff;}
+  .badge.auto{background:var(--auto);} .badge.semi{background:var(--semi);} .badge.manual{background:var(--manual);}
+  .phase{font-size:8.5px;font-weight:700;padding:1px 5px;border-radius:4px;flex:none;}
+  .ph-tofu{background:rgba(62,107,158,.15);color:var(--tofu);}
+  .ph-mofu{background:rgba(184,134,47,.15);color:var(--mofu);}
+  .ph-bofu{background:rgba(138,59,59,.15);color:var(--bofu);}
+  .stage-name{flex:1;min-width:0;font-size:12.5px;color:var(--ink);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .stage-num{font-weight:700;font-size:12.5px;color:var(--navy);font-variant-numeric:tabular-nums;flex:none;}
+  .conv{display:flex;align-items:center;gap:9px;padding-left:2px;}
+  .conv .arrow{color:var(--muted);font-size:11px;flex:none;}
+  .conv input[type="range"]{-webkit-appearance:none;appearance:none;flex:1;height:5px;border-radius:999px;background:var(--line);cursor:pointer;}
+  .conv input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--gold);cursor:grab;}
+  .conv input[type="range"]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--gold);cursor:grab;}
+  .conv .pct{font-weight:700;font-size:12px;width:46px;text-align:right;color:var(--mofu);font-variant-numeric:tabular-nums;flex:none;}
+  .muara{margin-top:16px;background:linear-gradient(180deg,var(--navy),var(--navy-3));border:1px solid var(--gold);border-radius:14px;padding:18px;color:#fff;}
+  .muara h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-light);margin:0 0 13px;}
+  .feeders{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  .feeder{flex:1;min-width:120px;text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:10px;}
+  .feeder .fk{font-size:10.5px;color:#9FB0CC;margin:0 0 4px;}
+  .feeder .fv{font-weight:700;font-size:19px;font-variant-numeric:tabular-nums;}
+  .converge{text-align:center;color:var(--gold-light);font-size:20px;margin:8px 0;}
+  .total-box{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;text-align:center;background:rgba(46,158,107,.14);border:1px solid var(--auto);border-radius:12px;padding:15px;}
+  .total-box .tk{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#B9C4D6;margin:0 0 5px;font-weight:600;}
+  .total-box .tv{font-weight:700;font-size:clamp(20px,3vw,28px);font-variant-numeric:tabular-nums;line-height:1;}
+  .unitrow{display:flex;align-items:center;gap:9px;justify-content:center;margin-top:13px;flex-wrap:wrap;font-size:12px;color:#C9D3E4;}
+  .unitrow input{width:150px;font-size:14px;}
+  .note{background:rgba(201,162,39,.1);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:10px 13px;font-size:12px;color:var(--ink);margin-top:14px;}
+
+  table{width:100%;border-collapse:collapse;font-size:12.8px;margin-top:6px;}
+  th{background:var(--navy);color:#fff;text-align:left;padding:9px 10px;font-size:11.5px;font-weight:600;}
+  td{padding:8px 10px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums;vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr.total td{font-weight:700;background:var(--cream);}
+  td input.cell{width:100px;background:#EEF4FF;border:1.5px solid var(--steel);border-radius:6px;padding:5px 7px;font-size:12.5px;text-align:right;font-weight:600;color:var(--ink);}
+  .mini{font-size:10.5px;color:var(--muted);}
+
+  /* profit waterfall */
+  .pl-wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:16px;}
+  @media(max-width:820px){.pl-wrap{grid-template-columns:1fr;}}
+  .pl-inputs .in-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);gap:8px;font-size:13px;}
+  .pl-inputs .in-row:last-child{border-bottom:none;}
+  .pl-inputs .in-row label{color:var(--ink);flex:1;}
+  .pl-inputs .in-row input{width:130px;text-align:right;}
+  .pl-inputs .in-row .u{width:34px;font-size:11px;color:var(--muted);}
+  .wf{display:flex;flex-direction:column;gap:7px;}
+  .wf-bar{display:flex;align-items:center;gap:10px;}
+  .wf-bar .wl{width:130px;font-size:12px;color:var(--muted);flex:none;}
+  .wf-bar .track2{flex:1;height:26px;background:#F0ECE2;border-radius:6px;position:relative;overflow:hidden;}
+  .wf-bar .fill{position:absolute;top:0;bottom:0;border-radius:6px;}
+  .wf-bar .wv{width:110px;text-align:right;font-weight:700;font-size:13px;flex:none;font-variant-numeric:tabular-nums;}
+  .pl-net{margin-top:12px;background:linear-gradient(135deg,var(--navy),var(--navy-3));color:#fff;border-radius:12px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .pl-net .nl{font-size:12px;color:var(--gold-light);text-transform:uppercase;letter-spacing:.08em;}
+  .pl-net .nv{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;}
+  .pl-net .mg{font-size:13px;color:#B9C4D6;}
+
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:11.5px;color:var(--muted);align-items:center;}
+  footer{text-align:center;color:var(--muted);font-size:11.5px;margin-top:24px;}
+  .stamp{margin-top:14px;font-size:11.5px;color:var(--muted);text-align:center;}
+  @media(max-width:760px){.track{min-width:100%;}}
+
+  @media print{
+    .toolbar,.tabs,.conv,details.ctrl>summary,.btn{display:none!important;}
+    details.ctrl[open] .stage-row .conv{display:none!important;}
+    body{background:#fff;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    header{-webkit-print-color-adjust:exact;}
+    .card{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="head-top">
+      <div>
+        <div class="eyebrow">Alfalee × MHG — Growth Engine</div>
+        <h1>Dashboard Kampanye — Gabungan</h1>
+        <p>Framework + Engine Angka + Funnel Journey melebur per produk. Media metric di puncak corong mengalir turun sampai Sales. Kolom <b>Aktual</b> untuk data real; badge <b>auto/semi/manual</b> menandai sumber data.</p>
+      </div>
+      <span class="sync-pill"><span class="sync-dot" id="syncDot"></span><span id="syncLbl">Menunggu Halaman 2…</span></span>
+    </div>
+    <div class="doc-chips">
+      <div class="doc-chip">Dok <b>RGI/CMP/2026/07/001</b></div>
+      <div class="doc-chip">Periode <b>30 hari</b></div>
+      <div class="doc-chip">IP <b>Muhammad Husein Gaza</b></div>
+      <div class="doc-chip">Target <b>Rp 204jt/bln</b></div>
+    </div>
+    <div class="toolbar">
+      <button class="btn" id="goKinerja" style="background:var(--steel);border-color:var(--steel);color:#fff">↗ Buka Halaman Kinerja (ATI)</button>
+      <button class="btn" id="exp">⬇ Export snapshot</button>
+      <button class="btn" id="imp">⬆ Import snapshot</button>
+      <button class="btn gold" id="lock">🔒 Kunci &amp; Simpan PDF</button>
+      <button class="btn" id="reset">↺ Reset default</button>
+      <input type="file" id="impFile" accept="application/json" style="display:none">
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div id="stage"></div>
+  <div class="legend">
+    <span>Sumber data:</span>
+    <span class="badge auto">auto</span><span>Meta / pixel / mayar</span>
+    <span class="badge semi">semi</span><span>form/tool rapi</span>
+    <span class="badge manual">manual</span><span>dicatat admin</span>
+  </div>
+  <div class="stamp" id="stamp"></div>
+  <footer>Alfalee × MHG · snapshot Juli 2026 · angka framework (bukan komitmen final), validasi ulang setelah 2–4 minggu data aktual.</footer>
+</div>
+
+<script>
+"use strict";
+/* ========= SYNC BRIDGE (identik Halaman 2) ========= */
+const BUS_KEY="alfalee_bus_v1";
+const bc=("BroadcastChannel"in window)?new BroadcastChannel("alfalee_mhg"):null;
+function busRead(){try{return JSON.parse(localStorage.getItem(BUS_KEY))||{}}catch(e){return{}}}
+function busWrite(patch){const cur=busRead();const next=Object.assign({},cur,patch);next._ts=new Date().toISOString();try{localStorage.setItem(BUS_KEY,JSON.stringify(next))}catch(e){}if(bc){try{bc.postMessage(next)}catch(e){}}return next;}
+let FROM_KINERJA=null; // {igReach,igER,igLinkTaps,...}
+function onBusIn(data){if(!data)return;if(data.fromKinerja){FROM_KINERJA=data.fromKinerja;markSync(true);if(activeTab!=="profit"&&activeTab!=="kalender"&&activeTab!=="agg")refreshKinerjaPanels();}}
+if(bc)bc.onmessage=e=>onBusIn(e.data);
+window.addEventListener("storage",e=>{if(e.key===BUS_KEY&&e.newValue){try{onBusIn(JSON.parse(e.newValue))}catch(_){}}});
+function markSync(on){const d=document.getElementById("syncDot"),l=document.getElementById("syncLbl");if(on){d.classList.add("on");l.textContent="Tersambung Halaman 2 (Kinerja)";}else{d.classList.remove("on");l.textContent="Belum tersambung — buka Halaman 2";}}
+function publishOut(){
+  const don=prodStats(CONFIG.donasi), mbr=prodStats(CONFIG.membership);
+  const aDon=ACT.donasi||{}, aMbr=ACT.membership||{};
+  busWrite({fromKampanye:{
+    donorBaru:Math.round(aDon.unit!=null?aDon.unit:don.buyers), donasiTarget:500,
+    repeatDonor:Math.round(aDon.repeat!=null?aDon.repeat:don.buyers*0.3),
+    donasiNominal:Math.round((aDon.rev!=null?aDon.rev:don.revenue)),
+    memberBaru:Math.round(aMbr.unit!=null?aMbr.unit:mbr.buyers), memberTarget:1000,
+    communityEvents:CAL.qty.live*CAL.durasi/7|0 || 4,
+    updatedAt:new Date().toISOString()
+  }});
+  if(typeof saveState==="function")saveState();
+}
+
+/* ========= DATA MODEL (journey forward) ========= */
+function s(label,src){return{label,src};}
+const SETTINGS={cpm:35000};
+const DEFAULT={
+  prodigi:{name:"Prodigi",tag:"Produk Digital · 99k",unitLabel:"Harga produk (Rp)",unitValue:99000,muaraLabel:"Total Buyer Prodigi",revTarget:60000000,
+    note:"Auto penuh (ad → landing mayar ter-pixel → beli). Pastikan Meta Pixel + CAPI terpasang.",
+    tracks:[
+      {id:"prd_ads",channel:"ads",label:"Jalur Ads — Meta → Landing mayar",note:"Impression → landing → beli",top:400000,rates:[0.9,80,14.7],
+        stages:[s("Impression iklan","auto"),s("Klik ke landing","auto"),s("Landing mayar dibuka","auto"),s("Checkout / beli","auto")]},
+      {id:"prd_org",channel:"organik",label:"Jalur Organik — Reels/Carousel",note:"Reach → link bio → beli",top:79267,rates:[1.5,85,18],
+        stages:[s("Reach organik","semi"),s("Klik link bio","auto"),s("Landing mayar dibuka","auto"),s("Checkout / beli","auto")]},
+    ]},
+  membership:{name:"Membership",tag:"Recurring 50k/bln · LTV 100k",unitLabel:"Harga/bln (Rp)",unitValue:50000,muaraLabel:"Total Member Baru",revTarget:50000000,
+    note:"Kelas multi-jalur: dingin + panas + komunitas warm menyatu. Nilai budget pakai ROAS-LTV 3,33×. Sedot sebagian target dari komunitas warm. Member & event dikirim ke ATI (Community Action) Halaman 2.",
+    tracks:[
+      {id:"mbr_cold",channel:"ads",label:"Jalur 1 — Traffic Dingin (Ads)",note:"WA-first · terpanjang",top:400000,rates:[1.0,45,45,56],
+        stages:[s("Impression iklan","auto"),s("Tap “Kirim Pesan”/klik","auto"),s("Chat WA / landing","semi"),s("Qualified — minat kuat","manual"),s("Bayar & join member","semi")]},
+      {id:"mbr_warm_ads",channel:"ads",label:"Jalur 2 — Traffic Panas (Retarget)",note:"Ads retarget → WA cepat",top:200000,rates:[1.5,50,45,37],
+        stages:[s("Impression retarget","auto"),s("Tap “Kirim Pesan”/klik","auto"),s("Chat WA / landing","semi"),s("Konfirmasi minat","manual"),s("Bayar & join member","semi")]},
+      {id:"mbr_comm",channel:"warm",label:"Jalur 3 — Komunitas Warm",note:"Basis = member/follower aktif",top:15000,rates:[40,25,20],
+        stages:[s("Basis warm aktif","semi"),s("Lihat penawaran","manual"),s("Sinyal minat","manual"),s("Join member","semi")]},
+    ]},
+  fwb:{name:"Webinar FWB",tag:"Lead magnet · upsell 35k · 4 event",unitLabel:"Harga upsell (Rp)",unitValue:35000,muaraLabel:"Total Upsell FWB",revTarget:15000000,
+    note:"FWB = mesin lead terbesar. Registran jadi audiens warm untuk produk lain — nilainya melampaui Rp 15jt upsell.",
+    tracks:[
+      {id:"fwb_ads",channel:"ads",label:"Jalur Ads — CTWA/Landing",note:"Impression → registrasi → hadir → upsell",top:257000,rates:[1.4,83.5,40,25],
+        stages:[s("Impression iklan","auto"),s("Klik ke registrasi","auto"),s("Registrasi FWB","semi"),s("Hadir webinar","semi"),s("Upsell beli","semi")]},
+      {id:"fwb_org",channel:"organik",label:"Jalur Organik — Reels/Story",note:"Reach → registrasi → hadir → upsell",top:252400,rates:[0.51,40,25],
+        stages:[s("Reach organik","semi"),s("Registrasi FWB","semi"),s("Hadir webinar","semi"),s("Upsell beli","semi")]},
+    ]},
+  webinarpaid:{name:"Webinar Paid",tag:"Tiket 99k · 2 event",unitLabel:"Harga tiket (Rp)",unitValue:99000,muaraLabel:"Total Tiket Terjual",revTarget:25000000,
+    note:"Tiket dibayar via mayar (auto). Audiens warm dari FWB & komunitas menurunkan beban reach organik. Target ROAS 2,5×.",
+    tracks:[
+      {id:"wp_ads",channel:"ads",label:"Jalur Ads — Meta → Landing daftar",note:"Impression → daftar → bayar",top:200000,rates:[1.5,40,14.75],
+        stages:[s("Impression iklan","auto"),s("Klik ke landing daftar","auto"),s("Landing pendaftaran","auto"),s("Bayar tiket","auto")]},
+      {id:"wp_org",channel:"organik",label:"Jalur Organik — Reels/Story",note:"Reach → daftar → bayar",top:23867,rates:[3,60,17.7],
+        stages:[s("Reach organik","semi"),s("Klik ke landing daftar","auto"),s("Landing pendaftaran","auto"),s("Bayar tiket","auto")]},
+    ]},
+  branddeals:{name:"Brand Deals",tag:"B2B · target 2 deals",unitLabel:"Nilai rata-rata deal (Rp)",unitValue:25000000,muaraLabel:"Deal Closed",revTarget:50000000,
+    note:"Pipeline B2B (bukan ads): 200 kontak/bln ≈ 10/hari kerja. Naikkan avg deal value lebih berdampak daripada volume. Inbound dari otoritas IG MHG mengurangi outreach dingin.",
+    tracks:[
+      {id:"bd",channel:"b2b",label:"Pipeline Outreach B2B",note:"Outreach → reply → meeting → proposal → close",top:200,rates:[20,40,50,25],
+        stages:[s("Outreach / kontak","manual"),s("Balasan","manual"),s("Meeting","manual"),s("Proposal terkirim","semi"),s("Deal closed","manual")]},
+    ]},
+  donasi:{name:"Donasi",tag:"500 donatur · avg 100k · fee 10%",unitLabel:"Rata-rata donasi (Rp)",unitValue:100000,muaraLabel:"Total Donatur",revTarget:50000000,feeMode:true,
+    note:"Governance terpisah: dana lewat entitas resmi auditable, Alfalee TIDAK memegang dana. Fee ≤10% net (Rp 4jt). Ad spend donasi dari pool donasi. Donor & nominal dikirim ke ATI (Donation Conversion) Halaman 2.",
+    tracks:[
+      {id:"don_ads",channel:"ads",label:"Jalur Ads — dari pool donasi",note:"Impression → halaman → donasi",top:285700,rates:[1.4,52.5,15],
+        stages:[s("Impression iklan","auto"),s("Klik ke halaman donasi","auto"),s("Halaman donasi dibuka","semi"),s("Donasi dibayar","semi")]},
+      {id:"don_org",channel:"organik",label:"Jalur Organik — Reels/Story",note:"Reach → halaman → donasi",top:29400,rates:[3,70,30],
+        stages:[s("Reach organik","semi"),s("Klik ke halaman donasi","auto"),s("Halaman donasi dibuka","semi"),s("Donasi dibayar","semi")]},
+    ]},
+};
+let CONFIG=clone(DEFAULT);
+let activeTab="agg";
+const KEYS=Object.keys(DEFAULT);
+let ACT={};   // realisasi per produk {rev,unit,spend,reach,repeat}
+let COST={mhgSharePct:40, production:15000000, ops:20000000};
+let CAL={durasi:30, qty:{reels:16,carousel:8,story:2,live:1,fwb:4,webinar:2},
+  basis:{reels:"per campaign",carousel:"per campaign",story:"per hari",live:"per minggu",fwb:"per campaign",webinar:"per campaign"}};
+
+/* helpers */
+function clone(o){return JSON.parse(JSON.stringify(o));}
+const fmt=n=>isFinite(n)?Math.round(n).toLocaleString("id-ID"):"-";
+const rupiah=n=>isFinite(n)?"Rp "+Math.round(n).toLocaleString("id-ID"):"Rp -";
+const rpJt=n=>isFinite(n)?"Rp "+(Math.round(n/100000)/10).toLocaleString("id-ID")+"jt":"-";
+const trimPct=n=>(Math.round(n*10)/10).toString();
+function esc(x){return String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function rampColor(i,n){const a=[62,107,158],b=[201,162,39];const t=n<=1?0:i/(n-1);const c=a.map((v,k)=>Math.round(v+(b[k]-v)*t));return`rgb(${c[0]},${c[1]},${c[2]})`;}
+function phaseOf(i,n){return i===0?"tofu":(i===n-1?"bofu":"mofu");}
+function valuesOf(t){const v=[t.top];for(let i=0;i<t.rates.length;i++)v.push(v[i]*t.rates[i]/100);return v;}
+function buyersOf(t){const v=valuesOf(t);return v[v.length-1];}
+function trackSpend(t){return t.channel==="ads"?t.top/1000*SETTINGS.cpm:0;}
+function prodStats(cfg){
+  let buyers=0,spend=0,adsBuyers=0,reachOrg=0;
+  cfg.tracks.forEach(t=>{const b=buyersOf(t);buyers+=b;const sp=trackSpend(t);spend+=sp;if(t.channel==="ads")adsBuyers+=b;if(t.channel==="organik"||t.channel==="warm")reachOrg+=t.top;});
+  return{buyers,spend,adsBuyers,reachOrg,revenue:buyers*cfg.unitValue,adsRevenue:adsBuyers*cfg.unitValue,cpa:adsBuyers?spend/adsBuyers:NaN,roas:spend?adsBuyers*cfg.unitValue/spend:NaN};
+}
+function alfaleeRevOf(key,st){return CONFIG[key].feeMode?(st.revenue-st.spend)*0.10:st.revenue;}
+
+/* ========= TABS ========= */
+function renderTabs(){
+  const el=document.getElementById("tabs");
+  let html=`<button class="tab agg" role="tab" data-tab="agg" ${activeTab==="agg"?'aria-selected="true"':''}>▦ Agregat</button>`;
+  html+=KEYS.map(k=>`<button class="tab" role="tab" data-tab="${k}" ${k===activeTab?'aria-selected="true"':''}>${esc(CONFIG[k].name)}</button>`).join("");
+  html+=`<button class="tab util" role="tab" data-tab="profit" ${activeTab==="profit"?'aria-selected="true"':''}>💰 Profit</button>`;
+  html+=`<button class="tab util" role="tab" data-tab="kalender" ${activeTab==="kalender"?'aria-selected="true"':''}>🗓 Kalender</button>`;
+  el.innerHTML=html;
+  el.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{activeTab=b.dataset.tab;build();}));
+}
+function build(){
+  renderTabs();
+  if(activeTab==="agg")return buildAggregate();
+  if(activeTab==="profit")return buildProfit();
+  if(activeTab==="kalender")return buildKalender();
+  buildProduct(CONFIG[activeTab]);
+}
+
+/* ========= PRODUCT ========= */
+function buildProduct(cfg){
+  const key=activeTab, single=cfg.tracks.length===1;
+  let html=`<section><div class="card">
+    <h2>${esc(cfg.name)} <span class="tag">${esc(cfg.tag)}</span></h2>
+    <p class="desc">Target revenue <b>${rpJt(cfg.revTarget)}</b> · Muara: ${esc(cfg.muaraLabel)}. Geser rate — corong, ad spend, CPA & ROAS menghitung sendiri.</p>
+    <div class="metrics" id="pmetrics"></div>
+    <div class="pillar">
+      <span class="pillbadge p-tofu">TOFU · reach/impression</span>
+      <span class="pillbadge p-mofu">MOFU · klik/chat/registrasi</span>
+      <span class="pillbadge p-bofu">BOFU · beli/join/deal</span>
+    </div>
+    <div class="tracks">`;
+  cfg.tracks.forEach(t=>html+=trackHTML(t,single));
+  html+=`</div>`+muaraHTML(cfg)+tvaHTML(key,cfg)+`<div class="note">${esc(cfg.note)}</div></div></section>`;
+  document.getElementById("stage").innerHTML=html;
+  wireInputs(cfg); wireTVA(key); recompute(cfg);
+}
+function trackHTML(t,single){
+  const n=t.stages.length;
+  const leadLabel=t.channel==="ads"?"Impression (ads)":t.channel==="organik"?"Reach organik":t.channel==="warm"?"Basis warm":"Outreach";
+  let rows="";
+  for(let i=0;i<n;i++){const st=t.stages[i],ph=phaseOf(i,n);
+    rows+=`<div class="stage-row"><div class="stage-head"><span class="badge ${st.src}">${st.src}</span><span class="phase ph-${ph}">${ph.toUpperCase()}</span><span class="stage-name">${esc(st.label)}</span><span class="stage-num" data-num="${t.id}-${i}">0</span></div>`;
+    if(i<n-1)rows+=`<div class="conv"><span class="arrow">▼</span><input type="range" min="0" max="100" step="0.1" value="${t.rates[i]}" data-rate="${t.id}" data-ri="${i}"><span class="pct" data-pct="${t.id}-${i}">${trimPct(t.rates[i])}%</span></div>`;
+    rows+=`</div>`;}
+  return `<div class="track ${single?'single':''}"><p class="track-title">${esc(t.label)}</p><p class="track-sub">${esc(t.note||"")}</p>
+    <div class="topinput"><span class="chip" style="background:${rampColor(0,n)}"></span><div style="flex:1"><div class="lead">${leadLabel} — media metric</div><label for="top-${t.id}">Jumlah masuk (puncak)</label><input type="number" id="top-${t.id}" min="0" step="100" value="${t.top}" data-top="${t.id}"></div></div>
+    <svg class="funnel" data-funnel="${t.id}"></svg>
+    <details class="ctrl" open><summary>Tahap & conversion rate</summary>${rows}</details></div>`;
+}
+function muaraHTML(cfg){
+  const multi=cfg.tracks.length>1;
+  const feeders=cfg.tracks.map(t=>`<div class="feeder"><p class="fk">${esc(t.label.split("—")[0].trim())}</p><p class="fv" data-feed="${t.id}" style="color:${rampColor(t.stages.length-1,t.stages.length)}">0</p></div>`).join("");
+  return `<div class="muara"><h3>${multi?'Muara — jalur menyatu ke Sales':'Hasil akhir → Sales'}</h3>
+    ${multi?`<div class="feeders">${feeders}</div><div class="converge">▼</div>`:''}
+    <div class="total-box">
+      <div><p class="tk">${esc(cfg.muaraLabel)}</p><p class="tv" data-total="buyers">0</p></div>
+      <div><p class="tk">${cfg.feeMode?'Donasi masuk (gross)':'Proyeksi revenue'}</p><p class="tv" data-total="rev">Rp 0</p></div>
+      ${cfg.feeMode?`<div><p class="tk">Fee Alfalee (10% net)</p><p class="tv" data-total="fee" style="color:var(--gold-light)">Rp 0</p></div>`:''}
+    </div>
+    <div class="unitrow"><label>${esc(cfg.unitLabel)}</label><input type="number" value="${cfg.unitValue}" data-unit="1"><span style="margin-left:14px">CPM ads (Rp)</span><input type="number" value="${SETTINGS.cpm}" data-cpm="1" style="width:110px"></div></div>`;
+}
+/* Target vs Aktual panel */
+function tvaHTML(key,cfg){
+  const a=ACT[key]||{};
+  const isDon=cfg.feeMode;
+  return `<div class="tva"><h4>🎯 Target (rencana) vs Aktual (realisasi) <span class="mini">— isi angka real; variance & sinkron otomatis</span></h4>
+    <div class="tva-grid">
+      <div class="tva-item"><div class="lbl">${isDon?'Donatur':'Unit terjual'}</div>
+        <div class="tva-row"><span class="plan">plan <b data-plan="unit">–</b></span></div>
+        <input type="number" placeholder="aktual" value="${a.unit!=null?a.unit:''}" data-act="${key}" data-f="unit">
+        <div class="var" data-var="unit"></div></div>
+      <div class="tva-item"><div class="lbl">${isDon?'Donasi masuk':'Revenue'} (Rp)</div>
+        <div class="tva-row"><span class="plan">plan <b data-plan="rev">–</b></span></div>
+        <input type="number" placeholder="aktual" value="${a.rev!=null?a.rev:''}" data-act="${key}" data-f="rev">
+        <div class="var" data-var="rev"></div></div>
+      <div class="tva-item"><div class="lbl">Ad spend (Rp)</div>
+        <div class="tva-row"><span class="plan">plan <b data-plan="spend">–</b></span></div>
+        <input type="number" placeholder="aktual" value="${a.spend!=null?a.spend:''}" data-act="${key}" data-f="spend">
+        <div class="var" data-var="spend"></div></div>
+      <div class="tva-item"><div class="lbl">Reach organik</div>
+        <div class="tva-row"><span class="plan">plan <b data-plan="reach">–</b></span></div>
+        <input type="number" placeholder="aktual" value="${a.reach!=null?a.reach:''}" data-act="${key}" data-f="reach">
+        <div class="var" data-var="reach"></div>
+        <div class="from-kinerja" data-fk="reach"></div></div>
+    </div></div>`;
+}
+function wireInputs(cfg){
+  const st=document.getElementById("stage"),map={};cfg.tracks.forEach(t=>map[t.id]=t);
+  st.querySelectorAll("[data-top]").forEach(inp=>inp.addEventListener("input",e=>{map[e.target.dataset.top].top=Math.max(0,parseFloat(e.target.value)||0);recompute(cfg);}));
+  st.querySelectorAll("[data-rate]").forEach(inp=>inp.addEventListener("input",e=>{map[e.target.dataset.rate].rates[+e.target.dataset.ri]=parseFloat(e.target.value);recompute(cfg);}));
+  const u=st.querySelector("[data-unit]");if(u)u.addEventListener("input",e=>{cfg.unitValue=Math.max(0,parseFloat(e.target.value)||0);recompute(cfg);});
+  const c=st.querySelector("[data-cpm]");if(c)c.addEventListener("input",e=>{SETTINGS.cpm=Math.max(0,parseFloat(e.target.value)||0);recompute(cfg);});
+}
+function wireTVA(key){
+  document.querySelectorAll(`[data-act="${key}"]`).forEach(inp=>inp.addEventListener("input",e=>{
+    ACT[key]=ACT[key]||{}; const v=e.target.value; ACT[key][e.target.dataset.f]=v===""?null:parseFloat(v)||0;
+    recompute(CONFIG[key]); publishOut();
+  }));
+}
+function recompute(cfg){
+  cfg.tracks.forEach(t=>{const v=valuesOf(t);drawFunnel(t,v);
+    for(let i=0;i<t.stages.length;i++){const nEl=document.querySelector(`[data-num="${t.id}-${i}"]`);if(nEl)nEl.textContent=fmt(v[i]);
+      if(i<t.rates.length){const p=document.querySelector(`[data-pct="${t.id}-${i}"]`);if(p)p.textContent=trimPct(t.rates[i])+"%";}}
+    const feed=document.querySelector(`[data-feed="${t.id}"]`);if(feed)feed.textContent=fmt(buyersOf(t));});
+  const st=prodStats(cfg);
+  const tb=document.querySelector('[data-total="buyers"]');if(tb)tb.textContent=fmt(st.buyers);
+  const rv=document.querySelector('[data-total="rev"]');if(rv)rv.textContent=rupiah(st.revenue);
+  const fe=document.querySelector('[data-total="fee"]');if(fe)fe.textContent=rupiah((st.revenue-st.spend)*0.10);
+  renderProdMetrics(cfg,st); renderTVA(activeTab,cfg,st); publishOut();
+}
+function renderProdMetrics(cfg,st){
+  const el=document.getElementById("pmetrics");if(!el)return;
+  const attain=cfg.revTarget?st.revenue/cfg.revTarget*100:0;
+  el.innerHTML=`
+    <div class="metric g"><div class="k">Sales (plan)</div><div class="v">${fmt(st.buyers)}</div><div class="s">unit terjual</div></div>
+    <div class="metric"><div class="k">${cfg.feeMode?'Donasi masuk':'Revenue'}</div><div class="v">${rpJt(st.revenue)}</div><div class="s">target ${rpJt(cfg.revTarget)} · ${trimPct(attain)}%</div></div>
+    <div class="metric"><div class="k">Ad spend</div><div class="v">${rpJt(st.spend)}</div><div class="s">CPM ${fmt(SETTINGS.cpm)}</div></div>
+    <div class="metric"><div class="k">Reach organik</div><div class="v">${fmt(st.reachOrg)}</div><div class="s">jalur organik/warm</div></div>
+    <div class="metric"><div class="k">CPA ads</div><div class="v">${isFinite(st.cpa)?rupiah(st.cpa):'—'}</div><div class="s">spend ÷ buyer ads</div></div>
+    <div class="metric"><div class="k">ROAS ads</div><div class="v">${isFinite(st.roas)?trimPct(st.roas)+'×':'—'}</div><div class="s">${cfg.name==='Membership'?'nilai pakai ROAS-LTV':'rev ads ÷ spend'}</div></div>`;
+}
+function setVar(field,plan,act,goodHigh){
+  const el=document.querySelector(`[data-var="${field}"]`);if(!el)return;
+  if(act==null||isNaN(act)){el.textContent="";return;}
+  const d=act-plan, pct=plan?d/plan*100:0;
+  const good=goodHigh?d>=0:d<=0;
+  el.className="var "+(good?"good":"bad");
+  el.textContent=(d>=0?"+":"")+fmt(d)+" ("+(d>=0?"+":"")+trimPct(pct)+"%)";
+}
+function renderTVA(key,cfg,st){
+  const setPlan=(f,v)=>{const el=document.querySelector(`[data-plan="${f}"]`);if(el)el.textContent=v;};
+  setPlan("unit",fmt(st.buyers)); setPlan("rev",rpJt(st.revenue)); setPlan("spend",rpJt(st.spend)); setPlan("reach",fmt(st.reachOrg));
+  const a=ACT[key]||{};
+  setVar("unit",st.buyers,a.unit,true); setVar("rev",st.revenue,a.rev,true); setVar("spend",st.spend,a.spend,false); setVar("reach",st.reachOrg,a.reach,true);
+  // sinkron reach IG dari Halaman 2 (khusus produk berjalur organik IG)
+  const fk=document.querySelector('[data-fk="reach"]');
+  if(fk){ if(FROM_KINERJA&&FROM_KINERJA.igReach){fk.innerHTML=`↩ IG aktual (Halaman 2): <b>${fmt(FROM_KINERJA.igReach)}</b> · ER ${trimPct(FROM_KINERJA.igER||0)}% <button class="btn" style="padding:2px 8px;font-size:11px" data-usefk="${key}">pakai</button>`;} else fk.textContent=""; }
+  const btn=document.querySelector(`[data-usefk="${key}"]`);
+  if(btn)btn.addEventListener("click",()=>{ACT[key]=ACT[key]||{};ACT[key].reach=FROM_KINERJA.igReach;buildProduct(cfg);});
+}
+function refreshKinerjaPanels(){ if(CONFIG[activeTab])renderTVA(activeTab,CONFIG[activeTab],prodStats(CONFIG[activeTab])); }
+function drawFunnel(t,v){
+  const svg=document.querySelector(`[data-funnel="${t.id}"]`);if(!svg)return;
+  const n=t.stages.length,W=340,bandH=50,gap=22,pad=4,minFrac=.16,maxV=v[0]||1;
+  const w=v.map(x=>Math.max(minFrac,(maxV?x/maxV:0))*W),cx=W/2;let y=pad,out="";
+  for(let i=0;i<n;i++){
+    const topW=w[i],botW=(i<n-1)?w[i+1]:Math.max(topW*0.5,minFrac*W*0.7),yb=y+bandH,col=rampColor(i,n);
+    out+=`<path d="M${cx-topW/2} ${y} L${cx+topW/2} ${y} L${cx+botW/2} ${yb} L${cx-botW/2} ${yb} Z" fill="${col}" fill-opacity="0.94"/>`;
+    out+=`<text class="band-label" x="${cx}" y="${y+bandH*0.4}" text-anchor="middle">${esc(t.stages[i].label)}</text>`;
+    out+=`<text class="band-num" x="${cx}" y="${y+bandH*0.78}" text-anchor="middle">${fmt(v[i])}</text>`;
+    if(i<n-1){const py=yb+gap/2;out+=`<rect class="pill-rect" x="${cx-30}" y="${py-11}" width="60" height="22" rx="11"/><text class="pill-txt" x="${cx}" y="${py+4}" text-anchor="middle" fill="${rampColor(i+1,n)}">${trimPct(t.rates[i])}%</text>`;}
+    y=yb+gap;
+  }
+  svg.setAttribute("viewBox",`0 0 ${W} ${y-gap+pad+4}`);svg.innerHTML=out;
+}
+
+/* ========= AGGREGATE ========= */
+function aggData(){
+  let totSpend=0,totReach=0,commercialRev=0,feeRev=0,actRev=0,anyAct=false;
+  const rows=KEYS.map(k=>{const cfg=CONFIG[k],st=prodStats(cfg);totSpend+=st.spend;totReach+=st.reachOrg;
+    const aRev=alfaleeRevOf(k,st); if(cfg.feeMode)feeRev+=aRev;else commercialRev+=aRev;
+    const a=ACT[k]||{}; if(a.rev!=null){anyAct=true;actRev+=a.rev;}
+    return{k,name:cfg.name,st,fee:cfg.feeMode,aRev,act:a};});
+  return{rows,totSpend,totReach,commercialRev,feeRev,alfaleeRev:commercialRev+feeRev,actRev,anyAct};
+}
+function buildAggregate(){
+  const A=aggData();
+  const cal=calRows();
+  let html=`<section>
+    <div class="card"><h2>Ringkasan Agregat <span class="tag">Semua Produk</span></h2>
+      <p class="desc">Rekap otomatis dari seluruh journey. Donasi dihitung sebagai fee (governance terpisah).</p>
+      <div class="metrics">
+        <div class="metric g"><div class="k">Total Revenue Alfalee</div><div class="v">${rpJt(A.alfaleeRev)}</div><div class="s">komersial ${rpJt(A.commercialRev)} + fee ${rpJt(A.feeRev)}</div></div>
+        <div class="metric"><div class="k">Total Ad Spend</div><div class="v">${rpJt(A.totSpend)}</div><div class="s">komersial + pool donasi</div></div>
+        <div class="metric"><div class="k">Total Reach Organik</div><div class="v">${fmt(A.totReach)}</div></div>
+        <div class="metric p"><div class="k">Revenue Aktual</div><div class="v">${A.anyAct?rpJt(A.actRev):'—'}</div><div class="s">${A.anyAct?trimPct(A.actRev/A.alfaleeRev*100)+'% dari plan':'isi di tab produk'}</div></div>
+      </div></div>
+    <div class="card"><h2>Rekap per Channel — Plan vs Aktual</h2>
+      <table><tr><th>Channel</th><th>Sales plan</th><th>Aktual</th><th>Revenue plan</th><th>Rev aktual</th><th>Ad spend</th><th>ROAS</th></tr>`;
+  A.rows.forEach(r=>{const a=r.act;
+    html+=`<tr><td><b>${esc(r.name)}</b></td><td>${fmt(r.st.buyers)}</td><td class="${a.unit!=null?'':'mini'}">${a.unit!=null?fmt(a.unit):'—'}</td>
+      <td>${r.fee?rpJt(r.aRev)+' <span class="mini">(fee)</span>':rpJt(r.aRev)}</td><td class="${a.rev!=null?'':'mini'}">${a.rev!=null?rpJt(a.rev):'—'}</td>
+      <td>${r.st.spend?rpJt(r.st.spend):'—'}</td><td>${isFinite(r.st.roas)?trimPct(r.st.roas)+'×':'—'}</td></tr>`;});
+  html+=`<tr class="total"><td>TOTAL ALFALEE</td><td>—</td><td>${A.anyAct?fmt(A.rows.reduce((s,r)=>s+(r.act.unit||0),0)):'—'}</td><td>${rpJt(A.alfaleeRev)}</td><td>${A.anyAct?rpJt(A.actRev):'—'}</td><td>${rpJt(A.totSpend)}</td><td>${trimPct(A.commercialRev/(A.totSpend||1))}×</td></tr></table></div>
+    <div class="card"><h2>Kalender Konten <span class="tag">${CAL.durasi} hari</span></h2>
+      <p class="desc">Ringkas — edit qty & matriks di tab <b>🗓 Kalender</b>.</p>
+      <table><tr><th>Konten</th><th>Basis</th><th>Qty/basis</th><th>Total campaign</th></tr>
+      ${cal.map(c=>`<tr><td>${c.name}</td><td>${c.basis}</td><td>${c.qty}</td><td><b>${c.total}</b></td></tr>`).join("")}</table></div>
+    </section>`;
+  document.getElementById("stage").innerHTML=html;
+  publishOut();
+}
+
+/* ========= PROFIT / P&L ========= */
+function buildProfit(){
+  const A=aggData();
+  const mhgShare=A.commercialRev*COST.mhgSharePct/100;
+  const commSpend=A.rows.filter(r=>!r.fee).reduce((s,r)=>s+r.st.spend,0);
+  const net=A.alfaleeRev - commSpend - mhgShare - COST.production - COST.ops;
+  const margin=A.alfaleeRev?net/A.alfaleeRev*100:0;
+  const maxV=A.alfaleeRev||1;
+  const wf=[
+    {l:"Revenue Alfalee",v:A.alfaleeRev,c:"var(--auto)",pos:true},
+    {l:"− Ad spend (komersial)",v:-commSpend,c:"var(--manual)"},
+    {l:"− Bagi hasil MHG",v:-mhgShare,c:"var(--mofu)"},
+    {l:"− Produksi konten",v:-COST.production,c:"var(--steel)"},
+    {l:"− Tim & ops",v:-COST.ops,c:"var(--muted)"},
+    {l:"= Net Profit",v:net,c:"var(--gold)",pos:true,bold:true},
+  ];
+  let html=`<section><div class="card">
+    <h2>Profit &amp; Loss <span class="tag">Model MHG — editable</span></h2>
+    <p class="desc">Net = Revenue Alfalee − Ad spend − Bagi hasil MHG − Produksi − Tim/Ops. Semua lini editable. Bagi hasil MHG dihitung dari revenue komersial (donasi = fee, di luar bagi hasil).</p>
+    <div class="pl-wrap">
+      <div class="pl-inputs">
+        <div class="in-row"><label>Bagi hasil MHG (creator/IP)</label><input type="number" value="${COST.mhgSharePct}" data-cost="mhgSharePct"><span class="u">%</span></div>
+        <div class="in-row"><label>Biaya produksi konten / bln</label><input type="number" value="${COST.production}" data-cost="production"><span class="u">Rp</span></div>
+        <div class="in-row"><label>Tim &amp; operasional / bln</label><input type="number" value="${COST.ops}" data-cost="ops"><span class="u">Rp</span></div>
+        <div class="in-row"><label>Revenue komersial (otomatis)</label><b>${rpJt(A.commercialRev)}</b></div>
+        <div class="in-row"><label>Fee donasi (otomatis)</label><b>${rpJt(A.feeRev)}</b></div>
+        <div class="in-row"><label>Ad spend komersial (otomatis)</label><b>${rpJt(commSpend)}</b></div>
+      </div>
+      <div class="wf">
+        ${wf.map(w=>{const width=Math.max(3,Math.abs(w.v)/maxV*100);const left=w.v<0?(100-width):0;
+          return `<div class="wf-bar"><span class="wl${w.bold?' ':''}" style="${w.bold?'font-weight:700;color:var(--navy)':''}">${w.l}</span>
+            <span class="track2"><span class="fill" style="left:${left}%;width:${width}%;background:${w.c};${w.bold?'box-shadow:0 0 0 2px var(--gold) inset':''}"></span></span>
+            <span class="wv" style="color:${w.v<0?'var(--bad)':'var(--navy)'}">${rpJt(w.v)}</span></div>`;}).join("")}
+      </div>
+    </div>
+    <div class="pl-net"><div><div class="nl">Net Profit / bulan</div><div class="nv">${rpJt(net)}</div></div>
+      <div class="mg">Margin <b style="color:#fff">${trimPct(margin)}%</b> · Annualized ${rpJt(net*12)}</div></div>
+    </div>
+    <div class="card"><h2>Contribution Margin per Produk</h2>
+      <p class="desc">Kontribusi = Revenue − Ad spend − bagi hasil MHG (untuk produk komersial). Donasi tampil sebagai fee net.</p>
+      <table><tr><th>Produk</th><th>Revenue</th><th>Ad spend</th><th>Bagi hasil MHG</th><th>Kontribusi</th><th>Margin</th></tr>`;
+  A.rows.forEach(r=>{const share=r.fee?0:r.aRev*COST.mhgSharePct/100;const contrib=r.aRev-r.st.spend-share;const mg=r.aRev?contrib/r.aRev*100:0;
+    html+=`<tr><td><b>${esc(r.name)}</b>${r.fee?' <span class="mini">(fee)</span>':''}</td><td>${rpJt(r.aRev)}</td><td>${r.st.spend?rpJt(r.st.spend):'—'}</td><td>${share?rpJt(share):'—'}</td><td>${rpJt(contrib)}</td><td>${trimPct(mg)}%</td></tr>`;});
+  html+=`<tr class="total"><td>TOTAL</td><td>${rpJt(A.alfaleeRev)}</td><td>${rpJt(commSpend)}</td><td>${rpJt(mhgShare)}</td><td>${rpJt(A.alfaleeRev-commSpend-mhgShare)}</td><td>${trimPct((A.alfaleeRev-commSpend-mhgShare)/(A.alfaleeRev||1)*100)}%</td></tr></table>
+      <div class="note">Ini P&L kampanye MHG (bukan P&L agency penuh). Referensi struktur biaya Alfalee/AIVF (talent 35% · tim 12% · mkt 6% · sw 3% · legal 4%) bisa dipakai sebagai patokan menaikkan lini biaya di atas.</div>
+    </div></section>`;
+  document.getElementById("stage").innerHTML=html;
+  document.querySelectorAll("[data-cost]").forEach(inp=>inp.addEventListener("input",e=>{COST[e.target.dataset.cost]=parseFloat(e.target.value)||0;buildProfit();}));
+}
+
+/* ========= KALENDER + MATRIKS ========= */
+const CAL_ITEMS=[["reels","Reels"],["carousel","Carousel"],["story","Daily Story"],["live","Live"],["fwb","FWB event"],["webinar","Paid Webinar event"]];
+function calTotal(key){const q=CAL.qty[key],b=CAL.basis[key];
+  if(b==="per hari")return q*CAL.durasi; if(b==="per minggu")return q*Math.round(CAL.durasi/7*10)/10; return q;}
+function calRows(){return CAL_ITEMS.map(([k,name])=>({key:k,name,basis:CAL.basis[k],qty:CAL.qty[k],total:Math.round(calTotal(k))}));}
+/* matriks konten × pillar (alokasi %) & konten × produk (checkbox) */
+const PILLARS=["TOFU","MOFU","BOFU"];
+const CAL_PILLAR={reels:[70,20,10],carousel:[50,35,15],story:[30,40,30],live:[20,40,40],fwb:[10,60,30],webinar:[10,30,60]};
+const CAL_PRODUCT={reels:["prodigi","fwb","donasi"],carousel:["prodigi","membership","fwb"],story:["membership","webinarpaid","donasi"],live:["membership","webinarpaid","fwb"],fwb:["fwb","prodigi","membership"],webinar:["webinarpaid","prodigi"]};
+function buildKalender(){
+  const rows=calRows();
+  let html=`<section><div class="card">
+    <h2>Kalender Konten <span class="tag">editable</span></h2>
+    <p class="desc">Ubah <b>qty per basis</b> & durasi campaign — total menyesuaikan (basis × durasi). Live/FWB dipakai untuk komponen <b>Community Action</b> ATI Halaman 2.</p>
+    <div class="in-row" style="display:flex;gap:10px;align-items:center;margin-bottom:6px"><label style="font-size:13px">Durasi campaign</label><input type="number" value="${CAL.durasi}" data-cal="durasi" style="width:110px"><span class="mini">hari</span></div>
+    <table><tr><th>Konten</th><th>Basis</th><th>Qty per basis</th><th>Total campaign</th></tr>
+    ${rows.map(r=>`<tr><td><b>${r.name}</b></td><td>${r.basis}</td><td><input class="cell" type="number" value="${CAL.qty[r.key]}" data-calq="${r.key}"></td><td><b data-caltot="${r.key}">${r.total}</b></td></tr>`).join("")}
+    <tr class="total"><td colspan="3">TOTAL konten/campaign</td><td><b id="calGrand">${rows.reduce((s,r)=>s+r.total,0)}</b></td></tr></table>
+    </div>
+    <div class="card"><h2>Matriks Konten × Pillar <span class="tag">alokasi %</span></h2>
+      <p class="desc">Distribusi tiap jenis konten ke TOFU/MOFU/BOFU. Total campaign dibagi menurut % ini → jumlah konten per pillar.</p>
+      <table><tr><th>Konten</th><th>Total</th>${PILLARS.map(p=>`<th>${p} %</th>`).join("")}${PILLARS.map(p=>`<th>${p} qty</th>`).join("")}</tr>
+      ${rows.map(r=>{const alloc=CAL_PILLAR[r.key];
+        return `<tr><td><b>${r.name}</b></td><td>${r.total}</td>${alloc.map((v,i)=>`<td><input class="cell" style="width:64px" type="number" value="${v}" data-pil="${r.key}" data-pi="${i}"></td>`).join("")}${alloc.map((v,i)=>`<td data-pilq="${r.key}-${i}">${Math.round(r.total*v/100)}</td>`).join("")}</tr>`;}).join("")}
+      <tr class="total"><td colspan="2">TOTAL per pillar</td>${PILLARS.map((p,i)=>`<td class="mini">—</td>`).join("")}${PILLARS.map((p,i)=>`<td><b data-piltot="${i}">0</b></td>`).join("")}</tr>
+      </table></div>
+    <div class="card"><h2>Matriks Konten × Produk <span class="tag">feeder</span></h2>
+      <p class="desc">Jenis konten mana memberi makan journey produk mana (●). Baris = konten, kolom = produk.</p>
+      <div style="overflow-x:auto"><table><tr><th>Konten</th>${KEYS.map(k=>`<th>${esc(CONFIG[k].name)}</th>`).join("")}</tr>
+      ${rows.map(r=>`<tr><td><b>${r.name}</b></td>${KEYS.map(k=>{const on=(CAL_PRODUCT[r.key]||[]).includes(k);return `<td style="text-align:center;cursor:pointer;font-size:16px;color:${on?'var(--auto)':'var(--line)'}" data-feed="${r.key}" data-fk="${k}">${on?'●':'○'}</td>`;}).join("")}</tr>`).join("")}
+      </table></div></div>
+    </section>`;
+  document.getElementById("stage").innerHTML=html;
+  const d=document.querySelector('[data-cal="durasi"]');if(d)d.addEventListener("input",e=>{CAL.durasi=parseFloat(e.target.value)||0;buildKalender();});
+  document.querySelectorAll("[data-calq]").forEach(inp=>inp.addEventListener("input",e=>{CAL.qty[e.target.dataset.calq]=parseFloat(e.target.value)||0;buildKalender();}));
+  document.querySelectorAll("[data-pil]").forEach(inp=>inp.addEventListener("input",e=>{CAL_PILLAR[e.target.dataset.pil][+e.target.dataset.pi]=parseFloat(e.target.value)||0;buildKalender();}));
+  document.querySelectorAll("[data-feed]").forEach(td=>td.addEventListener("click",e=>{const rk=td.dataset.feed,k=td.dataset.fk;const arr=CAL_PRODUCT[rk]=CAL_PRODUCT[rk]||[];const idx=arr.indexOf(k);if(idx>=0)arr.splice(idx,1);else arr.push(k);buildKalender();}));
+  // pillar totals
+  PILLARS.forEach((p,i)=>{let sum=0;rows.forEach(r=>sum+=Math.round(r.total*CAL_PILLAR[r.key][i]/100));const el=document.querySelector(`[data-piltot="${i}"]`);if(el)el.textContent=sum;});
+  publishOut();
+}
+
+/* ========= snapshot / autosave / lock / reset ========= */
+function snapshot(){return{app:"alfalee-kampanye",ts:new Date().toISOString(),CONFIG,SETTINGS,ACT,COST,CAL,CAL_PILLAR,CAL_PRODUCT,fromKinerja:FROM_KINERJA};}
+const STATE_KEY="alfalee_kampanye_state";
+let _sv=null;
+function saveState(){clearTimeout(_sv);_sv=setTimeout(()=>{try{localStorage.setItem(STATE_KEY,JSON.stringify(snapshot()))}catch(e){}},300);}
+function restoreState(){try{const s=JSON.parse(localStorage.getItem(STATE_KEY));if(!s)return false;
+  if(s.CONFIG)CONFIG=s.CONFIG; if(s.SETTINGS)Object.assign(SETTINGS,s.SETTINGS); if(s.ACT)ACT=s.ACT;
+  if(s.COST)Object.assign(COST,s.COST); if(s.CAL)Object.assign(CAL,s.CAL);
+  if(s.CAL_PILLAR)Object.assign(CAL_PILLAR,s.CAL_PILLAR); if(s.CAL_PRODUCT)Object.assign(CAL_PRODUCT,s.CAL_PRODUCT);
+  return true;}catch(e){return false;}}
+function doExport(){const blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="alfalee-kampanye-snapshot-"+new Date().toISOString().slice(0,10)+".json";a.click();}
+function doImport(o){try{
+  if(o.CONFIG)CONFIG=o.CONFIG; if(o.SETTINGS)Object.assign(SETTINGS,o.SETTINGS); if(o.ACT)ACT=o.ACT;
+  if(o.COST)Object.assign(COST,o.COST); if(o.CAL)Object.assign(CAL,o.CAL);
+  if(o.CAL_PILLAR)Object.assign(CAL_PILLAR,o.CAL_PILLAR); if(o.CAL_PRODUCT)Object.assign(CAL_PRODUCT,o.CAL_PRODUCT);
+  if(o.fromKinerja){FROM_KINERJA=o.fromKinerja;markSync(true);}
+  build();
+}catch(e){alert("Snapshot tidak valid.");}}
+function doLock(){
+  const who=prompt("Kunci rencana kampanye atas nama (untuk stempel PDF):","Tim MHG")||"";
+  const now=new Date();
+  document.getElementById("stamp").innerHTML=`🔒 <b>Rencana dikunci</b> — ${now.toLocaleString("id-ID")} · oleh ${who||"—"} · versi ${now.getTime().toString(36).toUpperCase()} · dok RGI/CMP/2026/07/001. Snapshot ini jadi acuan tim (semua angka & konversi tercatat).`;
+  setTimeout(()=>window.print(),200);
+}
+
+/* ========= init ========= */
+document.getElementById("exp").addEventListener("click",doExport);
+document.getElementById("imp").addEventListener("click",()=>document.getElementById("impFile").click());
+document.getElementById("impFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{doImport(JSON.parse(rd.result))}catch(_){alert("Gagal baca file.");}};rd.readAsText(f);});
+document.getElementById("lock").addEventListener("click",doLock);
+document.getElementById("goKinerja").addEventListener("click",()=>{location.href="dashboard-kinerja-multichannel.html";});
+document.getElementById("reset").addEventListener("click",()=>{try{localStorage.removeItem(STATE_KEY)}catch(e){}CONFIG=clone(DEFAULT);SETTINGS.cpm=35000;ACT={};COST={mhgSharePct:40,production:15000000,ops:20000000};CAL.durasi=30;CAL.qty={reels:16,carousel:8,story:2,live:1,fwb:4,webinar:2};build();});
+const _b=busRead(); if(_b.fromKinerja){FROM_KINERJA=_b.fromKinerja;markSync(true);}
+const _restored=restoreState();
+if(_restored){const s=document.getElementById("stamp");if(s)s.textContent="↻ State terakhir dipulihkan otomatis (auto-save). Klik Reset default untuk mengosongkan.";}
+build();
+publishOut();
+</script>
+</body>
+</html>
