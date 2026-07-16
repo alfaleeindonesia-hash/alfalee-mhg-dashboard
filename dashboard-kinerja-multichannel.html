@@ -201,8 +201,8 @@ table.det tbody tr:last-child td{border-bottom:0}
   <div id="banner" class="banner load">Memuat data channel…</div>
 
   <!-- ATI COMPOSITE -->
-  <div class="sec-head"><span class="n">01</span><h2>Humanitarian Audience Trust Index (ATI)</h2>
-    <span class="sub">framework proprietary Alfalee · skor 0–100</span></div>
+  <div class="sec-head"><span class="n">01</span><h2>Audience Trust Index (ATI)</h2>
+    <span class="sub">model 3-layer (Passive/Active/Sacrifice) · live dari tab ATI di Sheet</span></div>
   <div class="ati">
     <div class="ati-score" id="atiScore"></div>
     <div class="ati-comp" id="atiComp"></div>
@@ -272,7 +272,7 @@ function publishOut(){ // kirim angka IG ke Halaman 1
     igReach:AGG.ig.reach||0, igViews:AGG.ig.views||0, igER:AGG.ig.er||0,
     igSaveRate:AGG.ig.saveRate||0, igShareRate:AGG.ig.shareRate||0, igCommentRate:AGG.ig.commentRate||0,
     igLinkTaps:AGG.ig.linkTaps||0, igFollows:AGG.ig.follows||0, igProfileVisits:AGG.ig.profileVisits||0,
-    engagementQualityScore:Math.round(engQualityScore()), ati:Math.round(atiTotal()),
+    ati:Math.round(atiComposite(ATI_SEL==null?0:ATI_SEL)||0),
     updatedAt:new Date().toISOString()
   }});
   if(typeof saveState==="function")saveState();
@@ -286,6 +286,7 @@ const SOCIAL_SHEET="1rf1z-es8oBg9G3p9NHxnsUI6oRhcWDjTwp7siBozCGM"; // channel-he
 const num=v=>{if(v==null)return 0;const n=parseFloat(String(v).replace(",","."));return isNaN(n)?0:n;};
 /* normalizer rate: paham "6,1%" (string persen), 0.63 (pecahan 0–1), 6.1 (angka persen) → selalu kembalikan persen */
 function pctVal(v){if(v==null)return 0;if(typeof v==="string"&&v.indexOf("%")>=0)return num(v);const n=num(v);return n>0&&n<=1?n*100:n;}
+function esc(x){return String(x==null?"":x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 const TC=["#C0503F","#D99A2B","#3E8E6E","#2E7D5B"], TLABEL=["Buruk","Cukup","Baik","Sangat Baik"];
 
 /* --- channel definitions (social sheet schema, dari channel-health_4) --- */
@@ -393,6 +394,7 @@ async function loadAll(){
     const rows=await gviz(IG_SHEET,{gid:0,range:"A1:AP3000"});
     RAW["Instagram"]=rows.filter(r=>{const v=num(r[17]);const dt=pd(r[1]);return v>0 && dt;});
   }catch(e){RAW["Instagram"]=[];}
+  await loadATI();
 }
 
 /* aggregate IG over range */
@@ -450,88 +452,70 @@ function sigOf(ch,mArr){
 ========================================================= */
 const DIMS=["Reach","Engagement","Distribusi","Konversi","Retensi","Trust","Komunitas"];
 function clamp(x){return Math.max(0,Math.min(100,x));}
-/* Engagement Quality (20%) — auto dari IG: save/share/comment/ER dinormalkan ke benchmark */
-function engQualityScore(){
-  const A=AGG.ig||{};
-  if(!A.reach)return ATI.engManual;
-  const s=[
-    clamp((A.er||0)/10*100),          // ER benchmark 10%
-    clamp((A.saveRate||0)/4*100),     // save 4%
-    clamp((A.shareRate||0)/2*100),    // share 2%
-    clamp((A.commentRate||0)/1.5*100) // comment 1.5%
-  ];
-  return s.reduce((a,b)=>a+b,0)/s.length;
+/* ATI resmi = model 3-layer dari tab sheet (gid 109818991). Skor ditarik LIVE per periode. */
+const ATI_GID=109818991;
+const ATI_LAYERS=[
+  {key:"L1",name:"Passive Trust",comps:["Save Rate","Long Comment Ratio","Repeat Viewer"]},
+  {key:"L2",name:"Active Trust",comps:["CTA Response Rate","Poll Participation","Broadcast Read Ratio"]},
+  {key:"L3",name:"Sacrifice Trust",comps:["Volunteer Action","Join Community","Hadir Zoom","Watch Time Live"]},
+];
+let ATI_DATA=null, ATI_SEL=null;
+function pnum(v){if(v==null)return null;const n=parseFloat(String(v).replace(/[%\s]/g,"").replace(",","."));return isNaN(n)?null:n;}
+async function loadATI(){
+  try{ const rows=await gviz(SOCIAL_SHEET,{gid:ATI_GID,range:"A1:J50"});
+    const byLabel={};
+    rows.forEach(r=>{const lab=(r[0]==null?"":String(r[0])).trim();if(!lab||byLabel[lab])return;
+      byLabel[lab]={b:r[1],c:r[2],d:r[3],periods:[r[4],r[5],r[6],r[7],r[8],r[9]]};});
+    ATI_DATA={byLabel};
+  }catch(e){ATI_DATA=null;}
 }
-/* Donation Conversion (25%) — dari Halaman 1 bila ada */
-function donationScore(){
-  if(INCOMING){
-    const t=INCOMING.donasiTarget||500, d=INCOMING.donorBaru||0;
-    const attain=clamp(d/t*100);
-    const repeat=INCOMING.repeatDonor!=null&&d?clamp(INCOMING.repeatDonor/d*100):50;
-    return clamp(attain*0.7+repeat*0.3);
-  }
-  return ATI.donManual;
-}
-/* Community Action (20%) — dari Halaman 1 bila ada */
-function communityScore(){
-  if(INCOMING){
-    const t=INCOMING.memberTarget||1000, m=INCOMING.memberBaru||0;
-    const attain=clamp(m/t*100);
-    const ev=clamp((INCOMING.communityEvents||0)/6*100);
-    return clamp(attain*0.75+ev*0.25);
-  }
-  return ATI.commManual;
-}
-const ATI={
-  weights:{cred:25,eng:20,comm:20,don:25,safe:10},
-  credManual:70, engManual:60, commManual:60, donManual:60, safeManual:85,
-  target:75
-};
-function atiParts(){
-  return [
-    {key:"cred",name:"Humanitarian Credibility",w:25,src:"manual",val:ATI.credManual,note:"kredibilitas · rekam jejak · authority (input)"},
-    {key:"eng", name:"Engagement Quality",     w:20,src:AGG.ig&&AGG.ig.reach?"auto":"manual",val:engQualityScore(),note:"save · share · komentar · reply (IG live)"},
-    {key:"comm",name:"Community Action",       w:20,src:INCOMING?"link":"manual",val:communityScore(),note:"member · event · komunitas (Halaman 1)"},
-    {key:"don", name:"Donation Conversion",    w:25,src:INCOMING?"link":"manual",val:donationScore(),note:"donor baru · repeat · nominal (Halaman 1)"},
-    {key:"safe",name:"Brand Safety",           w:10,src:"manual",val:ATI.safeManual,note:"sentiment · risiko reputasi (input)"},
-  ];
-}
-function atiTotal(){return atiParts().reduce((a,p)=>a+p.w*clamp(p.val)/100,0);}
+function atiComposite(p){const r=ATI_DATA&&ATI_DATA.byLabel["SKOR ATI (komposit)"];return r?pnum(r.periods[p]):null;}
+function atiFilledPeriods(){const o=[];for(let p=0;p<6;p++)if(atiComposite(p)!=null)o.push(p);return o;}
+function atiLayerRow(i){if(!ATI_DATA)return null;for(const k in ATI_DATA.byLabel){if(k.toUpperCase().indexOf("LAYER "+(i+1))===0)return ATI_DATA.byLabel[k];}return null;}
+function atiTxtRow(prefix,p){if(!ATI_DATA)return "";for(const k in ATI_DATA.byLabel){if(k.indexOf(prefix)===0){const v=ATI_DATA.byLabel[k].periods[p];return v==null?"":String(v);}}return "";}
 function atiTier(v){return v>=80?3:v>=60?2:v>=40?1:0;}
+function atiColOf(s){return s==null?"#9AA0AC":(s>=80?TC[3]:s>=60?TC[2]:s>=40?TC[1]:TC[0]);}
 function renderATI(){
-  const total=atiTotal(),tr=atiTier(total);
-  document.getElementById("atiScore").innerHTML=`
-    <div class="lab">Humanitarian ATI</div>
-    <div class="big" style="color:${TC[tr]==='#C0503F'?'#F0A79B':tc(tr)}">${(Math.round(total*10)/10).toString().replace(".",",")}</div>
-    <div class="of">/ 100</div>
-    <div class="tierlab" style="background:color-mix(in srgb,${tc(tr)} 26%,#0F1B33);color:#fff">${tl(tr)}</div>
-    <div class="tgt">Target ATI <input type="number" id="atiTgt" value="${ATI.target}" min="0" max="100">
-      · ${total>=ATI.target?'<span style="color:#7FD3A6">tercapai ✓</span>':'<span style="color:#F0A79B">−'+(Math.round((ATI.target-total)*10)/10).toString().replace(".",",")+'</span>'}</div>`;
-  const parts=atiParts();
-  document.getElementById("atiComp").innerHTML=parts.map(p=>{
-    const pct=clamp(p.val),col=pct>=80?TC[3]:pct>=60?TC[2]:pct>=40?TC[1]:TC[0];
-    const dis=p.src!=="manual";
-    return `<div class="comp-row">
-      <div class="comp-top">
-        <span class="src-tag src-${p.src}">${p.src==="auto"?"IG live":p.src==="link"?"Halaman 1":"input"}</span>
-        <span class="comp-name">${p.name}</span>
-        <span class="comp-w">${p.w}%</span>
-        <span class="comp-val" style="color:${col}">${Math.round(pct)}</span>
-      </div>
-      <div class="comp-bar"><span style="width:${pct}%;background:${col}"></span></div>
-      <div class="comp-ctrl">
-        <input type="range" min="0" max="100" value="${Math.round(pct)}" data-atikey="${p.key}" ${dis?"disabled":""}>
-      </div>
-      <div class="comp-note">${p.note}${dis?" — otomatis, tak bisa diedit manual":""}</div>
-    </div>`;
-  }).join("");
-  document.getElementById("atiTgt").addEventListener("input",e=>{ATI.target=num(e.target.value);renderATI();});
-  document.querySelectorAll("[data-atikey]").forEach(inp=>inp.addEventListener("input",e=>{
-    const k=e.target.dataset.atikey,v=num(e.target.value);
-    if(k==="cred")ATI.credManual=v; else if(k==="safe")ATI.safeManual=v;
-    else if(k==="eng")ATI.engManual=v; else if(k==="comm")ATI.commManual=v; else if(k==="don")ATI.donManual=v;
-    renderATI(); publishOut();
-  }));
+  const wrap=document.getElementById("atiScore"), comp=document.getElementById("atiComp");
+  if(!wrap||!comp)return;
+  if(!ATI_DATA){
+    wrap.innerHTML=`<div class="lab">Audience Trust Index</div><div class="big" style="color:#F0A79B">—</div><div class="of">tab ATI tak terbaca</div>`;
+    comp.innerHTML=`<div style="padding:16px;font-size:13px;color:var(--ink-mute)">Tab <b>ATI</b> di Google Sheet tak terbaca. Pastikan sheet di-share <b>Viewer</b> &amp; online, lalu klik <b>↻ Muat ulang data</b>.</div>`;
+    return;
+  }
+  const filled=atiFilledPeriods();
+  if(ATI_SEL==null)ATI_SEL=filled.length?filled[filled.length-1]:0;
+  const p=ATI_SEL, composite=atiComposite(p), tr=composite!=null?atiTier(composite):-1;
+  const classif=atiTxtRow("Klasifikasi Audiens",p), diag=atiTxtRow("Diagnosa",p);
+  const opts=[0,1,2,3,4,5].map(i=>`<option value="${i}" ${i===p?"selected":""}>Periode ${i+1}${filled.includes(i)?"":" — kosong"}</option>`).join("");
+  wrap.innerHTML=`
+    <div class="lab">Audience Trust Index</div>
+    <div class="big" style="color:${composite==null?'#8CA1AB':(tr===0?'#F0A79B':tc(tr))}">${composite==null?'—':(Math.round(composite*10)/10).toString().replace(".",",")}</div>
+    <div class="of">/ 100 · model 3-layer (sheet)</div>
+    ${composite!=null?`<div class="tierlab" style="background:color-mix(in srgb,${tc(tr)} 26%,#0F1B33);color:#fff">${esc(classif||tl(tr))}</div>`:''}
+    <div class="tgt"><select id="atiPeriod" style="padding:4px 9px;border-radius:6px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);color:#fff;font-weight:600;font-family:inherit">${opts}</select></div>
+    ${diag?`<div class="tgt" style="font-size:11px;color:#F0C46B">⚠ ${esc(diag)}</div>`:''}
+    ${composite==null?`<div class="tgt" style="font-size:11px;color:#b9c4d6">Isi bagian ① data mentah di tab ATI (sheet) untuk periode ini.</div>`:''}`;
+  let h="";
+  ATI_LAYERS.forEach((ly,li)=>{
+    const lrow=atiLayerRow(li), lscore=lrow?pnum(lrow.periods[p]):null, lw=pnum(lrow&&lrow.b), lcol=atiColOf(lscore);
+    h+=`<div class="comp-row"><div class="comp-top">
+        <span class="src-tag" style="background:var(--navy)">Layer ${li+1}</span>
+        <span class="comp-name">${ly.name}</span>
+        <span class="comp-w">${lw!=null?Math.round(lw*100)+'%':''}</span>
+        <span class="comp-val" style="color:${lcol}">${lscore==null?'—':Math.round(lscore)}</span></div>
+      <div class="comp-bar"><span style="width:${lscore||0}%;background:${lcol}"></span></div>`;
+    ly.comps.forEach(cn=>{const cr=ATI_DATA.byLabel[cn], cs=cr?pnum(cr.periods[p]):null, ccol=atiColOf(cs);
+      const pf=v=>{const n=pnum(v);return n==null?'?':(Math.round(n*1000)/10).toString().replace(".",",")+'%';};
+      const bw=cr&&pnum(cr.b)!=null?Math.round(pnum(cr.b)*100)+'%':'?';
+      h+=`<div class="comp-note" style="display:flex;justify-content:space-between;gap:8px;margin-top:5px">
+        <span>• ${cn} <span style="color:var(--ink-dim)">(bobot ${bw} · ${pf(cr&&cr.c)}→${pf(cr&&cr.d)})</span></span>
+        <b style="color:${ccol}">${cs==null?'—':Math.round(cs)}</b></div>`;});
+    h+=`</div>`;
+  });
+  comp.innerHTML=h;
+  const sel=document.getElementById("atiPeriod");
+  if(sel)sel.addEventListener("change",e=>{ATI_SEL=+e.target.value;renderATI();publishOut();});
 }
 
 /* =========================================================
@@ -637,14 +621,14 @@ function targetStat(val,tgt,dir){
 function snapshot(){
   return {app:"alfalee-kinerja",ts:new Date().toISOString(),
     from:document.getElementById("from").value,to:document.getElementById("to").value,
-    ATI:{credManual:ATI.credManual,engManual:ATI.engManual,commManual:ATI.commManual,donManual:ATI.donManual,safeManual:ATI.safeManual,target:ATI.target},
+    atiSel:ATI_SEL,
     TARGETS,CUSTOM,igAgg:AGG.ig,fromKampanye:INCOMING};
 }
 const STATE_KEY="alfalee_kinerja_state";
 let S_FROM=null,S_TO=null,_sv=null;
 function saveState(){clearTimeout(_sv);_sv=setTimeout(()=>{try{localStorage.setItem(STATE_KEY,JSON.stringify(snapshot()))}catch(e){}},350);}
 function restoreState(){try{const s=JSON.parse(localStorage.getItem(STATE_KEY));if(!s)return;
-  if(s.ATI)Object.assign(ATI,s.ATI); if(s.TARGETS)TARGETS=s.TARGETS; if(s.CUSTOM)CUSTOM=s.CUSTOM;
+  if(s.atiSel!=null)ATI_SEL=s.atiSel; if(s.TARGETS)TARGETS=s.TARGETS; if(s.CUSTOM)CUSTOM=s.CUSTOM;
   if(s.from)S_FROM=s.from; if(s.to)S_TO=s.to;}catch(e){}}
 function doExport(){
   const blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:"application/json"});

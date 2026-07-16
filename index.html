@@ -54,6 +54,9 @@
   table.src td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
   table.src tr:last-child td{border-bottom:none;}
   table.src code{font-size:11px;background:var(--cream);padding:1px 5px;border-radius:4px;}
+  a.srclink{display:inline-block;color:var(--steel);font-weight:700;text-decoration:none;font-size:13px;border-bottom:1.5px solid rgba(62,107,158,.35);}
+  a.srclink:hover{color:var(--navy);border-bottom-color:var(--gold);}
+  .srcnote{font-size:11.5px;color:var(--muted);margin-top:3px;}
   .warn{background:#FBF3DE;border:1px solid #EAD9A8;border-radius:10px;padding:12px 15px;font-size:12.5px;color:#6b5514;margin-top:12px;}
   .warn b{color:#8a6d1f;}
   .foot{margin-top:34px;font-size:11.5px;color:var(--muted);text-align:center;}
@@ -84,7 +87,7 @@
       <div class="ic">📊</div>
       <h2>Dashboard Kinerja</h2>
       <p>Angka kinerja — ATI &amp; Engagement Rate 7 channel.</p>
-      <ul><li>Humanitarian ATI (bobot 25/20/20/25/10)</li><li>Engagement Rate per channel</li><li>Matriks channel × dimensi</li><li>IG live dari Google Sheet</li></ul>
+      <ul><li>ATI 3-layer (Passive/Active/Sacrifice)</li><li>Engagement Rate per channel</li><li>Matriks channel × dimensi</li><li>IG live dari Google Sheet</li></ul>
       <span class="go">Buka →</span>
     </a>
   </div>
@@ -118,8 +121,8 @@
       <div class="body">
         <p><b>Tujuan:</b> mengukur kualitas audiens tiap channel — bukan sekadar reach — lewat <b>Humanitarian ATI</b> &amp; Engagement Rate.</p>
         <ol>
-          <li><b>Kartu ATI</b> di atas: skor 0–100 dari 5 komponen berbobot — Humanitarian Credibility 25% · Engagement Quality 20% · Community Action 20% · Donation Conversion 25% · Brand Safety 10%.</li>
-          <li>Komponen ber-label <span class="badge b-live">IG live</span> / <span class="badge b-live">Halaman 1</span> terisi otomatis; sisanya (Credibility, Brand Safety) geser slider manual.</li>
+          <li><b>Kartu ATI</b> di atas: skor 0–100 dari <b>model 3-layer</b> — Passive Trust 25% · Active Trust 35% · Sacrifice Trust 40% — ditarik <b>live</b> dari tab Kalkulator ATI di Google Sheet, per periode (pilih di dropdown). Ada klasifikasi audiens &amp; diagnosa layer terlemah.</li>
+          <li>Isi <b>bagian ① data mentah</b> di tab ATI sheet; skor tiap komponen (Floor→Target), skor layer &amp; ATI komposit muncul otomatis di kartu.</li>
           <li><b>Matriks Channel × Dimensi:</b> warna = tier (Buruk→Sangat Baik), angka = metrik jantung tiap dimensi.</li>
           <li><b>Detail per channel:</b> klik untuk buka rincian metrik; isi kolom <b>Target</b>; channel manual (WA Group) &amp; custom diisi tangan.</li>
           <li><b>Rentang tanggal</b> di atas menyaring data; <b>+ Tambah channel custom</b> untuk kanal baru.</li>
@@ -145,13 +148,21 @@
     <h2 class="hd"><span class="num">Data</span> Sumber &amp; Cara Dihitung</h2>
     <p class="lead">Ringkasan dari mana tiap angka berasal.</p>
     <table class="src">
-      <tr><th>Bagian</th><th>Sumber</th><th>Sifat</th></tr>
-      <tr><td><b>Instagram</b> (kinerja)</td><td>Google Sheet tracker konten IG (<code>1j3M…suyC0</code>), per-post: Views, Reach, Save/Share/Comment rate, Bio Link Taps, Follows, demografi.</td><td><span class="badge b-live">live</span></td></tr>
-      <tr><td><b>Telegram · YouTube · TikTok · Threads · WA Channel</b></td><td>Google Sheet Tracker_Metrik_Sosmed (<code>1rf1z…zCGM</code>), satu tab per channel.</td><td><span class="badge b-live">live</span></td></tr>
+      <tr><th>Bagian</th><th>Sumber — klik untuk buka</th><th>Sifat</th></tr>
+      <tr><td><b>Instagram</b> (kinerja)</td>
+        <td><a class="srclink" href="https://docs.google.com/spreadsheets/d/1j3M-FKdWic1FiRIplBbyz3VpR7wFTQVdeHgxOqsuyC0/edit" target="_blank" rel="noopener">🔗 Sheet Tracker Konten IG</a>
+          <div class="srcnote">per-post: Views, Reach, Save/Share/Comment rate, Bio Link Taps, Follows, demografi.</div></td>
+        <td><span class="badge b-live">live</span></td></tr>
+      <tr><td><b>Telegram · YouTube · TikTok · Threads · WA Channel</b></td>
+        <td><a class="srclink" href="https://docs.google.com/spreadsheets/d/1rf1z-es8oBg9G3p9NHxnsUI6oRhcWDjTwp7siBozCGM/edit" target="_blank" rel="noopener">🔗 Sheet Tracker Metrik Sosmed</a>
+          <div class="srcnote">satu tab per channel (metrik jantung + engagement).</div></td>
+        <td><span class="badge b-live">live</span></td></tr>
+      <tr><td><b>ATI</b> (skor &amp; model 3-layer)</td>
+        <td><a class="srclink" href="https://docs.google.com/spreadsheets/d/1rf1z-es8oBg9G3p9NHxnsUI6oRhcWDjTwp7siBozCGM/edit?gid=109818991#gid=109818991" target="_blank" rel="noopener">🔗 Tab Kalkulator ATI</a>
+          <div class="srcnote">model Passive/Active/Sacrifice Trust (bobot 25/35/40). Isi bagian ① data mentah → skor komponen, layer &amp; ATI otomatis; dashboard menariknya live per periode.</div></td>
+        <td><span class="badge b-live">live</span></td></tr>
       <tr><td><b>WA Group</b> &amp; channel custom</td><td>Input manual di dashboard (belum ada tracker otomatis).</td><td><span class="badge b-manual">manual</span></td></tr>
-      <tr><td><b>Humanitarian ATI</b> (bobot &amp; komponen)</td><td>Framework proprietary <b>Alfalee</b> (AIVF) versi Husein Gaza — dokumen strategi ATI.</td><td>framework</td></tr>
-      <tr><td><b>Donation Conversion &amp; Community Action</b> (ATI)</td><td>Ditarik dari angka Donasi &amp; Member di Dashboard Kampanye lewat sinkron.</td><td>turunan sync</td></tr>
-      <tr><td><b>Angka Rupiah</b> (funnel, target, ad spend)</td><td>Default dari dokumen <b>RGI/CMP/2026/07/001</b> (agregat Rp 204jt, ad spend Rp 51jt). Semua rate = <b>asumsi</b> yang bisa diedit.</td><td>default editable</td></tr>
+      <tr><td><b>Angka Rupiah</b> (funnel, target, ad spend)</td><td>Default dari dokumen <b>RGI/CMP/2026/07/001</b> (agregat Rp 204jt, ad spend Rp 51jt). Semua rate = <b>asumsi</b> yang bisa diedit.</td><td>default</td></tr>
       <tr><td><b>Aktual</b> (target vs aktual)</td><td>Diisi tim (atau otomatis dari kinerja IG untuk reach).</td><td><span class="badge b-manual">manual</span>/sync</td></tr>
     </table>
     <div class="warn">
