@@ -196,8 +196,13 @@ table.det tbody tr:last-child td{border-bottom:0}
   <div class="toolbar">
     <div class="sl"><label>Dari</label><input type="date" id="from"></div>
     <div class="sl"><label>Sampai</label><input type="date" id="to"></div>
-    <span class="hint">samakan tanggal untuk 1 hari</span>
+    <div class="sl"><label>Akun IG</label>
+      <select id="igAcct" style="font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#FAF8F3;color:var(--text);font-weight:500;font-family:inherit">
+        <option value="__ALL__">Semua akun (agregat)</option>
+      </select></div>
+    <span class="hint">filter akun berlaku untuk Instagram &amp; Story</span>
     <div class="tb-sp">
+      <button class="btn" id="fullRange">↔ Rentang penuh</button>
       <button class="btn" id="goHome">🏠 Beranda &amp; Panduan</button>
       <button class="btn" id="goKampanye" style="background:var(--navy);border-color:var(--navy);color:#fff">↗ Buka Halaman Kampanye (Rp)</button>
       <button class="btn" id="reload">↻ Muat ulang data</button>
@@ -283,6 +288,10 @@ function publishOut(){ // kirim angka IG ke Halaman 1
     igReach:AGG.ig.reach||0, igViews:AGG.ig.views||0, igER:AGG.ig.er||0,
     igSaveRate:AGG.ig.saveRate||0, igShareRate:AGG.ig.shareRate||0, igCommentRate:AGG.ig.commentRate||0,
     igLinkTaps:AGG.ig.linkTaps||0, igFollows:AGG.ig.follows||0, igProfileVisits:AGG.ig.profileVisits||0,
+    igStoryViews:(AGG.story&&AGG.story.views)||0, igStoryLinkTaps:(AGG.story&&AGG.story.linkTaps)||0,
+    /* gabungan yang SAH: satuannya sama-sama "klik menuju landing" */
+    igTotalLinkTaps:(AGG.ig.linkTaps||0)+((AGG.story&&AGG.story.linkTaps)||0),
+    igAccount:acctLabel(),
     ati:Math.round(atiComposite(ATI_SEL==null?0:ATI_SEL)||0),
     updatedAt:new Date().toISOString()
   }});
@@ -293,6 +302,12 @@ function publishOut(){ // kirim angka IG ke Halaman 1
    SHEETS
 ========================================================= */
 const IG_SHEET="1j3M-FKdWic1FiRIplBbyz3VpR7wFTQVdeHgxOqsuyC0"; // tracker konten IG (poin 8)
+const IG_STORY_GID=1726006522;                                 // tab tracker Instagram Story (per slide)
+/* filter akun IG — daftar akun ditemukan otomatis dari data, jadi akun baru muncul sendiri */
+let IG_ACCOUNTS=[], IG_ACCT="__ALL__";
+function normAcct(v){return String(v==null?"":v).trim().replace(/\s*\*+\s*$/,"").trim();} // "@x *" → "@x"
+function acctOK(v){return IG_ACCT==="__ALL__"||normAcct(v)===IG_ACCT;}
+function acctLabel(){return IG_ACCT==="__ALL__"?"semua akun (agregat)":IG_ACCT;}
 const SOCIAL_SHEET="1rf1z-es8oBg9G3p9NHxnsUI6oRhcWDjTwp7siBozCGM"; // channel-health lama
 const num=v=>{if(v==null)return 0;const n=parseFloat(String(v).replace(",","."));return isNaN(n)?0:n;};
 /* normalizer rate: paham "6,1%" (string persen), 0.63 (pecahan 0–1), 6.1 (angka persen) → selalu kembalikan persen */
@@ -342,6 +357,7 @@ const SOCIAL_DEFS={
 /* channel registry: source = ig | social | manual */
 const CHANNELS=[
  {key:"Instagram",source:"ig",sig:"Engagement Rate",dim:"Engagement"},
+ {key:"Instagram Story",source:"igstory",sig:"Exit Rate",dim:"Retensi"},
  {key:"WA Channel",source:"social"},
  {key:"WA Group",source:"manual",sig:"Active-Member Rate",dim:"Komunitas",
    metrics:[{label:"Active-Member Rate",dim:"Komunitas",t:[10,25,40],dir:"up",val:0,f:"Diisi manual. Saran: Member yang mengirim ≥1 pesan ÷ Total member × 100."},
@@ -363,6 +379,21 @@ const IG_METRICS=[
  {label:"Follow Rate",dim:"Reach",t:[0.5,1,2],dir:"up",f:"Total Follows ÷ Total Reach × 100. Berapa banyak yang jadi follower dari yang terjangkau.",calc:c=>c.reach?c.follows/c.reach*100:0},
  {label:"Non-Follower Reach %",dim:"Distribusi",t:[40,60,75],dir:"up",f:"Rata-rata kolom Non-Followers (%) tiap post, DIBOBOT oleh Reach post tsb. Porsi jangkauan ke audiens baru (discovery).",calc:c=>c.nonFollowerPct},
  {label:"Avg Retention (100−Skip) %",dim:"Retensi",t:[30,45,60],dir:"up",f:"100 − (rata-rata Skip rate % tiap post, dibobot Reach). Proksi berapa lama orang bertahan menonton.",calc:c=>100-c.skipRate},
+];
+
+/* ---- Instagram Story (tab tracker Story, per slide). Penyebut selalu Views. ----
+   Semua ambang = USULAN awal, kalibrasi setelah data lebih banyak.               */
+const STORY_METRICS=[
+ {label:"Exit Rate",dim:"Retensi",t:[10,18],dir:"down",f:"Σ Exited ÷ Σ Views × 100. Porsi penonton yang MENUTUP story sepenuhnya. Metrik jantung Story — makin KECIL makin baik.",calc:c=>c.views?c.exited/c.views*100:0},
+ {label:"Skip ke Next Story",dim:"Retensi",t:[10,20],dir:"down",f:"Σ Next Story ÷ Σ Views × 100. Lompat ke story akun LAIN (beda dari Forward yang cuma geser slide sendiri). Makin kecil makin baik.",calc:c=>c.views?c.next/c.views*100:0},
+ {label:"Back Rate",dim:"Trust",t:[1,2,3.5],dir:"up",f:"Σ Back ÷ Σ Views × 100. Mengulang slide sebelumnya — sinyal POSITIF (penasaran / ingin baca ulang).",calc:c=>c.views?c.back/c.views*100:0},
+ {label:"Interaction Rate",dim:"Engagement",t:[2,4,7],dir:"up",f:"Σ Interactions ÷ Σ Views × 100. Interactions = Like + Replies + Shares (terverifikasi cocok di sheet).",calc:c=>c.views?c.inter/c.views*100:0},
+ {label:"Sticker Tap Rate",dim:"Engagement",t:[1,3,6],dir:"up",f:"Σ Sticker taps ÷ Σ Views × 100.",calc:c=>c.views?c.sticker/c.views*100:0},
+ {label:"Reply Rate",dim:"Engagement",t:[0.2,0.5,1],dir:"up",f:"Σ Replies ÷ Σ Views × 100. Balasan DM dari story = sinyal trust; komponen “Story Reply” di framework ATI.",calc:c=>c.views?c.replies/c.views*100:0},
+ {label:"Share Rate",dim:"Distribusi",t:[0.1,0.3,0.8],dir:"up",f:"Σ Shares ÷ Σ Views × 100. Story dikirim ke orang lain.",calc:c=>c.views?c.shares/c.views*100:0},
+ {label:"Link Tap Rate",dim:"Konversi",t:[0.3,0.8,1.5],dir:"up",f:"Σ External link taps ÷ Σ Views × 100. Klik keluar dari story → landing/checkout. Digabung dgn Bio Link Taps (Reels) = total klik MOFU Instagram.",calc:c=>c.views?c.linkTaps/c.views*100:0},
+ {label:"Profile Visit Rate",dim:"Konversi",t:[0.5,1.5,3],dir:"up",f:"Σ Profile visits ÷ Σ Views × 100.",calc:c=>c.views?c.profVisit/c.views*100:0},
+ {label:"Poll Participation",dim:"Komunitas",t:[5,15,30],dir:"up",f:"Σ Total Polling ÷ Σ Views × 100. Ambang disamakan dgn tab ATI (floor 5% → target 30%). Ini yang mengisi komponen Poll Participation di Layer 2 ATI.",calc:c=>c.views?c.poll/c.views*100:0},
 ];
 
 let RAW={}, AGG={ig:{}}, openSet=null, CUSTOM=[];
@@ -409,12 +440,44 @@ async function loadAll(){
     const rows=await gviz(IG_SHEET,{gid:0,range:"A1:AP3000"});
     RAW["Instagram"]=rows.filter(r=>{const v=num(r[17]);const dt=pd(r[1]);return v>0 && dt;});
   }catch(e){RAW["Instagram"]=[];}
+  // instagram STORY tracker (per slide)
+  try{
+    const rows=await gviz(IG_SHEET,{gid:IG_STORY_GID,range:"A2:AK2000"});
+    RAW["Instagram Story"]=rows.filter(r=>{const v=num(r[17]);const dt=pd(r[1]);return v>0 && dt;});
+  }catch(e){RAW["Instagram Story"]=[];}
+  // temukan akun IG dari kedua tracker (otomatis; akun baru muncul sendiri)
+  const set=new Set();
+  ["Instagram","Instagram Story"].forEach(k=>(RAW[k]||[]).forEach(r=>{const a=normAcct(r[2]);if(a)set.add(a);}));
+  IG_ACCOUNTS=[...set].sort();
+  if(IG_ACCT!=="__ALL__"&&!IG_ACCOUNTS.includes(IG_ACCT))IG_ACCT="__ALL__";
+  renderAcctFilter();
   await loadATI();
 }
+function renderAcctFilter(){
+  const sel=document.getElementById("igAcct"); if(!sel)return;
+  sel.innerHTML=`<option value="__ALL__">Semua akun (agregat)</option>`+
+    IG_ACCOUNTS.map(a=>`<option value="${esc(a)}">${esc(a)}</option>`).join("");
+  sel.value=IG_ACCT;
+}
 
+/* aggregate Instagram Story: semua rate berpenyebut Views, dijumlah dulu baru dibagi */
+function aggregateStory(from,to){
+  const rows=(RAW["Instagram Story"]||[]).filter(r=>{const d=iso(pd(r[1]));return d&&d>=from&&d<=to&&acctOK(r[2]);});
+  const A={n:rows.length,views:0,reach:0,inter:0,like:0,replies:0,shares:0,sticker:0,
+           fwd:0,next:0,exited:0,back:0,profVisit:0,linkTaps:0,poll:0,sets:new Set()};
+  rows.forEach(r=>{
+    A.views+=num(r[17]); A.inter+=num(r[18]); A.reach+=num(r[22]);
+    A.like+=num(r[25]); A.replies+=num(r[26]); A.shares+=num(r[27]); A.sticker+=num(r[28]);
+    A.fwd+=num(r[29]); A.next+=num(r[30]); A.exited+=num(r[31]); A.back+=num(r[32]);
+    A.profVisit+=num(r[33]); A.linkTaps+=num(r[34]); A.poll+=num(r[12]);
+    A.sets.add(iso(pd(r[1]))+"|"+normAcct(r[2]));
+  });
+  A.setCount=A.sets.size;
+  return A;
+}
 /* aggregate IG over range */
 function aggregateIG(from,to){
-  const rows=(RAW["Instagram"]||[]).filter(r=>{const d=iso(pd(r[1]));return d&&d>=from&&d<=to;});
+  const rows=(RAW["Instagram"]||[]).filter(r=>{const d=iso(pd(r[1]));return d&&d>=from&&d<=to&&acctOK(r[2]);});
   const A={n:rows.length,reach:0,views:0,likes:0,comments:0,saves:0,shares:0,reposts:0,
     follows:0,linkTaps:0,profileVisits:0,skipW:0,nfW:0};
   rows.forEach(r=>{
@@ -449,6 +512,10 @@ function metricsFor(ch,from,to){
     const A=aggregateIG(from,to); AGG.ig=A;
     return IG_METRICS.map(m=>({label:m.label,dim:m.dim,t:m.t,dir:m.dir,f:m.f,val:A.reach?m.calc(A):null}));
   }
+  if(ch.source==="igstory"){
+    const A=aggregateStory(from,to); AGG.story=A;
+    return STORY_METRICS.map(m=>({label:m.label,dim:m.dim,t:m.t,dir:m.dir,f:m.f,val:A.views?m.calc(A):null}));
+  }
   if(ch.source==="social"){
     const def=SOCIAL_DEFS[ch.key];
     const rows=(RAW[ch.key]||[]).filter(r=>{const d=iso(pd(r[0]));return d&&d>=from&&d<=to;});
@@ -477,7 +544,8 @@ function benchTxt(m){
     : `≥${m.t[2]}% sangat baik · ≥${m.t[1]}% baik · ≥${m.t[0]}% cukup · <${m.t[0]}% buruk`;
 }
 function srcTxt(ch){
-  if(ch.source==="ig")return "Sheet Tracker Konten IG — semua post dalam rentang tanggal dijumlah (agregat).";
+  if(ch.source==="igstory")return `Tab Tracker Instagram Story (per slide) di Sheet Tracker Konten IG — semua slide dalam rentang tanggal dijumlah (agregat), penyebut Views. Akun: ${acctLabel()}.`;
+  if(ch.source==="ig")return `Sheet Tracker Konten IG — semua post dalam rentang tanggal dijumlah (agregat). Akun: ${acctLabel()}.`;
   if(ch.source==="social")return `Tab “${SOCIAL_DEFS[ch.key].tab}” di Sheet Tracker Metrik Sosmed — rata-rata TERTIMBANG seluruh baris dalam rentang tanggal.`;
   return "Input manual di dashboard — belum ada tracker otomatis untuk channel ini.";
 }
@@ -598,12 +666,12 @@ function render(){
   allCh.forEach(ch=>{
     const mArr=DATA[ch.key],sm=sigOf(ch,mArr),tr=tierOf(sm);
     const er=mArr.find(m=>m.label.toLowerCase().includes("engagement")||m.label.toLowerCase().includes("interaction"));
-    const live=(ch.source==="ig"&&AGG.ig.reach)||(ch.source==="social"&&(RAW[ch.key]||[]).length);
+    const live=(ch.source==="ig"&&AGG.ig.reach)||(ch.source==="igstory"&&AGG.story&&AGG.story.views)||(ch.source==="social"&&(RAW[ch.key]||[]).length);
     g+=`<div class="cch"><span class="edge" style="background:${tc(tr)}"></span>
       <span class="live-dot ${live?'on':''}" title="${live?'data live':'manual/kosong'}"></span>
       <div class="cn">${ch.key}</div><div class="sig">${sm.label}</div>
       <div class="big" style="color:${tc(tr)}">${fmtv(sm.val)}</div>
-      <div class="er">ER: <b>${er?fmtv(er.val):'—'}</b>${ch.source==="ig"?` · reach ${fmtn(AGG.ig.reach)}`:''}</div>
+      <div class="er">ER: <b>${er?fmtv(er.val):'—'}</b>${ch.source==="ig"?` · reach ${fmtn(AGG.ig.reach)}`:ch.source==="igstory"&&AGG.story?` · ${fmtn(AGG.story.views)} views · ${AGG.story.setCount} set`:''}</div>
       <span class="tchip" style="background:color-mix(in srgb,${tc(tr)} 14%,#fff);color:${tc(tr)}">${tl(tr)}</span></div>`;
   });
   document.getElementById("grid").innerHTML=g;
@@ -653,7 +721,9 @@ function render(){
   }));
 
   renderATI(); publishOut(); saveState();
-  document.getElementById("stamp").textContent="Rentang "+from+" → "+to;
+  const luar=(DATA_MIN&&from>DATA_MIN)||(DATA_MAX&&to<DATA_MAX);
+  document.getElementById("stamp").innerHTML="Rentang "+from+" → "+to+" · akun: "+esc(acctLabel())+
+    (luar?` <b style="color:var(--t1)">⚠ ada data di luar rentang (${DATA_MIN} → ${DATA_MAX}) — klik “↔ Rentang penuh”</b>`:"");
 }
 function targetStat(val,tgt,dir){
   if(val==null||tgt==null||isNaN(val))return '<span style="color:var(--muted)">—</span>';
@@ -668,14 +738,14 @@ function targetStat(val,tgt,dir){
 function snapshot(){
   return {app:"alfalee-kinerja",ts:new Date().toISOString(),
     from:document.getElementById("from").value,to:document.getElementById("to").value,
-    atiSel:ATI_SEL,
+    atiSel:ATI_SEL, igAcct:IG_ACCT,
     TARGETS,CUSTOM,igAgg:AGG.ig,fromKampanye:INCOMING};
 }
 const STATE_KEY="alfalee_kinerja_state";
-let S_FROM=null,S_TO=null,_sv=null;
+let S_FROM=null,S_TO=null,_sv=null,DATA_MIN=null,DATA_MAX=null;
 function saveState(){clearTimeout(_sv);_sv=setTimeout(()=>{try{localStorage.setItem(STATE_KEY,JSON.stringify(snapshot()))}catch(e){}},350);}
 function restoreState(){try{const s=JSON.parse(localStorage.getItem(STATE_KEY));if(!s)return;
-  if(s.atiSel!=null)ATI_SEL=s.atiSel; if(s.TARGETS)TARGETS=s.TARGETS; if(s.CUSTOM)CUSTOM=s.CUSTOM;
+  if(s.atiSel!=null)ATI_SEL=s.atiSel; if(s.igAcct)IG_ACCT=s.igAcct; if(s.TARGETS)TARGETS=s.TARGETS; if(s.CUSTOM)CUSTOM=s.CUSTOM;
   if(s.from)S_FROM=s.from; if(s.to)S_TO=s.to;}catch(e){}}
 function doExport(){
   const blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:"application/json"});
@@ -725,12 +795,13 @@ async function boot(){
   await loadAll();
   // set date range dari data yang ada
   const dates=[];
-  (RAW["Instagram"]||[]).forEach(r=>{const d=iso(pd(r[1]));if(d)dates.push(d);});
+  ["Instagram","Instagram Story"].forEach(k=>(RAW[k]||[]).forEach(r=>{const d=iso(pd(r[1]));if(d)dates.push(d);}));
   Object.keys(SOCIAL_DEFS).forEach(k=>(RAW[k]||[]).forEach(r=>{const d=iso(pd(r[0]));if(d)dates.push(d);}));
   dates.sort();
-  const from=S_FROM||dates[0]||"2026-06-01", to=S_TO||dates[dates.length-1]||"2026-07-31";
+  DATA_MIN=dates[0]||"2026-06-01"; DATA_MAX=dates[dates.length-1]||"2026-07-31";
+  const from=S_FROM||DATA_MIN, to=S_TO||DATA_MAX;
   document.getElementById("from").value=from; document.getElementById("to").value=to;
-  const anyLive=(RAW["Instagram"]||[]).length||Object.keys(SOCIAL_DEFS).some(k=>(RAW[k]||[]).length);
+  const anyLive=(RAW["Instagram"]||[]).length||(RAW["Instagram Story"]||[]).length||Object.keys(SOCIAL_DEFS).some(k=>(RAW[k]||[]).length);
   if(anyLive){banner("ok","Data live termuat.");}
   else{banner("err","Data live kosong. Pastikan Sheet di-share 'anyone with link → Viewer' & online. Channel manual tetap bisa diisi.");}
   render();
@@ -739,6 +810,11 @@ async function boot(){
 }
 document.getElementById("from").addEventListener("change",render);
 document.getElementById("to").addEventListener("change",render);
+document.getElementById("igAcct").addEventListener("change",e=>{IG_ACCT=e.target.value;render();});
+document.getElementById("fullRange").addEventListener("click",()=>{
+  if(!DATA_MIN)return;
+  document.getElementById("from").value=DATA_MIN; document.getElementById("to").value=DATA_MAX; render();
+});
 document.getElementById("reload").addEventListener("click",boot);
 document.getElementById("exp").addEventListener("click",doExport);
 document.getElementById("imp").addEventListener("click",()=>document.getElementById("impFile").click());
