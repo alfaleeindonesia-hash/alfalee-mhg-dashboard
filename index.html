@@ -7,11 +7,11 @@
 <style>
   :root{--navy:#1B2A4A;--navy2:#24365C;--navy3:#0F1B33;--gold:#C9A227;--gold-l:#E8CE6C;--cream:#F7F4EC;--ink:#1B2430;--muted:#5B6675;--line:#DDE2EA;--steel:#3E6B9E;--auto:#2E9E6B;}
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Segoe UI',Roboto,-apple-system,sans-serif;background:radial-gradient(1000px 600px at 15% -10%,rgba(201,162,39,.10),transparent 60%),var(--cream);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5;}
-  .wrap{max-width:920px;margin:0 auto;padding:56px 22px 60px;}
+  body{font-family:'Segoe UI',Roboto,-apple-system,sans-serif;background:radial-gradient(1000px 600px at 15% -10%,rgba(201,162,39,.10),transparent 60%),var(--cream);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.55;}
+  .wrap{max-width:940px;margin:0 auto;padding:56px 22px 70px;}
   .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;}
   h1{font-size:30px;color:var(--navy);margin:8px 0 6px;letter-spacing:-.01em;}
-  .sub{color:var(--muted);font-size:14px;max-width:640px;}
+  .sub{color:var(--muted);font-size:14px;max-width:660px;}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
   .chip{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:11.5px;color:var(--muted);}
   .chip b{color:var(--navy);}
@@ -29,17 +29,41 @@
   .card ul{list-style:none;font-size:12px;color:var(--muted);margin-bottom:12px;}
   .card li{padding:2px 0;padding-left:16px;position:relative;}
   .card li::before{content:"›";position:absolute;left:2px;color:var(--gold);font-weight:700;}
-  .link-row{display:flex;gap:14px;align-items:center;margin-top:8px;flex-wrap:wrap;}
-  .sync{margin-top:30px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--auto);border-radius:0 12px 12px 0;padding:16px 18px;font-size:13px;color:var(--ink);}
+  .sync{margin-top:24px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--auto);border-radius:0 12px 12px 0;padding:16px 18px;font-size:13px;color:var(--ink);}
   .sync b{color:var(--navy);}
-  .foot{margin-top:26px;font-size:11.5px;color:var(--muted);text-align:center;}
+
+  .sec{margin-top:38px;}
+  .sec h2.hd{font-size:20px;color:var(--navy);display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+  .sec h2.hd .num{font-size:12px;background:var(--gold);color:var(--navy);font-weight:800;border-radius:20px;padding:3px 10px;letter-spacing:.05em;}
+  .sec .lead{font-size:13px;color:var(--muted);margin-bottom:14px;}
+  details.guide{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+  details.guide>summary{cursor:pointer;padding:14px 18px;font-weight:700;font-size:14.5px;color:var(--navy);list-style:none;display:flex;align-items:center;gap:10px;}
+  details.guide>summary::-webkit-details-marker{display:none;}
+  details.guide>summary::before{content:"▸";color:var(--gold);font-size:12px;transition:.15s;}
+  details.guide[open]>summary::before{content:"▾";}
+  details.guide .body{padding:0 18px 16px 40px;font-size:13px;color:var(--ink);}
+  details.guide .body p{margin:6px 0;}
+  details.guide .body ol,.body ul{margin:6px 0 6px 18px;}
+  details.guide .body li{margin:4px 0;}
+  details.guide .body b{color:var(--navy);}
+  .kbd{font-family:monospace;background:var(--cream);border:1px solid var(--line);border-radius:5px;padding:1px 7px;font-size:12px;color:var(--navy);}
+  .badge{font-size:9.5px;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:5px;color:#fff;}
+  .b-auto{background:var(--auto);}.b-semi{background:#C08A1E;}.b-manual{background:#B0453B;}.b-live{background:var(--steel);}
+  table.src{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px;}
+  table.src th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-size:11px;}
+  table.src td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  table.src tr:last-child td{border-bottom:none;}
+  table.src code{font-size:11px;background:var(--cream);padding:1px 5px;border-radius:4px;}
+  .warn{background:#FBF3DE;border:1px solid #EAD9A8;border-radius:10px;padding:12px 15px;font-size:12.5px;color:#6b5514;margin-top:12px;}
+  .warn b{color:#8a6d1f;}
+  .foot{margin-top:34px;font-size:11.5px;color:var(--muted);text-align:center;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="eyebrow">Alfalee × MHG — Growth Engine</div>
   <h1>Command Center</h1>
-  <p class="sub">Dua dashboard terhubung untuk kampanye Muhammad Husein Gaza — perencanaan angka Rupiah & kinerja channel (ATI). Angka yang beririsan tersinkron dua-arah otomatis.</p>
+  <p class="sub">Dua dashboard terhubung untuk kampanye Muhammad Husein Gaza — perencanaan angka Rupiah &amp; kinerja channel (ATI). Angka yang beririsan tersinkron dua-arah otomatis.</p>
   <div class="chips">
     <div class="chip">Dok <b>RGI/CMP/2026/07/001</b></div>
     <div class="chip">Target <b>Rp 204jt/bln</b></div>
@@ -67,6 +91,73 @@
 
   <div class="sync">
     🔗 <b>Sinkron dua-arah aktif.</b> Karena kedua halaman berada di satu domain, angka Donasi/Member dari Kampanye otomatis mengisi komponen ATI di Kinerja, dan reach/ER Instagram mengalir balik jadi kolom Aktual di Kampanye — real-time saat dua-duanya terbuka.
+  </div>
+
+  <!-- ============ PANDUAN ============ -->
+  <div class="sec" id="panduan">
+    <h2 class="hd"><span class="num">Panduan</span> Cara Pakai Dashboard</h2>
+    <p class="lead">Semua angka bisa diedit langsung; tidak ada yang permanen sampai kamu Kunci &amp; Simpan PDF. Perubahan tersimpan otomatis di browser (auto-save).</p>
+
+    <details class="guide" open>
+      <summary>💰 Dashboard Kampanye (angka Rupiah)</summary>
+      <div class="body">
+        <p><b>Tujuan:</b> menerjemahkan target omzet → jumlah unit → reach organik &amp; ad spend per produk, lengkap dengan profit.</p>
+        <ol>
+          <li><b>Tab per produk</b> (Prodigi, Membership, FWB, Webinar Paid, Brand Deals, Donasi): geser <b>conversion rate</b> tiap tahap corong — jumlah &amp; ad spend menghitung sendiri. Ubah harga/CPM di bawah corong.</li>
+          <li><b>Target vs Aktual:</b> kolom biru untuk mengisi data <b>real</b> (unit, revenue, spend, reach). Variance muncul otomatis (hijau = di atas plan, merah = di bawah).</li>
+          <li><b>Tab 💰 Profit:</b> atur bagi hasil MHG, biaya produksi &amp; ops → <b>Net Profit + margin</b> per produk &amp; blended.</li>
+          <li><b>Tab 🗓 Kalender:</b> ubah qty per basis &amp; durasi; lihat matriks Konten×Pillar dan Konten×Produk.</li>
+          <li><b>🔒 Kunci &amp; Simpan PDF:</b> menstempel timestamp + nama, lalu mencetak <b>SELURUH</b> bagian (agregat + semua produk + profit + kalender) sekaligus — pilih "Save as PDF" di dialog cetak.</li>
+        </ol>
+        <p>Badge sumber tahap: <span class="badge b-auto">auto</span> Meta/pixel/mayar · <span class="badge b-semi">semi</span> form/tool · <span class="badge b-manual">manual</span> dicatat admin.</p>
+      </div>
+    </details>
+
+    <details class="guide">
+      <summary>📊 Dashboard Kinerja (ATI &amp; Engagement)</summary>
+      <div class="body">
+        <p><b>Tujuan:</b> mengukur kualitas audiens tiap channel — bukan sekadar reach — lewat <b>Humanitarian ATI</b> &amp; Engagement Rate.</p>
+        <ol>
+          <li><b>Kartu ATI</b> di atas: skor 0–100 dari 5 komponen berbobot — Humanitarian Credibility 25% · Engagement Quality 20% · Community Action 20% · Donation Conversion 25% · Brand Safety 10%.</li>
+          <li>Komponen ber-label <span class="badge b-live">IG live</span> / <span class="badge b-live">Halaman 1</span> terisi otomatis; sisanya (Credibility, Brand Safety) geser slider manual.</li>
+          <li><b>Matriks Channel × Dimensi:</b> warna = tier (Buruk→Sangat Baik), angka = metrik jantung tiap dimensi.</li>
+          <li><b>Detail per channel:</b> klik untuk buka rincian metrik; isi kolom <b>Target</b>; channel manual (WA Group) &amp; custom diisi tangan.</li>
+          <li><b>Rentang tanggal</b> di atas menyaring data; <b>+ Tambah channel custom</b> untuk kanal baru.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="guide">
+      <summary>🔗 Sinkron, Auto-save &amp; Snapshot</summary>
+      <div class="body">
+        <ul>
+          <li><b>Sinkron otomatis:</b> saat kedua halaman dibuka dari situs ini (satu domain), Donasi &amp; Member dari Kampanye mengisi ATI (Donation 25% + Community 20%); reach/ER Instagram mengalir jadi kolom Aktual Kampanye.</li>
+          <li><b>Auto-save:</b> setiap perubahan tersimpan di browser; buka lagi → kembali seperti terakhir. Tombol <span class="kbd">↺ Reset default</span> mengosongkan.</li>
+          <li><b>Export/Import snapshot:</b> unduh file <span class="kbd">.json</span> untuk berbagi state ke rekan (atau jadi arsip rencana), lalu Import di komputer lain.</li>
+          <li>Tombol <span class="kbd">↗</span> berpindah antar-halaman; <span class="kbd">🏠 Beranda</span> kembali ke sini.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ============ SUMBER DATA ============ -->
+  <div class="sec" id="sumber">
+    <h2 class="hd"><span class="num">Data</span> Sumber &amp; Cara Dihitung</h2>
+    <p class="lead">Ringkasan dari mana tiap angka berasal.</p>
+    <table class="src">
+      <tr><th>Bagian</th><th>Sumber</th><th>Sifat</th></tr>
+      <tr><td><b>Instagram</b> (kinerja)</td><td>Google Sheet tracker konten IG (<code>1j3M…suyC0</code>), per-post: Views, Reach, Save/Share/Comment rate, Bio Link Taps, Follows, demografi.</td><td><span class="badge b-live">live</span></td></tr>
+      <tr><td><b>Telegram · YouTube · TikTok · Threads · WA Channel</b></td><td>Google Sheet Tracker_Metrik_Sosmed (<code>1rf1z…zCGM</code>), satu tab per channel.</td><td><span class="badge b-live">live</span></td></tr>
+      <tr><td><b>WA Group</b> &amp; channel custom</td><td>Input manual di dashboard (belum ada tracker otomatis).</td><td><span class="badge b-manual">manual</span></td></tr>
+      <tr><td><b>Humanitarian ATI</b> (bobot &amp; komponen)</td><td>Framework proprietary <b>Alfalee</b> (AIVF) versi Husein Gaza — dokumen strategi ATI.</td><td>framework</td></tr>
+      <tr><td><b>Donation Conversion &amp; Community Action</b> (ATI)</td><td>Ditarik dari angka Donasi &amp; Member di Dashboard Kampanye lewat sinkron.</td><td>turunan sync</td></tr>
+      <tr><td><b>Angka Rupiah</b> (funnel, target, ad spend)</td><td>Default dari dokumen <b>RGI/CMP/2026/07/001</b> (agregat Rp 204jt, ad spend Rp 51jt). Semua rate = <b>asumsi</b> yang bisa diedit.</td><td>default editable</td></tr>
+      <tr><td><b>Aktual</b> (target vs aktual)</td><td>Diisi tim (atau otomatis dari kinerja IG untuk reach).</td><td><span class="badge b-manual">manual</span>/sync</td></tr>
+    </table>
+    <div class="warn">
+      ⚠️ <b>Syarat data IG &amp; sosmed live:</b> Google Sheet-nya harus di-share <b>"anyone with link → Viewer"</b>. Kalau sharing dicabut, kartu channel terkait kosong — input manual &amp; angka Rupiah tetap jalan. <br>
+      <b>Validasi:</b> semua angka default = proyeksi; validasi ulang setelah 2–4 minggu data kampanye aktual berjalan.
+    </div>
   </div>
 
   <div class="foot">Alfalee × MHG · snapshot Juli 2026 · angka framework, validasi ulang setelah 2–4 minggu data aktual.</div>

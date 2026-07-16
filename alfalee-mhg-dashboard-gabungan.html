@@ -177,13 +177,28 @@
   .stamp{margin-top:14px;font-size:11.5px;color:var(--muted);text-align:center;}
   @media(max-width:760px){.track{min-width:100%;}}
 
+  /* ---- laporan cetak menyeluruh (semua tab) ---- */
+  #printReport{display:none;}
+  .pr-hd h1{font-size:20px;color:var(--navy);margin:0 0 4px;}
+  .pr-meta{font-size:11px;color:var(--muted);margin-bottom:10px;border-bottom:2px solid var(--gold);padding-bottom:8px;}
+  .pr-sec{font-size:15px;color:var(--navy);margin:16px 0 6px;padding:5px 9px;background:var(--cream);border-left:4px solid var(--gold);}
+  .pr-sec small{font-weight:400;color:var(--muted);font-size:11px;}
+  table.pr-t{width:100%;border-collapse:collapse;font-size:11.5px;margin:4px 0 8px;}
+  table.pr-t th{background:var(--navy);color:#fff;text-align:left;padding:5px 8px;font-size:10.5px;}
+  table.pr-t td{padding:4px 8px;border-bottom:1px solid var(--line);}
+  table.pr-t tr.tot td{font-weight:700;background:var(--cream);}
+  table.pr-t.small{font-size:10.5px;}
+  .pr-tk{font-size:11px;font-weight:700;color:var(--steel);margin-top:6px;}
+  .src{font-size:8px;font-weight:700;text-transform:uppercase;padding:1px 4px;border-radius:3px;color:#fff;}
+  .src.auto{background:var(--auto);}.src.semi{background:var(--semi);}.src.manual{background:var(--manual);}
+
   @media print{
-    .toolbar,.tabs,.conv,details.ctrl>summary,.btn{display:none!important;}
-    details.ctrl[open] .stage-row .conv{display:none!important;}
-    body{background:#fff;}
+    .toolbar,.tabs,.conv,details.ctrl>summary,.btn,#stage,.legend,.stamp,footer,.sync-pill{display:none!important;}
+    #printReport{display:block!important;}
+    body{background:#fff;padding-bottom:0;}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    header{-webkit-print-color-adjust:exact;}
-    .card{break-inside:avoid;}
+    .pr-sec,table.pr-t{break-inside:avoid;}
+    h2.pr-sec{break-before:auto;}
   }
 </style>
 </head>
@@ -205,6 +220,7 @@
       <div class="doc-chip">Target <b>Rp 204jt/bln</b></div>
     </div>
     <div class="toolbar">
+      <button class="btn" id="goHome">🏠 Beranda &amp; Panduan</button>
       <button class="btn" id="goKinerja" style="background:var(--steel);border-color:var(--steel);color:#fff">↗ Buka Halaman Kinerja (ATI)</button>
       <button class="btn" id="exp">⬇ Export snapshot</button>
       <button class="btn" id="imp">⬆ Import snapshot</button>
@@ -218,6 +234,7 @@
 <div class="wrap">
   <div class="tabs" role="tablist" id="tabs"></div>
   <div id="stage"></div>
+  <div id="printReport" aria-hidden="true"></div>
   <div class="legend">
     <span>Sumber data:</span>
     <span class="badge auto">auto</span><span>Meta / pixel / mayar</span>
@@ -637,11 +654,66 @@ function doImport(o){try{
   if(o.fromKinerja){FROM_KINERJA=o.fromKinerja;markSync(true);}
   build();
 }catch(e){alert("Snapshot tidak valid.");}}
+/* laporan cetak MENYELURUH — agregat + semua produk + profit + kalender (statis, rapi untuk PDF) */
+function buildPrintReport(who){
+  const now=new Date(), A=aggData();
+  const mhgShare=A.commercialRev*COST.mhgSharePct/100;
+  const commSpend=A.rows.filter(r=>!r.fee).reduce((s,r)=>s+r.st.spend,0);
+  const net=A.alfaleeRev-commSpend-mhgShare-COST.production-COST.ops;
+  const margin=A.alfaleeRev?net/A.alfaleeRev*100:0;
+  let h=`<div class="pr-hd"><h1>Alfalee × MHG — Rencana Kampanye (Terkunci)</h1>
+    <div class="pr-meta">🔒 Dok RGI/CMP/2026/07/001 · dikunci ${now.toLocaleString("id-ID")} · oleh ${esc(who||"—")} · versi ${now.getTime().toString(36).toUpperCase()} · seluruh angka & konversi tercatat sebagai acuan tim.</div></div>`;
+  // 1 · Agregat
+  h+=`<h2 class="pr-sec">1 · Ringkasan Agregat</h2>
+    <table class="pr-t"><tr><th>Metrik</th><th>Nilai</th></tr>
+    <tr><td>Total Revenue Alfalee</td><td>${rupiah(A.alfaleeRev)}</td></tr>
+    <tr><td>— Komersial</td><td>${rupiah(A.commercialRev)}</td></tr>
+    <tr><td>— Fee donasi</td><td>${rupiah(A.feeRev)}</td></tr>
+    <tr><td>Total Ad Spend</td><td>${rupiah(A.totSpend)}</td></tr>
+    <tr><td>Total Reach Organik</td><td>${fmt(A.totReach)}</td></tr>
+    <tr class="tot"><td>Revenue Aktual</td><td>${A.anyAct?rupiah(A.actRev):'— (belum diisi)'}</td></tr></table>
+    <table class="pr-t"><tr><th>Channel</th><th>Sales plan</th><th>Aktual</th><th>Revenue</th><th>Rev aktual</th><th>Ad spend</th><th>ROAS</th></tr>`;
+  A.rows.forEach(r=>{const a=r.act;h+=`<tr><td>${esc(r.name)}${r.fee?' (fee)':''}</td><td>${fmt(r.st.buyers)}</td><td>${a.unit!=null?fmt(a.unit):'—'}</td><td>${rupiah(r.aRev)}</td><td>${a.rev!=null?rupiah(a.rev):'—'}</td><td>${r.st.spend?rupiah(r.st.spend):'—'}</td><td>${isFinite(r.st.roas)?trimPct(r.st.roas)+'×':'—'}</td></tr>`;});
+  h+=`<tr class="tot"><td>TOTAL</td><td>—</td><td>—</td><td>${rupiah(A.alfaleeRev)}</td><td>${A.anyAct?rupiah(A.actRev):'—'}</td><td>${rupiah(A.totSpend)}</td><td>—</td></tr></table>`;
+  // 2..N · per produk
+  KEYS.forEach((k,idx)=>{
+    const cfg=CONFIG[k], st=prodStats(cfg), a=ACT[k]||{};
+    h+=`<h2 class="pr-sec">${idx+2} · ${esc(cfg.name)} <small>${esc(cfg.tag)} · target ${rpJt(cfg.revTarget)}</small></h2>
+      <table class="pr-t"><tr><th>Sales</th><th>${cfg.feeMode?'Donasi masuk':'Revenue'}</th><th>Ad spend</th><th>Reach organik</th><th>CPA ads</th><th>ROAS</th></tr>
+      <tr><td>${fmt(st.buyers)}</td><td>${rupiah(st.revenue)}</td><td>${st.spend?rupiah(st.spend):'—'}</td><td>${fmt(st.reachOrg)}</td><td>${isFinite(st.cpa)?rupiah(st.cpa):'—'}</td><td>${isFinite(st.roas)?trimPct(st.roas)+'×':'—'}</td></tr></table>`;
+    cfg.tracks.forEach(t=>{const v=valuesOf(t);
+      h+=`<div class="pr-tk">${esc(t.label)}</div><table class="pr-t small"><tr><th>Tahap funnel</th><th>Jumlah</th><th>→ konversi</th></tr>`;
+      t.stages.forEach((sg,i)=>{h+=`<tr><td>${esc(sg.label)} <span class="src ${sg.src}">${sg.src}</span></td><td>${fmt(v[i])}</td><td>${i<t.rates.length?trimPct(t.rates[i])+'%':'closing'}</td></tr>`;});
+      h+=`</table>`;});
+    h+=`<table class="pr-t small"><tr><th>Target vs Aktual</th><th>Plan</th><th>Aktual</th><th>Δ</th></tr>`;
+    [["Unit/donatur",st.buyers,a.unit,false],["Revenue",st.revenue,a.rev,true],["Ad spend",st.spend,a.spend,true],["Reach organik",st.reachOrg,a.reach,false]].forEach(([lbl,plan,act,isRp])=>{
+      const d=(act!=null&&!isNaN(act))?act-plan:null;
+      h+=`<tr><td>${lbl}</td><td>${isRp?rupiah(plan):fmt(plan)}</td><td>${act!=null&&act!==''?(isRp?rupiah(act):fmt(act)):'—'}</td><td>${d!=null?(d>=0?'+':'')+(isRp?rupiah(d):fmt(d)):'—'}</td></tr>`;});
+    h+=`</table>`;
+  });
+  // Profit
+  h+=`<h2 class="pr-sec">${KEYS.length+2} · Profit &amp; Loss (model MHG)</h2>
+    <table class="pr-t"><tr><th>Komponen</th><th>Nilai</th></tr>
+    <tr><td>Revenue Alfalee</td><td>${rupiah(A.alfaleeRev)}</td></tr>
+    <tr><td>− Ad spend komersial</td><td>${rupiah(commSpend)}</td></tr>
+    <tr><td>− Bagi hasil MHG (${COST.mhgSharePct}%)</td><td>${rupiah(mhgShare)}</td></tr>
+    <tr><td>− Produksi konten</td><td>${rupiah(COST.production)}</td></tr>
+    <tr><td>− Tim &amp; ops</td><td>${rupiah(COST.ops)}</td></tr>
+    <tr class="tot"><td>Net Profit / bulan</td><td>${rupiah(net)} · margin ${trimPct(margin)}% · annual ${rupiah(net*12)}</td></tr></table>`;
+  // Kalender + matriks
+  const cal=calRows();
+  h+=`<h2 class="pr-sec">${KEYS.length+3} · Kalender Konten (${CAL.durasi} hari) &amp; Matriks Pillar</h2>
+    <table class="pr-t"><tr><th>Konten</th><th>Basis</th><th>Qty</th><th>Total</th>${PILLARS.map(p=>`<th>${p}</th>`).join("")}</tr>`;
+  cal.forEach(c=>{const al=CAL_PILLAR[c.key];h+=`<tr><td>${c.name}</td><td>${c.basis}</td><td>${c.qty}</td><td>${c.total}</td>${al.map(v=>`<td>${Math.round(c.total*v/100)}</td>`).join("")}</tr>`;});
+  h+=`<tr class="tot"><td colspan="3">TOTAL konten</td><td>${cal.reduce((s,c)=>s+c.total,0)}</td>${PILLARS.map((p,i)=>`<td>${cal.reduce((s,c)=>s+Math.round(c.total*CAL_PILLAR[c.key][i]/100),0)}</td>`).join("")}</tr></table>`;
+  return h;
+}
 function doLock(){
   const who=prompt("Kunci rencana kampanye atas nama (untuk stempel PDF):","Tim MHG")||"";
   const now=new Date();
-  document.getElementById("stamp").innerHTML=`🔒 <b>Rencana dikunci</b> — ${now.toLocaleString("id-ID")} · oleh ${who||"—"} · versi ${now.getTime().toString(36).toUpperCase()} · dok RGI/CMP/2026/07/001. Snapshot ini jadi acuan tim (semua angka & konversi tercatat).`;
-  setTimeout(()=>window.print(),200);
+  document.getElementById("printReport").innerHTML=buildPrintReport(who);
+  document.getElementById("stamp").innerHTML=`🔒 <b>Rencana dikunci</b> — ${now.toLocaleString("id-ID")} · oleh ${who||"—"} · versi ${now.getTime().toString(36).toUpperCase()}. Saat cetak/Simpan-PDF, SELURUH bagian (agregat + semua produk + profit + kalender) ikut tercetak.`;
+  setTimeout(()=>window.print(),250);
 }
 
 /* ========= init ========= */
@@ -649,6 +721,7 @@ document.getElementById("exp").addEventListener("click",doExport);
 document.getElementById("imp").addEventListener("click",()=>document.getElementById("impFile").click());
 document.getElementById("impFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{doImport(JSON.parse(rd.result))}catch(_){alert("Gagal baca file.");}};rd.readAsText(f);});
 document.getElementById("lock").addEventListener("click",doLock);
+document.getElementById("goHome").addEventListener("click",()=>{location.href="index.html";});
 document.getElementById("goKinerja").addEventListener("click",()=>{location.href="dashboard-kinerja-multichannel.html";});
 document.getElementById("reset").addEventListener("click",()=>{try{localStorage.removeItem(STATE_KEY)}catch(e){}CONFIG=clone(DEFAULT);SETTINGS.cpm=35000;ACT={};COST={mhgSharePct:40,production:15000000,ops:20000000};CAL.durasi=30;CAL.qty={reels:16,carousel:8,story:2,live:1,fwb:4,webinar:2};build();});
 const _b=busRead(); if(_b.fromKinerja){FROM_KINERJA=_b.fromKinerja;markSync(true);}

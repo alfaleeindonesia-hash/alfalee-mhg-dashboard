@@ -188,6 +188,7 @@ table.det tbody tr:last-child td{border-bottom:0}
     <div class="sl"><label>Sampai</label><input type="date" id="to"></div>
     <span class="hint">samakan tanggal untuk 1 hari</span>
     <div class="tb-sp">
+      <button class="btn" id="goHome">🏠 Beranda &amp; Panduan</button>
       <button class="btn" id="goKampanye" style="background:var(--navy);border-color:var(--navy);color:#fff">↗ Buka Halaman Kampanye (Rp)</button>
       <button class="btn" id="reload">↻ Muat ulang data</button>
       <button class="btn" id="exp">⬇ Export snapshot</button>
@@ -712,6 +713,7 @@ document.getElementById("exp").addEventListener("click",doExport);
 document.getElementById("imp").addEventListener("click",()=>document.getElementById("impFile").click());
 document.getElementById("impFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{doImport(JSON.parse(rd.result))}catch(_){banner("err","Gagal baca file.");}};rd.readAsText(f);});
 document.getElementById("lock").addEventListener("click",doLock);
+document.getElementById("goHome").addEventListener("click",()=>{location.href="index.html";});
 document.getElementById("goKampanye").addEventListener("click",()=>{location.href="alfalee-mhg-dashboard-gabungan.html";});
 document.getElementById("addCh").addEventListener("click",addCustom);
 boot();
