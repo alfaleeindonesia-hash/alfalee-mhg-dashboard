@@ -253,7 +253,14 @@ const bc=("BroadcastChannel"in window)?new BroadcastChannel("alfalee_mhg"):null;
 function busRead(){try{return JSON.parse(localStorage.getItem(BUS_KEY))||{}}catch(e){return{}}}
 function busWrite(patch){const cur=busRead();const next=Object.assign({},cur,patch);next._ts=new Date().toISOString();try{localStorage.setItem(BUS_KEY,JSON.stringify(next))}catch(e){}if(bc){try{bc.postMessage(next)}catch(e){}}return next;}
 let FROM_KINERJA=null; // {igReach,igER,igLinkTaps,...}
-function onBusIn(data){if(!data)return;if(data.fromKinerja){FROM_KINERJA=data.fromKinerja;markSync(true);if(activeTab!=="profit"&&activeTab!=="kalender"&&activeTab!=="agg")refreshKinerjaPanels();}}
+function onBusIn(data){
+  if(!data)return;
+  if(data.fromKinerja){
+    FROM_KINERJA=data.fromKinerja; markSync(true);
+    if(activeTab==="agg")buildAggregate();                       // jembatan MOFU ikut segar
+    else if(CONFIG[activeTab])refreshKinerjaPanels();
+  }
+}
 if(bc)bc.onmessage=e=>onBusIn(e.data);
 window.addEventListener("storage",e=>{if(e.key===BUS_KEY&&e.newValue){try{onBusIn(JSON.parse(e.newValue))}catch(_){}}});
 function markSync(on){const d=document.getElementById("syncDot"),l=document.getElementById("syncLbl");if(on){d.classList.add("on");l.textContent="Tersambung Halaman 2 (Kinerja)";}else{d.classList.remove("on");l.textContent="Belum tersambung — buka Halaman 2";}}
@@ -507,6 +514,52 @@ function drawFunnel(t,v){
   svg.setAttribute("viewBox",`0 0 ${W} ${y-gap+pad+4}`);svg.innerHTML=out;
 }
 
+/* ========= JEMBATAN MOFU: klik IG (Feed+Story) vs rencana =========
+   Hanya tahap yang benar-benar "Klik" di jalur ORGANIK yang dihitung, karena
+   satuannya harus sama dengan link tap. FWB tidak punya tahap klik → dikecualikan. */
+function mofuClickPlan(){
+  let total=0; const detail=[];
+  KEYS.forEach(k=>{
+    const cfg=CONFIG[k];
+    cfg.tracks.forEach(t=>{
+      if(t.channel!=="organik")return;
+      const v=valuesOf(t);
+      for(let i=1;i<t.stages.length;i++){
+        if(/klik/i.test(t.stages[i].label)){ total+=v[i]; detail.push({produk:cfg.name,stage:t.stages[i].label,val:v[i]}); break; }
+      }
+    });
+  });
+  return {total,detail};
+}
+function mofuCardHTML(){
+  const P=mofuClickPlan(), K=FROM_KINERJA;
+  const act=K?(+K.igTotalLinkTaps||0):null;
+  const bio=K?(+K.igLinkTaps||0):0, story=K?(+K.igStoryLinkTaps||0):0;
+  const attain=(act!=null&&P.total)?act/P.total*100:null;
+  const good=attain!=null&&attain>=100;
+  const storyShare=act?story/act*100:null;
+  let h=`<div class="card"><h2>Jembatan MOFU — Klik dari Instagram <span class="tag">Feed + Story</span></h2>
+    <p class="desc">Gabungan yang sah: <b>Bio Link Taps (Feed) + External Link Taps (Story)</b> — satuannya sama-sama “klik menuju landing”. Dibandingkan dengan total tahap <b>Klik</b> di jalur organik semua produk.</p>
+    <div class="metrics">
+      <div class="metric"><div class="k">Klik MOFU — rencana</div><div class="v">${fmt(P.total)}</div><div class="s">jalur organik</div></div>
+      <div class="metric p"><div class="k">Klik IG — aktual</div><div class="v">${act==null?'—':fmt(act)}</div><div class="s">${K?`bio ${fmt(bio)} + story ${fmt(story)}`:'buka Halaman Kinerja dulu'}</div></div>
+      <div class="metric"><div class="k">Pencapaian</div><div class="v" style="color:${attain==null?'var(--muted)':(good?'var(--good)':'var(--bad)')}">${attain==null?'—':trimPct(attain)+'%'}</div><div class="s">${attain==null?'belum tersambung':(act-P.total>=0?'+':'')+fmt(act-P.total)+' klik'}</div></div>
+      <div class="metric"><div class="k">Kontribusi Story</div><div class="v">${storyShare==null?'—':trimPct(storyShare)+'%'}</div><div class="s">dari total klik IG</div></div>
+    </div>`;
+  if(P.detail.length){
+    h+=`<table><tr><th>Produk</th><th>Tahap klik (organik)</th><th>Rencana klik</th></tr>`;
+    P.detail.forEach(d=>{h+=`<tr><td><b>${esc(d.produk)}</b></td><td>${esc(d.stage)}</td><td>${fmt(d.val)}</td></tr>`;});
+    h+=`<tr class="total"><td colspan="2">TOTAL rencana klik MOFU</td><td>${fmt(P.total)}</td></tr></table>`;
+  }
+  h+=`<div class="note">${K&&K.igAccount?`Akun IG: <b>${esc(K.igAccount)}</b>. `:''}<b>Webinar FWB tidak dihitung</b> — funnelnya melompat dari Reach langsung ke Registrasi, tak punya tahap “Klik”.
+    <br>⚖️ <b>Samakan periode sebelum menyimpulkan:</b> rencana di atas untuk <b>${CAL.durasi} hari</b>, sedangkan angka aktual mengikuti <b>rentang tanggal yang dipilih di Halaman Kinerja</b>. Kalau rentangnya lebih pendek, pencapaian otomatis terlihat lebih kecil.`;
+  if(act!=null&&attain!=null&&attain<100){
+    h+=`<br><br>🎯 <b>Arah: Story dinaikkan ke MOFU.</b> Story kini menyumbang ${fmt(story)} klik (${trimPct(storyShare||0)}% dari klik IG) dan Tujuan Story masih 100% Awareness. Kekurangan <b>${fmt(P.total-act)} klik</b> paling realistis ditutup lewat <b>link sticker</b> di Story — bukan dengan menurunkan target funnel.`;
+  }
+  h+=`</div></div>`;
+  return h;
+}
+
 /* ========= AGGREGATE ========= */
 function aggData(){
   let totSpend=0,totReach=0,commercialRev=0,feeRev=0,actRev=0,anyAct=false;
@@ -535,6 +588,7 @@ function buildAggregate(){
       <td>${r.fee?rpJt(r.aRev)+' <span class="mini">(fee)</span>':rpJt(r.aRev)}</td><td class="${a.rev!=null?'':'mini'}">${a.rev!=null?rpJt(a.rev):'—'}</td>
       <td>${r.st.spend?rpJt(r.st.spend):'—'}</td><td>${isFinite(r.st.roas)?trimPct(r.st.roas)+'×':'—'}</td></tr>`;});
   html+=`<tr class="total"><td>TOTAL ALFALEE</td><td>—</td><td>${A.anyAct?fmt(A.rows.reduce((s,r)=>s+(r.act.unit||0),0)):'—'}</td><td>${rpJt(A.alfaleeRev)}</td><td>${A.anyAct?rpJt(A.actRev):'—'}</td><td>${rpJt(A.totSpend)}</td><td>${trimPct(A.commercialRev/(A.totSpend||1))}×</td></tr></table></div>
+    ${mofuCardHTML()}
     <div class="card"><h2>Kalender Konten <span class="tag">${CAL.durasi} hari</span></h2>
       <p class="desc">Ringkas — edit qty & matriks di tab <b>🗓 Kalender</b>.</p>
       <table><tr><th>Konten</th><th>Basis</th><th>Qty/basis</th><th>Total campaign</th></tr>
@@ -675,6 +729,17 @@ function buildPrintReport(who){
     <table class="pr-t"><tr><th>Channel</th><th>Sales plan</th><th>Aktual</th><th>Revenue</th><th>Rev aktual</th><th>Ad spend</th><th>ROAS</th></tr>`;
   A.rows.forEach(r=>{const a=r.act;h+=`<tr><td>${esc(r.name)}${r.fee?' (fee)':''}</td><td>${fmt(r.st.buyers)}</td><td>${a.unit!=null?fmt(a.unit):'—'}</td><td>${rupiah(r.aRev)}</td><td>${a.rev!=null?rupiah(a.rev):'—'}</td><td>${r.st.spend?rupiah(r.st.spend):'—'}</td><td>${isFinite(r.st.roas)?trimPct(r.st.roas)+'×':'—'}</td></tr>`;});
   h+=`<tr class="tot"><td>TOTAL</td><td>—</td><td>—</td><td>${rupiah(A.alfaleeRev)}</td><td>${A.anyAct?rupiah(A.actRev):'—'}</td><td>${rupiah(A.totSpend)}</td><td>—</td></tr></table>`;
+  // Jembatan MOFU
+  {
+    const P=mofuClickPlan(), K=FROM_KINERJA;
+    const act=K?(+K.igTotalLinkTaps||0):null, bio=K?(+K.igLinkTaps||0):0, story=K?(+K.igStoryLinkTaps||0):0;
+    const attain=(act!=null&&P.total)?act/P.total*100:null;
+    h+=`<div class="pr-tk">Jembatan MOFU — klik Instagram (Feed + Story)</div>
+      <table class="pr-t small"><tr><th>Ukuran</th><th>Nilai</th></tr>
+      <tr><td>Klik MOFU — rencana (jalur organik)</td><td>${fmt(P.total)}</td></tr>
+      <tr><td>Klik IG — aktual (bio ${fmt(bio)} + story ${fmt(story)})</td><td>${act==null?'— (belum tersambung)':fmt(act)}</td></tr>
+      <tr class="tot"><td>Pencapaian</td><td>${attain==null?'—':trimPct(attain)+'% · '+((act-P.total>=0?'+':'')+fmt(act-P.total))+' klik'}</td></tr></table>`;
+  }
   // 2..N · per produk
   KEYS.forEach((k,idx)=>{
     const cfg=CONFIG[k], st=prodStats(cfg), a=ACT[k]||{};
