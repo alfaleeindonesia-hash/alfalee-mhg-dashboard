@@ -301,37 +301,41 @@ function esc(x){return String(x==null?"":x).replace(/[&<>"]/g,c=>({"&":"&amp;","
 const TC=["#C0503F","#D99A2B","#3E8E6E","#2E7D5B"], TLABEL=["Buruk","Cukup","Baik","Sangat Baik"];
 
 /* --- channel definitions (social sheet schema, dari channel-health_4) --- */
+/* Metrik sosmed = rata-rata TERTIMBANG sepanjang rentang tanggal (konsisten dgn Instagram).
+   Dua bentuk:
+     rasio       → n(r)=pembilang, d(r)=penyebut   ⇒  Σn ÷ Σd × 100
+     rate jadi   → rate(r)=persen dari sheet, w(r)=bobot ⇒ Σ(rate×w) ÷ Σw            */
 const SOCIAL_DEFS={
  Telegram:{tab:"Telegram",sig:"VPS",metrics:[
-   {label:"VPS (View-per-Subscriber)",dim:"Reach",t:[20,40,60],dir:"up",f:"Views ÷ Subscribers × 100. Seberapa besar bagian subscriber yang benar-benar melihat postingan.",calc:r=>r[1]?r[2]/r[1]*100:0},
-   {label:"ERR (Engagement by Reach)",dim:"Engagement",t:[2,5,8],dir:"up",f:"(Reactions + Replies + Forwards) ÷ Views × 100.",calc:r=>r[2]?(num(r[3])+num(r[4])+num(r[5]))/r[2]*100:0},
-   {label:"Forward Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",f:"Forwards ÷ Views × 100. Sinyal konten diteruskan ke orang lain.",calc:r=>r[2]?num(r[5])/r[2]*100:0},
-   {label:"Notif-Enabled Ratio",dim:"Komunitas",t:[40,60,75],dir:"up",f:"Subscriber dengan notifikasi aktif ÷ Total subscriber × 100.",calc:r=>r[1]?num(r[8])/r[1]*100:0},
-   {label:"Churn Rate",dim:"Retensi",t:[2,5],dir:"down",f:"Unsubscribe ÷ Total subscriber × 100. Makin KECIL makin baik.",calc:r=>r[1]?num(r[7])/r[1]*100:0},
+   {label:"VPS (View-per-Subscriber)",dim:"Reach",t:[20,40,60],dir:"up",f:"Σ Views ÷ Σ Subscribers × 100 sepanjang rentang (rata-rata tertimbang). Porsi subscriber yang benar-benar melihat postingan.",n:r=>r[2],d:r=>r[1]},
+   {label:"ERR (Engagement by Reach)",dim:"Engagement",t:[2,5,8],dir:"up",f:"Σ(Reactions + Replies + Forwards) ÷ Σ Views × 100 sepanjang rentang.",n:r=>num(r[3])+num(r[4])+num(r[5]),d:r=>r[2]},
+   {label:"Forward Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",f:"Σ Forwards ÷ Σ Views × 100. Sinyal konten diteruskan ke orang lain.",n:r=>r[5],d:r=>r[2]},
+   {label:"Notif-Enabled Ratio",dim:"Komunitas",t:[40,60,75],dir:"up",f:"Σ Subscriber ber-notifikasi aktif ÷ Σ Total subscriber × 100.",n:r=>r[8],d:r=>r[1]},
+   {label:"Churn Rate",dim:"Retensi",t:[2,5],dir:"down",f:"Σ Unsubscribe ÷ Σ Total subscriber × 100. Makin KECIL makin baik.",n:r=>r[7],d:r=>r[1]},
  ]},
  YouTube:{tab:"YouTube",sig:"Engagement Rate",metrics:[
-   {label:"CTR (Click-Through Rate)",dim:"Distribusi",t:[2,4,8],dir:"up",f:"Diambil langsung dari kolom CTR di sheet (mis. \"6,1%\" → 6,1%). Tidak dihitung ulang.",calc:r=>pctVal(r[4])},
-   {label:"Avg % Viewed (APV)",dim:"Retensi",t:[30,45,60],dir:"up",f:"Kolom Avg % Viewed di sheet (tersimpan pecahan 0,63 → ditampilkan 63%).",calc:r=>pctVal(r[5])},
-   {label:"Subscriber Conversion",dim:"Konversi",t:[0.1,0.3,0.7],dir:"up",f:"Subscriber baru ÷ Views × 100.",calc:r=>r[3]?num(r[6])/r[3]*100:0},
-   {label:"Engagement Rate",dim:"Engagement",t:[2,5,10],dir:"up",f:"(Likes + Komentar + Shares) ÷ Views × 100.",calc:r=>r[3]?(num(r[7])+num(r[8])+num(r[9]))/r[3]*100:0},
+   {label:"CTR (Click-Through Rate)",dim:"Distribusi",t:[2,4,8],dir:"up",f:"Kolom CTR di sheet (mis. \"6,1%\"), dirata-rata TERTIMBANG oleh Impressions: Σ(CTR × Impressions) ÷ Σ Impressions.",rate:r=>pctVal(r[4]),w:r=>r[2]},
+   {label:"Avg % Viewed (APV)",dim:"Retensi",t:[30,45,60],dir:"up",f:"Kolom Avg % Viewed (pecahan 0,63 → 63%), dirata-rata TERTIMBANG oleh Views: Σ(APV × Views) ÷ Σ Views.",rate:r=>pctVal(r[5]),w:r=>r[3]},
+   {label:"Subscriber Conversion",dim:"Konversi",t:[0.1,0.3,0.7],dir:"up",f:"Σ Subscriber baru ÷ Σ Views × 100 sepanjang rentang.",n:r=>r[6],d:r=>r[3]},
+   {label:"Engagement Rate",dim:"Engagement",t:[2,5,10],dir:"up",f:"Σ(Likes + Komentar + Shares) ÷ Σ Views × 100 sepanjang rentang.",n:r=>num(r[7])+num(r[8])+num(r[9]),d:r=>r[3]},
  ]},
  TikTok:{tab:"TikTok",sig:"Engagement Rate",metrics:[
-   {label:"Completion Rate",dim:"Retensi",t:[15,30,50],dir:"up",f:"Kolom Completion di sheet (pecahan 0,55 → 55%). Porsi penonton yang menonton sampai habis.",calc:r=>pctVal(r[3])},
-   {label:"Engagement Rate",dim:"Engagement",t:[4,8,12],dir:"up",f:"(Likes + Komentar + Shares + Saves) ÷ Views × 100.",calc:r=>r[2]?(num(r[5])+num(r[6])+num(r[7])+num(r[8]))/r[2]*100:0},
-   {label:"Save Rate",dim:"Trust",t:[1,2,4],dir:"up",f:"Saves ÷ Views × 100. Sinyal trust terkuat: konten disimpan untuk dibuka lagi.",calc:r=>r[2]?num(r[8])/r[2]*100:0},
-   {label:"Share Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",f:"Shares ÷ Views × 100.",calc:r=>r[2]?num(r[7])/r[2]*100:0},
-   {label:"FYP %",dim:"Distribusi",t:[50,70,85],dir:"up",f:"Kolom FYP di sheet (pecahan 0,88 → 88%). Porsi traffic dari For You Page.",calc:r=>pctVal(r[4])},
+   {label:"Completion Rate",dim:"Retensi",t:[15,30,50],dir:"up",f:"Kolom Completion (pecahan 0,55 → 55%), dirata-rata TERTIMBANG oleh Views: Σ(Completion × Views) ÷ Σ Views.",rate:r=>pctVal(r[3]),w:r=>r[2]},
+   {label:"Engagement Rate",dim:"Engagement",t:[4,8,12],dir:"up",f:"Σ(Likes + Komentar + Shares + Saves) ÷ Σ Views × 100 sepanjang rentang.",n:r=>num(r[5])+num(r[6])+num(r[7])+num(r[8]),d:r=>r[2]},
+   {label:"Save Rate",dim:"Trust",t:[1,2,4],dir:"up",f:"Σ Saves ÷ Σ Views × 100. Sinyal trust terkuat: konten disimpan untuk dibuka lagi.",n:r=>r[8],d:r=>r[2]},
+   {label:"Share Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",f:"Σ Shares ÷ Σ Views × 100.",n:r=>r[7],d:r=>r[2]},
+   {label:"FYP %",dim:"Distribusi",t:[50,70,85],dir:"up",f:"Kolom FYP (pecahan 0,88 → 88%), dirata-rata TERTIMBANG oleh Views: Σ(FYP × Views) ÷ Σ Views.",rate:r=>pctVal(r[4]),w:r=>r[2]},
  ]},
  Threads:{tab:"Threads",sig:"Interaction Rate",metrics:[
-   {label:"Interaction Rate",dim:"Engagement",t:[2,5,8],dir:"up",f:"(Likes + Replies + Reposts + Quotes) ÷ Views × 100.",calc:r=>r[2]?(num(r[3])+num(r[4])+num(r[5])+num(r[6]))/r[2]*100:0},
-   {label:"Reply-to-View Ratio",dim:"Trust",t:[0.5,1.5,3],dir:"up",f:"Replies ÷ Views × 100. Balasan = effort tinggi, jadi proxy trust.",calc:r=>r[2]?num(r[4])/r[2]*100:0},
-   {label:"Repost + Quote Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",f:"(Reposts + Quotes) ÷ Views × 100.",calc:r=>r[2]?(num(r[5])+num(r[6]))/r[2]*100:0},
+   {label:"Interaction Rate",dim:"Engagement",t:[2,5,8],dir:"up",f:"Σ(Likes + Replies + Reposts + Quotes) ÷ Σ Views × 100 sepanjang rentang.",n:r=>num(r[3])+num(r[4])+num(r[5])+num(r[6]),d:r=>r[2]},
+   {label:"Reply-to-View Ratio",dim:"Trust",t:[0.5,1.5,3],dir:"up",f:"Σ Replies ÷ Σ Views × 100. Balasan = effort tinggi, jadi proxy trust.",n:r=>r[4],d:r=>r[2]},
+   {label:"Repost + Quote Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",f:"Σ(Reposts + Quotes) ÷ Σ Views × 100.",n:r=>num(r[5])+num(r[6]),d:r=>r[2]},
  ]},
  "WA Channel":{tab:"WA Channel",sig:"View Rate",metrics:[
-   {label:"View Rate",dim:"Retensi",t:[40,60,80],dir:"up",f:"Views ÷ Total penerima × 100. Porsi follower channel yang membuka pesan.",calc:r=>r[2]?num(r[3])/r[2]*100:0},
-   {label:"Reaction Rate",dim:"Engagement",t:[2,4,7],dir:"up",f:"Reactions ÷ Views × 100.",calc:r=>r[3]?num(r[4])/r[3]*100:0},
-   {label:"Forward Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",f:"Forwards ÷ Views × 100.",calc:r=>r[3]?num(r[5])/r[3]*100:0},
-   {label:"Link CTR (UTM)",dim:"Konversi",t:[2,4,7],dir:"up",f:"Klik link ber-UTM ÷ Views × 100. Jembatan channel → landing/checkout.",calc:r=>r[3]?num(r[6])/r[3]*100:0},
+   {label:"View Rate",dim:"Retensi",t:[40,60,80],dir:"up",f:"Σ Views ÷ Σ Total penerima × 100. Porsi follower channel yang membuka pesan.",n:r=>r[3],d:r=>r[2]},
+   {label:"Reaction Rate",dim:"Engagement",t:[2,4,7],dir:"up",f:"Σ Reactions ÷ Σ Views × 100.",n:r=>r[4],d:r=>r[3]},
+   {label:"Forward Rate",dim:"Distribusi",t:[0.5,1,2],dir:"up",f:"Σ Forwards ÷ Σ Views × 100.",n:r=>r[5],d:r=>r[3]},
+   {label:"Link CTR (UTM)",dim:"Konversi",t:[2,4,7],dir:"up",f:"Σ Klik link ber-UTM ÷ Σ Views × 100. Jembatan channel → landing/checkout.",n:r=>r[6],d:r=>r[3]},
  ]},
 };
 
@@ -448,7 +452,19 @@ function metricsFor(ch,from,to){
   if(ch.source==="social"){
     const def=SOCIAL_DEFS[ch.key];
     const rows=(RAW[ch.key]||[]).filter(r=>{const d=iso(pd(r[0]));return d&&d>=from&&d<=to;});
-    return def.metrics.map(m=>{let val=null;if(rows.length){const s=rows.map(r=>m.calc(r)).filter(v=>!isNaN(v));val=s.length?s[s.length-1]:null;}return{label:m.label,dim:m.dim,t:m.t,dir:m.dir,f:m.f,val};});
+    return def.metrics.map(m=>{
+      let val=null;
+      if(rows.length){
+        if(m.n){                                   // rasio → Σpembilang ÷ Σpenyebut × 100
+          let N=0,D=0; rows.forEach(r=>{N+=num(m.n(r));D+=num(m.d(r));});
+          val=D>0?N/D*100:null;
+        }else{                                     // rate jadi → Σ(rate×bobot) ÷ Σbobot
+          let S=0,W=0; rows.forEach(r=>{const w=num(m.w(r)),v=m.rate(r);if(w>0&&!isNaN(v)){S+=v*w;W+=w;}});
+          val=W>0?S/W:null;
+        }
+      }
+      return{label:m.label,dim:m.dim,t:m.t,dir:m.dir,f:m.f,val};
+    });
   }
   // manual
   return (ch.metrics||[]).map(m=>({label:m.label,dim:m.dim,t:m.t,dir:m.dir,f:m.f,val:(m.val||m.val===0)?m.val:null}));
@@ -462,7 +478,7 @@ function benchTxt(m){
 }
 function srcTxt(ch){
   if(ch.source==="ig")return "Sheet Tracker Konten IG — semua post dalam rentang tanggal dijumlah (agregat).";
-  if(ch.source==="social")return `Tab “${SOCIAL_DEFS[ch.key].tab}” di Sheet Tracker Metrik Sosmed — memakai nilai baris TERAKHIR dalam rentang tanggal (bukan rata-rata).`;
+  if(ch.source==="social")return `Tab “${SOCIAL_DEFS[ch.key].tab}” di Sheet Tracker Metrik Sosmed — rata-rata TERTIMBANG seluruh baris dalam rentang tanggal.`;
   return "Input manual di dashboard — belum ada tracker otomatis untuk channel ini.";
 }
 function tipIdx(ch,m){
