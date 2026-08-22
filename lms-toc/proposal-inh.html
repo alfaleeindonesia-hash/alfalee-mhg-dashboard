@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Contoh Proposal Berbasis ToC — INH</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  body{background:#EFEDE6;}
+  .paper{max-width:1040px;margin:0 auto;background:#fff;box-shadow:0 2px 26px rgba(11,31,58,.12);}
+  .docbar{position:sticky;top:0;z-index:40;background:#1B2A4A;color:#fff;padding:9px 20px;
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:12.5px;}
+  .docbar a,.docbar button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+    color:#fff;border-radius:7px;padding:5px 11px;font-size:11.5px;cursor:pointer;text-decoration:none;font-family:inherit;}
+  .docbar a:hover,.docbar button:hover{background:#C9A227;color:#0F1B33;border-color:#C9A227;}
+  .docbar .sp{flex:1;}
+  .stamp{background:#FCF0EE;border-bottom:3px solid #C2483C;padding:13px 46px;font-size:12.8px;color:#8f342c;}
+  .stamp b{display:block;font-size:11px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:3px;}
+  .cover{padding:52px 46px 40px;background:linear-gradient(135deg,#1B2A4A 0%,#24365C 62%,#2E4675 100%);color:#fff;position:relative;overflow:hidden;}
+  .cover::after{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;
+    background:radial-gradient(circle,rgba(201,162,39,.26),transparent 68%);}
+  .cover .kop{display:flex;align-items:center;gap:14px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.2);}
+  .cover .logo{width:56px;height:56px;border-radius:12px;background:#C9A227;color:#0F1B33;display:flex;
+    align-items:center;justify-content:center;font-weight:800;font-size:19px;letter-spacing:-.02em;flex:0 0 auto;}
+  .cover .kop .nm{font-size:15px;font-weight:800;letter-spacing:.01em;}
+  .cover .kop .sb{font-size:11.5px;color:rgba(255,255,255,.7);}
+  .cover .lbl{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#E8CE6C;font-weight:700;margin-top:30px;}
+  .cover h1{font-size:33px;line-height:1.2;margin:10px 0 6px;letter-spacing:-.02em;}
+  .cover .st{font-size:16px;color:rgba(255,255,255,.86);max-width:60ch;}
+  .cover .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.18);border-radius:10px;overflow:hidden;margin-top:28px;}
+  .cover .facts div{background:rgba(15,27,51,.55);padding:12px 14px;}
+  .cover .facts .k{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);}
+  .cover .facts .v{font-size:15px;font-weight:800;margin-top:3px;}
+  .doc{padding:8px 46px 60px;}
+  .doc h2{font-size:22px;color:#1B2A4A;margin:38px 0 10px;padding-bottom:8px;border-bottom:2px solid #C9A227;
+    letter-spacing:-.01em;display:flex;align-items:baseline;gap:11px;}
+  .doc h2 .no{font-size:12px;background:#1B2A4A;color:#E8CE6C;border-radius:6px;padding:3px 9px;font-weight:800;flex:0 0 auto;}
+  .doc h3{font-size:16.5px;border-bottom:1px solid #EDF0F5;}
+  .doc p,.doc li{font-size:14px;}
+  .doc .lead{font-size:14.5px;}
+  .fill{background:#FBF3DE;border-bottom:1px dashed #C9A227;padding:0 5px;color:#8a6d1f;font-size:13px;font-style:italic;}
+  .sig{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:34px;}
+  .sig div{border-top:1px solid var(--line);padding-top:8px;font-size:13px;}
+  .sig .nm{height:64px;}
+  .toc-doc{background:#FCFCFA;border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:20px 0;}
+  .toc-doc ol{columns:2;column-gap:34px;margin:6px 0 0 18px;font-size:13.4px;}
+  .toc-doc a{text-decoration:none;color:var(--navy2);}
+  .toc-doc a:hover{color:var(--gold);}
+  @media print{
+    body{background:#fff;} .paper{box-shadow:none;max-width:none;} .docbar{display:none;}
+    .doc h2{page-break-after:avoid;} figure,table{page-break-inside:avoid;}
+  }
+  @media(max-width:800px){
+    .doc,.cover,.stamp{padding-left:20px;padding-right:20px;}
+    .cover h1{font-size:25px;} .cover .facts{grid-template-columns:1fr 1fr;}
+    .toc-doc ol{columns:1;} .sig{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="paper">
+
+<div class="docbar">
+  <span>📄 Contoh proposal berbasis Theory of Change</span>
+  <span class="sp"></span>
+  <a href="index.html#proposal">‹ Kembali ke Sekolah ToC</a>
+  <a href="index.html#lampiranB">Daftar periksa Lampiran B</a>
+  <button onclick="window.print()">🖨 Cetak / simpan PDF</button>
+</div>
+
+<div class="stamp">
+  <b>Dokumen latihan — bukan proposal resmi</b>
+  Dokumen ini dibuat sebagai <b>contoh untuk pelatihan internal</b> Modul Theory of Change. Nama program, lokasi, angka anggaran, target, nama donor, dan seluruh data di dalamnya adalah <b>ilustrasi</b> — bukan data riil, bukan komitmen organisasi, dan tidak boleh dikirim ke pihak mana pun. Bagian profil lembaga sengaja dibiarkan berupa <span class="fill">isian</span> yang harus diambil dari dokumen resmi sebelum dipakai. Yang perlu ditiru dari dokumen ini adalah <b>strukturnya</b>, bukan isinya.
+</div>
+
+<div class="cover">
+  <div class="kop">
+    <div class="logo">INH</div>
+    <div>
+      <div class="nm">INH — International Networking for Humanitarian</div>
+      <div class="sb">Lembaga kemanusiaan · <span class="fill">alamat sekretariat, telepon, surel, laman resmi</span></div>
+    </div>
+  </div>
+  <div class="lbl">Proposal Permohonan Dukungan Pendanaan</div>
+  <h1>Air untuk Bertahan</h1>
+  <p class="st">Ketahanan air bersih dan sanitasi berbasis komunitas di enam desa rawan kekeringan, Kabupaten Sumba Timur, Nusa Tenggara Timur</p>
+  <div class="facts">
+    <div><div class="k">Durasi</div><div class="v">24 bulan</div></div>
+    <div><div class="k">Total permohonan</div><div class="v">Rp 3,86 miliar</div></div>
+    <div><div class="k">Penerima manfaat langsung</div><div class="v">1.480 RT · ±6.320 jiwa</div></div>
+    <div><div class="k">Nomor dokumen</div><div class="v">CONTOH/ToC/2026/01</div></div>
+  </div>
+</div>
+
+<div class="doc">
+
+<div class="toc-doc">
+  <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:800">Isi dokumen</div>
+  <ol>
+    <li><a href="#s1">Ringkasan eksekutif</a></li>
+    <li><a href="#s2">Profil pemohon</a></li>
+    <li><a href="#s3">Analisis situasi dan masalah</a></li>
+    <li><a href="#s4">Tujuan jangka panjang dan kelompok sasaran</a></li>
+    <li><a href="#s5">Theory of Change — diagram dan narasi</a></li>
+    <li><a href="#s6">Asumsi kritis dan rencana pengujiannya</a></li>
+    <li><a href="#s7">Logframe (diturunkan dari ToC)</a></li>
+    <li><a href="#s8">Rencana MEAL</a></li>
+    <li><a href="#s9">Strategi pelaksanaan dan jadwal</a></li>
+    <li><a href="#s10">Anggaran dan penelusuran ke outcome</a></li>
+    <li><a href="#s11">Risiko dan mitigasi</a></li>
+    <li><a href="#s12">Keberlanjutan dan strategi keluar</a></li>
+    <li><a href="#s13">Tata kelola, akuntabilitas, dan perlindungan</a></li>
+    <li><a href="#s14">Pemeriksaan mandiri dengan Lampiran B</a></li>
+  </ol>
+</div>
+
+<h2 id="s1"><span class="no">1</span> Ringkasan eksekutif</h2>
+<p>Enam desa di Kabupaten Sumba Timur menghadapi kekeringan berulang setiap musim kemarau. Persoalannya bukan semata tidak adanya air, melainkan <b>tidak adanya sistem penyediaan air yang tetap berfungsi ketika musim kemarau tiba</b> — sarana yang pernah dibangun berhenti beroperasi karena tidak ada pihak yang bertanggung jawab atas pemeliharaan dan tidak ada sumber biaya untuk itu.</p>
+<p>INH mengusulkan program 24 bulan yang <b>tidak berhenti pada pembangunan sarana</b>. Sarana adalah <i>output</i>; yang dikejar program ini adalah <i>outcome</i>: sistem yang tetap mengalir pada bulan kesembilan musim kemarau karena ada pengelola yang bekerja, tarif yang disepakati, dan anggaran desa yang menopangnya.</p>
+<div class="grid4" style="margin:18px 0">
+  <div class="kpi"><div class="n">6</div><div class="l">desa di 2 kecamatan</div><div class="s">daftar desa final ditetapkan setelah verifikasi baseline</div></div>
+  <div class="kpi"><div class="n">80%</div><div class="l">RT sasaran memakai air dari sistem terkelola sepanjang kemarau</div><div class="s">target outcome menengah, bulan ke-24</div></div>
+  <div class="kpi"><div class="n">6</div><div class="l">KPSPAMS menutup biaya operasional dari iuran</div><div class="s">syarat keberlanjutan, bukan pelengkap</div></div>
+  <div class="kpi"><div class="n">Bulan 3</div><div class="l">titik keputusan sebelum dana konstruksi cair</div><div class="s">dua asumsi kritis diuji lebih dulu</div></div>
+</div>
+<div class="note ok"><span class="h">Yang membedakan proposal ini</span>Sebelum satu rupiah pun dana konstruksi dicairkan, dua asumsi paling berisiko diuji lebih dulu pada bulan 1–3: <b>ketersediaan sumber air dengan debit memadai</b> dan <b>kesediaan rumah tangga membayar iuran</b>. Jika salah satu tidak lolos ambang, rancangan program diubah — dan mekanisme perubahannya sudah disepakati di muka bersama donor (lihat <a href="#s6">Bagian 6</a>). Kami memilih menyatakan ketidakpastian ini secara terbuka, bukan menyembunyikannya di balik angka target.</div>
+
+<h2 id="s2"><span class="no">2</span> Profil pemohon</h2>
+<div class="note warn"><span class="h">Bagian yang wajib diisi dari dokumen resmi</span>Isian di bawah sengaja dikosongkan. Dalam pelatihan, bagian ini dipakai untuk menunjukkan <b>informasi apa saja</b> yang biasanya diminta penilai hibah — bukan untuk menyatakan data lembaga.</div>
+<div class="tbl-wrap">
+<table class="compact">
+  <tbody>
+    <tr><td style="width:230px"><b>Nama lembaga</b></td><td>INH — International Networking for Humanitarian</td></tr>
+    <tr><td><b>Bentuk badan hukum</b></td><td><span class="fill">yayasan/perkumpulan — nomor akta pendirian, notaris, tanggal</span></td></tr>
+    <tr><td><b>Pengesahan</b></td><td><span class="fill">nomor SK Kemenkumham, NPWP, izin operasional yang relevan</span></td></tr>
+    <tr><td><b>Alamat &amp; kontak</b></td><td><span class="fill">alamat sekretariat, telepon, surel resmi, laman</span></td></tr>
+    <tr><td><b>Penanggung jawab</b></td><td><span class="fill">nama, jabatan, kontak</span></td></tr>
+    <tr><td><b>Bidang kerja</b></td><td><span class="fill">ringkas — bidang program yang dijalankan lembaga</span></td></tr>
+    <tr><td><b>Pengalaman relevan</b></td><td><span class="fill">tiga program terdekat dengan usulan ini: judul, lokasi, tahun, nilai, donor, hasil terverifikasi</span></td></tr>
+    <tr><td><b>Kapasitas keuangan</b></td><td><span class="fill">laporan keuangan teraudit dua tahun terakhir, nama auditor, opini</span></td></tr>
+    <tr><td><b>Kebijakan yang berlaku</b></td><td><span class="fill">perlindungan anak &amp; orang dewasa rentan, anti-fraud, pengaduan, perlindungan data</span></td></tr>
+  </tbody>
+</table>
+</div>
+<p><b>Catatan penulisan.</b> Penilai hibah membaca bagian ini untuk menjawab satu pertanyaan: <i>apakah lembaga ini pernah menyelesaikan pekerjaan sejenis dan dapat mempertanggungjawabkan uangnya?</i> Pengalaman yang dicantumkan harus <b>sejenis dengan yang diusulkan</b> — daftar panjang program yang tidak relevan justru melemahkan.</p>
+
+<h2 id="s3"><span class="no">3</span> Analisis situasi dan masalah</h2>
+<p>Modul 4 Langkah 1 menempatkan analisis situasi <b>sebelum</b> pemetaan mundur. Bagian ini memperlihatkan hasilnya: rumusan masalah, akar penyebab, dan alasan mengapa masalah itu belum terselesaikan meski sudah ada intervensi sebelumnya.</p>
+
+<figure>
+  <div class="fig-title">Gambar 1 — Pohon masalah kawasan sasaran</div>
+  <svg viewBox="0 0 880 380" role="img" aria-labelledby="pm1 pm2">
+    <title id="pm1">Pohon masalah ketersediaan air bersih</title>
+    <desc id="pm2">Tiga akar penyebab di bawah, masalah inti di tengah, tiga dampak di atas.</desc>
+    <defs><marker id="pa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8A94A3"/></marker></defs>
+    <text x="10" y="20" font-size="11" font-weight="800" fill="#8f342c">DAMPAK YANG DITIMBULKAN</text>
+    <g font-size="10.4" fill="#8f342c">
+      <rect x="10" y="30" width="272" height="52" rx="9" fill="#FCF0EE" stroke="#F0D5D0"/>
+      <text x="24" y="51">Perempuan dan anak menempuh 1–3 km<tspan x="24" dy="14">untuk mengambil air pada puncak kemarau</tspan></text>
+      <rect x="300" y="30" width="272" height="52" rx="9" fill="#FCF0EE" stroke="#F0D5D0"/>
+      <text x="314" y="51">Diare pada balita meningkat pada<tspan x="314" dy="14">musim kemarau</tspan></text>
+      <rect x="590" y="30" width="280" height="52" rx="9" fill="#FCF0EE" stroke="#F0D5D0"/>
+      <text x="604" y="51">Pengeluaran rumah tangga untuk<tspan x="604" dy="14">membeli air tangki menekan pangan</tspan></text>
+    </g>
+    <g stroke="#8A94A3" stroke-width="1.8" marker-end="url(#pa)">
+      <line x1="200" y1="118" x2="146" y2="86"/><line x1="440" y1="118" x2="440" y2="86"/><line x1="680" y1="118" x2="730" y2="86"/></g>
+    <rect x="210" y="124" width="460" height="56" rx="11" fill="#1B2A4A"/>
+    <text x="440" y="147" text-anchor="middle" font-size="11.5" font-weight="800" fill="#E8CE6C">MASALAH INTI</text>
+    <text x="440" y="167" text-anchor="middle" font-size="12" fill="#fff">Tidak tersedia layanan air bersih yang tetap berfungsi sepanjang musim kemarau</text>
+    <g stroke="#8A94A3" stroke-width="1.8" marker-end="url(#pa)">
+      <line x1="146" y1="248" x2="300" y2="182"/><line x1="440" y1="248" x2="440" y2="182"/><line x1="730" y1="248" x2="580" y2="182"/></g>
+    <text x="10" y="270" font-size="11" font-weight="800" fill="#1e4a76">AKAR PENYEBAB — mengapa belum terselesaikan</text>
+    <g font-size="10.4" fill="#1e4a76">
+      <rect x="10" y="280" width="272" height="72" rx="9" fill="#E7EFF7" stroke="#C7D9EA"/>
+      <text x="24" y="301">Sarana yang pernah dibangun berhenti<tspan x="24" dy="14">beroperasi: tidak ada pengelola tetap,</tspan><tspan x="24" dy="14">tidak ada biaya pemeliharaan</tspan></text>
+      <rect x="300" y="280" width="272" height="72" rx="9" fill="#E7EFF7" stroke="#C7D9EA"/>
+      <text x="314" y="301">Jarak sumber air ke permukiman jauh<tspan x="314" dy="14">dan debitnya turun tajam pada</tspan><tspan x="314" dy="14">kemarau</tspan></text>
+      <rect x="590" y="280" width="280" height="72" rx="9" fill="#E7EFF7" stroke="#C7D9EA"/>
+      <text x="604" y="301">Belum ada kesepakatan desa tentang<tspan x="604" dy="14">siapa mengelola, berapa iuran, dan</tspan><tspan x="604" dy="14">dari mana biaya perbaikan diambil</tspan></text>
+    </g>
+    <text x="440" y="374" text-anchor="middle" font-size="10.5" font-style="italic" fill="#7C8798">Ilustrasi untuk keperluan pelatihan — bukan hasil kajian lapangan.</text>
+  </svg>
+  <figcaption><b>Yang menentukan rancangan program.</b> Dua dari tiga akar penyebab bersifat <b>kelembagaan</b>, bukan teknis. Karena itu program yang hanya membangun sarana akan mengulang kegagalan yang sama — dan itulah sebabnya jalur perubahan pada Bagian 5 menempatkan pengelolaan sebagai jalur sejajar dengan konstruksi, bukan sebagai kegiatan tambahan di akhir.</figcaption>
+</figure>
+
+<h3>Mengapa intervensi sebelumnya belum menyelesaikan masalah</h3>
+<ul>
+  <li><b>Berhenti di output.</b> Keberhasilan dilaporkan sebagai jumlah titik sarana terbangun. Tidak ada pihak yang melaporkan berapa titik yang <i>masih mengalir</i> dua tahun kemudian.</li>
+  <li><b>Pengelolaan diserahkan tanpa dasar biaya.</b> Kelompok pengelola dibentuk pada akhir proyek, tanpa tarif yang disepakati dan tanpa dukungan anggaran desa.</li>
+  <li><b>Asumsi tidak diuji.</b> Ketersediaan debit pada puncak kemarau diasumsikan dari data musim hujan.</li>
+</ul>
+
+<h3>Analisis pemangku kepentingan (ringkas)</h3>
+<div class="tbl-wrap">
+<table class="compact">
+  <thead><tr><th>Pihak</th><th>Kepentingan</th><th>Pengaruh</th><th>Implikasi bagi program</th></tr></thead>
+  <tbody>
+    <tr><td>Rumah tangga pengguna</td><td>Air dekat, andal, terjangkau</td><td>Menentukan (membayar iuran)</td><td>Dilibatkan sejak analisis masalah, bukan hanya saat serah terima</td></tr>
+    <tr><td>Pemerintah desa</td><td>Layanan berjalan; APBDes efisien</td><td>Tinggi (Perdes, anggaran O&amp;M)</td><td>MoU sebelum konstruksi dimulai — bukan sesudahnya</td></tr>
+    <tr><td>KPSPAMS / kelompok pengelola</td><td>Legitimasi dan biaya operasional</td><td>Tinggi (keberlanjutan)</td><td>Dibentuk di awal, didampingi menurun bertahap</td></tr>
+    <tr><td>Dinas terkait kabupaten</td><td>Kesesuaian standar teknis &amp; data</td><td>Sedang</td><td>Verifikasi teknis dan integrasi pelaporan</td></tr>
+    <tr><td>Pemilik lahan sumber air</td><td>Hak atas lahan dan air</td><td>Tinggi (dapat menghentikan)</td><td>Kesepakatan tertulis sebelum survei teknis lanjutan</td></tr>
+    <tr><td>Penyedia air tangki</td><td>Pendapatan dari penjualan air</td><td>Rendah–sedang</td><td>Potensi penolakan — dipantau sebagai risiko konteks</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="s4"><span class="no">4</span> Tujuan jangka panjang dan kelompok sasaran</h2>
+<div class="note"><span class="h">Tujuan jangka panjang (impact, horizon 5 tahun)</span>
+  <b>Rumah tangga di enam desa sasaran memperoleh air bersih yang cukup dan andal sepanjang musim kemarau tanpa harus membeli air tangki atau menempuh jarak jauh, dan angka kejadian diare pada balita menurun dibanding kondisi awal.</b></div>
+<p>Rumusan ini menyebutkan <b>siapa</b> (rumah tangga di enam desa sasaran), <b>berubah dalam hal apa</b> (memperoleh air cukup dan andal tanpa membeli air tangki), <b>di mana</b> (enam desa, dua kecamatan), dan <b>berapa lama</b> (lima tahun) — sesuai kriteria Modul 4 Langkah 2.</p>
+<div class="tbl-wrap">
+<table class="compact">
+  <thead><tr><th>Kelompok</th><th>Jumlah (perkiraan)</th><th>Dasar penetapan</th></tr></thead>
+  <tbody>
+    <tr><td>Rumah tangga pengguna langsung</td><td>1.480 RT ≈ 6.320 jiwa</td><td>Diverifikasi ulang pada baseline bulan 1–3; daftar desa final ditetapkan setelah verifikasi</td></tr>
+    <tr><td>Perempuan pengambil air utama</td><td>±1.480 orang</td><td>Beban waktu pengambilan air menjadi salah satu indikator outcome</td></tr>
+    <tr><td>Murid pada 6 sekolah dasar</td><td>±940 murid</td><td>Sarana sanitasi sekolah termasuk lingkup</td></tr>
+    <tr><td>Pengurus KPSPAMS</td><td>6 kelompok, ±42 orang</td><td>Minimal 40% pengurus perempuan disyaratkan dalam AD/ART</td></tr>
+    <tr><td>Kader higiene desa</td><td>180 orang</td><td>30 per desa, dipilih komunitas</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="src-note">Seluruh angka pada tabel ini adalah ilustrasi pelatihan.</p>
+
+<h2 id="s5"><span class="no">5</span> Theory of Change — diagram dan narasi</h2>
+<p>Sesuai Modul 6.3, diagram ini ditempatkan di bagian pendekatan — bukan di lampiran. Diagram menyampaikan struktur; narasi di bawahnya menyampaikan penalaran.</p>
+
+<figure>
+  <div class="fig-title">Gambar 2 — Jalur perubahan program “Air untuk Bertahan”</div>
+  <svg viewBox="0 0 900 736" role="img" aria-labelledby="tc1 tc2">
+    <title id="tc1">Diagram Theory of Change program air bersih</title>
+    <desc id="tc2">Tiga jalur sejajar — sarana, tata kelola dan pembiayaan, serta perilaku — mengalir dari aktivitas ke output, outcome jangka pendek, outcome jangka menengah, lalu bertemu pada impact. Batas akuntabilitas berada di antara outcome jangka menengah dan impact.</desc>
+    <defs>
+      <marker id="tu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#8A94A3"/></marker>
+    </defs>
+
+    <text x="10" y="32" font-size="10.5" font-weight="800" fill="#4a3a86">IMPACT · 5 TAHUN · KLAIM KONTRIBUSI</text>
+    <rect x="10" y="40" width="880" height="70" rx="11" fill="#1B2A4A"/>
+    <text x="30" y="66" font-size="13" fill="#fff">Rumah tangga di enam desa memperoleh air bersih yang cukup dan andal sepanjang musim</text>
+    <text x="30" y="86" font-size="13" fill="#fff">kemarau tanpa membeli air tangki; kejadian diare pada balita menurun dibanding kondisi awal</text>
+    <text x="30" y="103" font-size="10.5" fill="#E8CE6C">Banyak aktor ikut menentukan — program mengklaim kontribusi, bukan atribusi</text>
+
+    <line x1="10" y1="128" x2="890" y2="128" stroke="#C2483C" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="890" y="124" text-anchor="end" font-size="10.5" font-weight="800" fill="#8f342c">▲ BATAS AKUNTABILITAS — di atas garis ini kami tidak menjanjikan hasil tunggal</text>
+
+    <text x="10" y="150" font-size="10.5" font-weight="800" fill="#14624a">OUTCOME JANGKA MENENGAH · BULAN 12–24</text>
+    <g font-size="11.5" fill="#14624a">
+      <rect x="10" y="158" width="285" height="108" rx="10" fill="#E4F3EC" stroke="#1E9E6A" stroke-width="1.6"/>
+      <text x="24" y="178" font-size="9.5" font-weight="800" fill="#1e4a76">JALUR 1 · SARANA</text>
+      <text x="24" y="198">80% rumah tangga sasaran<tspan x="24" dy="16">memakai air dari sistem</tspan><tspan x="24" dy="16">terkelola untuk minum dan</tspan><tspan x="24" dy="16">masak sepanjang kemarau</tspan></text>
+      <rect x="307" y="158" width="286" height="108" rx="10" fill="#E4F3EC" stroke="#1E9E6A" stroke-width="1.6"/>
+      <text x="321" y="178" font-size="9.5" font-weight="800" fill="#8a6d1f">JALUR 2 · TATA KELOLA &amp; BIAYA</text>
+      <text x="321" y="198">Enam KPSPAMS memungut<tspan x="321" dy="16">iuran yang menutup 100%</tspan><tspan x="321" dy="16">biaya operasional dan</tspan><tspan x="321" dy="16">pemeliharaan rutin</tspan></text>
+      <rect x="605" y="158" width="285" height="108" rx="10" fill="#E4F3EC" stroke="#1E9E6A" stroke-width="1.6"/>
+      <text x="619" y="178" font-size="9.5" font-weight="800" fill="#4a3a86">JALUR 3 · PERILAKU</text>
+      <text x="619" y="198">70% rumah tangga menerapkan<tspan x="619" dy="16">tiga praktik higiene kunci:</tspan><tspan x="619" dy="16">cuci tangan pakai sabun,</tspan><tspan x="619" dy="16">penyimpanan air aman, sanitasi</tspan></text>
+    </g>
+    <g stroke="#8A94A3" stroke-width="2.2" marker-end="url(#tu)">
+      <line x1="152" y1="306" x2="152" y2="268"/><line x1="450" y1="306" x2="450" y2="268"/><line x1="747" y1="306" x2="747" y2="268"/></g>
+    <g font-size="9" font-weight="800">
+      <circle cx="176" cy="287" r="10" fill="#C2483C"/><text x="176" y="290" text-anchor="middle" fill="#fff">A6</text>
+      <circle cx="474" cy="287" r="10" fill="#C2483C"/><text x="474" y="290" text-anchor="middle" fill="#fff">A2</text>
+      <circle cx="498" cy="287" r="10" fill="#D9A400"/><text x="498" y="290" text-anchor="middle" fill="#3a2d00">A4</text>
+      <circle cx="771" cy="287" r="10" fill="#C2483C"/><text x="771" y="290" text-anchor="middle" fill="#fff">A6</text>
+    </g>
+
+    <text x="10" y="328" font-size="10.5" font-weight="800" fill="#14624a">OUTCOME JANGKA PENDEK · BULAN 6–15</text>
+    <g font-size="11.5" fill="#14624a">
+      <rect x="10" y="336" width="285" height="112" rx="10" fill="#F4FBF7" stroke="#1E9E6A" stroke-width="1.4"/>
+      <text x="24" y="358">Sistem air berfungsi dengan<tspan x="24" dy="16">debit memenuhi standar</tspan><tspan x="24" dy="16">minimum di enam titik</tspan><tspan x="24" dy="16">layanan — termasuk pada</tspan><tspan x="24" dy="16">puncak kemarau</tspan></text>
+      <rect x="307" y="336" width="286" height="112" rx="10" fill="#F4FBF7" stroke="#1E9E6A" stroke-width="1.4"/>
+      <text x="321" y="358">Enam KPSPAMS aktif; tarif<tspan x="321" dy="16">disepakati warga; peraturan</tspan><tspan x="321" dy="16">desa terbit; APBDes</tspan><tspan x="321" dy="16">mengalokasikan dana</tspan><tspan x="321" dy="16">operasional-pemeliharaan</tspan></text>
+      <rect x="605" y="336" width="285" height="112" rx="10" fill="#F4FBF7" stroke="#1E9E6A" stroke-width="1.4"/>
+      <text x="619" y="358">Rumah tangga mengetahui cara<tspan x="619" dy="16">memperoleh, menyimpan, dan</tspan><tspan x="619" dy="16">menggunakan air secara aman;</tspan><tspan x="619" dy="16">kader higiene desa aktif</tspan></text>
+    </g>
+    <g stroke="#8A94A3" stroke-width="2.2" marker-end="url(#tu)">
+      <line x1="152" y1="488" x2="152" y2="450"/><line x1="450" y1="488" x2="450" y2="450"/><line x1="747" y1="488" x2="747" y2="450"/></g>
+    <g font-size="9" font-weight="800">
+      <circle cx="176" cy="469" r="10" fill="#D9A400"/><text x="176" y="472" text-anchor="middle" fill="#3a2d00">A5</text>
+      <circle cx="474" cy="469" r="10" fill="#D9A400"/><text x="474" y="472" text-anchor="middle" fill="#3a2d00">A3</text>
+      <circle cx="771" cy="469" r="10" fill="#D9A400"/><text x="771" y="472" text-anchor="middle" fill="#3a2d00">A9</text>
+    </g>
+
+    <text x="10" y="510" font-size="10.5" font-weight="800" fill="#1e4a76">OUTPUT · BULAN 3–14 · DALAM KENDALI PROGRAM</text>
+    <g font-size="11.5" fill="#1e4a76">
+      <rect x="10" y="518" width="285" height="100" rx="10" fill="#E7EFF7" stroke="#3572B0" stroke-width="1.4"/>
+      <text x="24" y="540">Enam unit sumber air dibangun<tspan x="24" dy="16">atau direhabilitasi; jaringan</tspan><tspan x="24" dy="16">perpipaan dan 18 keran umum;</tspan><tspan x="24" dy="16">enam unit sanitasi sekolah</tspan></text>
+      <rect x="307" y="518" width="286" height="100" rx="10" fill="#E7EFF7" stroke="#3572B0" stroke-width="1.4"/>
+      <text x="321" y="540">Enam KPSPAMS terlatih dengan<tspan x="321" dy="16">AD/ART, rekening, dan</tspan><tspan x="321" dy="16">pembukuan; enam kesepakatan</tspan><tspan x="321" dy="16">tarif; enam rancangan Perdes</tspan></text>
+      <rect x="605" y="518" width="285" height="100" rx="10" fill="#E7EFF7" stroke="#3572B0" stroke-width="1.4"/>
+      <text x="619" y="540">180 kader higiene terlatih;<tspan x="619" dy="16">enam rencana kerja higiene</tspan><tspan x="619" dy="16">desa yang disahkan</tspan><tspan x="619" dy="16">musyawarah desa</tspan></text>
+    </g>
+    <g stroke="#8A94A3" stroke-width="2.2" marker-end="url(#tu)">
+      <line x1="152" y1="658" x2="152" y2="620"/><line x1="450" y1="658" x2="450" y2="620"/><line x1="747" y1="658" x2="747" y2="620"/></g>
+    <g font-size="9" font-weight="800">
+      <circle cx="176" cy="639" r="10" fill="#C2483C"/><text x="176" y="642" text-anchor="middle" fill="#fff">A1</text>
+      <circle cx="474" cy="639" r="10" fill="#D9A400"/><text x="474" y="642" text-anchor="middle" fill="#3a2d00">A7</text>
+    </g>
+
+    <text x="10" y="680" font-size="10.5" font-weight="800" fill="#5B6675">AKTIVITAS · BULAN 1–22</text>
+    <rect x="10" y="686" width="880" height="42" rx="8" fill="#F7F8FA" stroke="#C9CFD9"/>
+    <text x="24" y="702" font-size="11" fill="#5B6675">Survei hidrogeologi &amp; uji pompa · survei kesediaan membayar · perundingan hak lahan &amp; MoU desa · konstruksi dan supervisi teknis</text>
+    <text x="24" y="719" font-size="11" fill="#5B6675">pembentukan &amp; pelatihan KPSPAMS · penyusunan tarif dan Perdes · pelatihan kader &amp; kampanye higiene · tinjauan ToC berkala</text>
+  </svg>
+  <figcaption><b>Membaca lingkaran berwarna.</b> Setiap lingkaran adalah asumsi yang menopang panah di sebelahnya — <span style="color:#C2483C;font-weight:700">merah</span> berarti akibat besar dengan bukti lemah (diuji lebih dulu), <span style="color:#8a6d1f;font-weight:700">emas</span> berarti dipantau rutin. Rincian setiap asumsi ada pada <a href="#s6">Bagian 6</a>. <span class="src-note">Angka target adalah ilustrasi pelatihan.</span></figcaption>
+</figure>
+
+<h3>5.1 Narasi: mengapa jalur ini yang dipilih</h3>
+<p><b>Titik berangkatnya adalah kegagalan yang sudah terdokumentasi.</b> Di kawasan ini sarana air pernah dibangun dan berhenti berfungsi. Karena itu jalur perubahan program ini <b>tidak menempatkan konstruksi sebagai jantung program</b>. Konstruksi diperlakukan sebagai satu dari tiga jalur sejajar, dan bukan jalur yang paling menentukan keberhasilan jangka panjang.</p>
+<p><b>Jalur yang paling menentukan adalah Jalur 2 — tata kelola dan pembiayaan.</b> Alasannya: sarana yang berfungsi tanpa pengelola dan tanpa sumber biaya pemeliharaan akan berhenti pada kerusakan pertama, dan pada titik itu seluruh investasi Jalur 1 hilang. Konsekuensi rancangannya: kesepakatan tarif dan alokasi APBDes ditempatkan sebagai <b>outcome jangka pendek yang harus tercapai sebelum bulan ke-15</b> — bukan sebagai kegiatan penutup pada bulan ke-23 seperti lazimnya proyek sarana.</p>
+<p><b>Jalur 3 memuat pergeseran paradigma yang perlu dinyatakan terbuka.</b> Program ini bekerja atas keyakinan bahwa <i>praktik higiene lebih ditentukan oleh tersedianya air yang dekat dan andal daripada oleh penyuluhan</i>. Karena itu kampanye higiene tidak dimulai lebih dulu, melainkan menyusul setelah air tersedia — dan porsi anggarannya lebih kecil daripada porsi tata kelola. Keyakinan ini adalah <b>asumsi normatif (A6)</b>; jika ia keliru, bentuk program perlu berubah, bukan sekadar ditambah kegiatannya.</p>
+<p><b>Apa yang tidak dikerjakan program ini.</b> Program tidak menangani harga air tangki, tidak membangun jaringan antar-desa, dan tidak melakukan advokasi kebijakan tingkat kabupaten. Ketiganya relevan dengan masalah, tetapi berada di luar kapasitas dan durasi program; ketiganya dicatat sebagai prasyarat di luar kendali yang dipantau, dan dua di antaranya diusulkan sebagai bahan pembicaraan dengan pemerintah kabupaten.</p>
+<div class="note bad"><span class="h">Batas akuntabilitas</span>
+  INH bersedia dinilai sampai tingkat <b>outcome jangka menengah</b>: proporsi rumah tangga yang memakai air dari sistem terkelola, kemampuan KPSPAMS menutup biaya operasional, dan penerapan praktik higiene.
+  <br><br>Untuk tingkat <b>impact</b> — termasuk penurunan angka diare pada balita — INH <b>hanya mengklaim kontribusi</b>. Angka diare dipengaruhi gizi, akses layanan kesehatan, dan faktor lain di luar jangkauan program. Kami melaporkannya sebagai konteks yang dipantau, bukan sebagai hasil yang dijamin.</div>
+<p><b>Kondisi yang akan membuat kami mengubah strategi.</b> (i) Jika hasil uji pompa menunjukkan debit tidak memenuhi standar minimum pada dua titik atau lebih, rancangan beralih ke opsi pemanenan air hujan berskala komunitas dan jumlah desa dikurangi; (ii) jika survei kesediaan membayar menunjukkan kurang dari 60% rumah tangga bersedia pada rentang tarif yang menutup biaya operasional, model pembiayaan diubah menjadi subsidi silang berbasis APBDes dan target Jalur 2 direvisi; (iii) jika pada bulan ke-15 belum ada satu pun Perdes terbit, program menghentikan penambahan titik layanan dan mengalihkan sumber daya ke pendampingan tata kelola.</p>
+
+<h2 id="s6"><span class="no">6</span> Asumsi kritis dan rencana pengujiannya</h2>
+<p>Sepuluh asumsi berikut menopang jalur perubahan pada Bagian 5. Dua di antaranya berada di kuadran <b>akibat besar–bukti lemah</b> dan karena itu <b>diuji sebelum dana konstruksi dicairkan</b>, bukan dipantau sambil jalan.</p>
+<div class="tbl-wrap">
+<table class="compact">
+  <thead><tr><th style="width:36px">No</th><th style="min-width:230px">Asumsi</th><th>Jenis</th><th>Akibat</th><th>Bukti</th><th style="min-width:200px">Tindakan</th></tr></thead>
+  <tbody>
+    <tr style="background:#FCF0EE"><td><b>A1</b></td><td>Terdapat sumber air dengan debit memadai dan kualitas layak dalam radius ≤2 km dari permukiman, <b>termasuk pada puncak kemarau</b></td><td>Kontekstual</td><td><b>Besar</b></td><td><b>Lemah</b></td><td>Survei hidrogeologi + uji pompa 72 jam pada puncak kemarau, bulan 1–3. <b>Titik keputusan.</b></td></tr>
+    <tr style="background:#FCF0EE"><td><b>A2</b></td><td>Rumah tangga bersedia dan mampu membayar iuran pada rentang yang menutup biaya operasional</td><td>Kausal &amp; kontekstual</td><td><b>Besar</b></td><td><b>Lemah</b></td><td>Survei kesediaan membayar + diskusi kelompok terarah terpisah laki-laki/perempuan, bulan 1–3. <b>Titik keputusan.</b></td></tr>
+    <tr><td><b>A3</b></td><td>Pemerintah desa mengalokasikan APBDes untuk operasional-pemeliharaan secara berulang</td><td>Kontekstual</td><td>Besar</td><td>Sedang</td><td>MoU desa sebelum konstruksi; pemantauan dokumen APBDes tiap tahun anggaran</td></tr>
+    <tr><td><b>A4</b></td><td>KPSPAMS tetap berfungsi setelah pendampingan berakhir</td><td>Implementasi</td><td>Besar</td><td>Lemah</td><td>Pendampingan menurun bertahap sejak bulan 13; indikator keaktifan dipantau triwulanan</td></tr>
+    <tr><td><b>A5</b></td><td>Tersedia teknisi lokal yang mampu melakukan perbaikan tanpa mendatangkan pihak luar</td><td>Implementasi</td><td>Besar</td><td>Lemah</td><td>Pelatihan dua teknisi per desa; ketersediaan suku cadang di ibu kota kecamatan diverifikasi bulan 6</td></tr>
+    <tr style="background:#FBF3DE"><td><b>A6</b></td><td><b>Asumsi normatif:</b> praktik higiene lebih ditentukan oleh tersedianya air yang dekat dan andal daripada oleh penyuluhan</td><td><b>Normatif</b></td><td>Besar</td><td>Sedang</td><td>Dinyatakan terbuka; diuji dengan membandingkan perubahan praktik antar desa yang sarananya selesai lebih dulu dan lebih akhir</td></tr>
+    <tr><td><b>A7</b></td><td>Tidak terjadi sengketa hak atas lahan atau sumber air yang menghentikan pekerjaan</td><td>Kontekstual</td><td>Besar</td><td>Sedang</td><td>Kesepakatan tertulis pemilik lahan sebelum survei teknis lanjutan; opsi lokasi cadangan disiapkan</td></tr>
+    <tr><td><b>A8</b></td><td>Curah hujan tidak menyimpang ekstrem dari rerata sepuluh tahun terakhir</td><td>Kontekstual</td><td>Besar</td><td>Lemah</td><td>Pemantauan data iklim; skenario kontinjensi penambahan penampungan bila musim kemarau memanjang</td></tr>
+    <tr><td><b>A9</b></td><td>Perempuan dapat berpartisipasi bermakna dalam kepengurusan dan pengambilan keputusan KPSPAMS</td><td>Kontekstual</td><td>Sedang</td><td>Sedang</td><td>Kuota 40% dalam AD/ART; pertemuan terpisah perempuan; dipantau sebagai indikator</td></tr>
+    <tr><td><b>A10</b></td><td>Fasilitas kesehatan mencatat kasus diare secara konsisten sehingga dapat dipakai sebagai sumber data</td><td>Implementasi (pengukuran)</td><td>Kecil</td><td>Lemah</td><td>Diverifikasi bulan 3; bila tidak memadai, diganti survei rumah tangga dan klaim disesuaikan</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note bad"><span class="h">Titik keputusan bulan ke-3 — disepakati di muka</span>
+  Pencairan dana konstruksi (Rp 1,64 miliar, 42,5% anggaran) diusulkan <b>ditahan sampai hasil pengujian A1 dan A2 tersedia</b> dan ditinjau bersama donor. Ambang yang kami usulkan:
+  <ul style="margin:8px 0 8px 18px">
+    <li><b>A1 lolos</b> bila minimal 5 dari 6 titik menunjukkan debit memenuhi standar minimum pada uji puncak kemarau.</li>
+    <li><b>A2 lolos</b> bila minimal 60% rumah tangga menyatakan bersedia membayar pada rentang tarif yang menutup biaya operasional.</li>
+  </ul>
+  Jika ambang tidak tercapai, INH mengajukan revisi rancangan dalam 30 hari — bukan melanjutkan pekerjaan dengan target yang sudah diketahui tidak realistis. Konsekuensi anggaran dari setiap skenario revisi disajikan pada <a href="#s10">Bagian 10</a>.</div>
+
+<h2 id="s7"><span class="no">7</span> Logframe (diturunkan dari ToC)</h2>
+<p>Logframe berikut <b>diturunkan dari</b> diagram Bagian 5 — bukan disusun lebih dulu lalu dijelaskan mundur. Istilah, penomoran outcome, dan penomoran asumsi konsisten dengan bagian sebelumnya.</p>
+<div class="tbl-wrap">
+<table class="compact">
+  <thead><tr><th style="min-width:200px">Ringkasan naratif</th><th style="min-width:210px">Indikator terverifikasi</th><th>Sumber verifikasi</th><th>Asumsi</th></tr></thead>
+  <tbody>
+    <tr><td><b>IMPACT</b><br>Air bersih tersedia andal sepanjang kemarau; diare balita menurun</td><td>Proporsi RT yang tidak membeli air tangki selama kemarau; insidens diare balita</td><td>Survei rumah tangga akhir program; data fasilitas kesehatan (bila memadai — lihat A10)</td><td>A6, A8<br><i>di luar batas akuntabilitas — klaim kontribusi</i></td></tr>
+    <tr><td><b>OUTCOME 1</b><br>80% RT sasaran memakai air dari sistem terkelola sepanjang kemarau</td><td>% RT pengguna aktif pada bulan ke-24; rata-rata waktu tempuh pengambilan air (menit/hari)</td><td>Survei RT (baseline, tengah, akhir); catatan pengguna KPSPAMS</td><td>A1, A5, A8</td></tr>
+    <tr><td><b>OUTCOME 2</b><br>Enam KPSPAMS menutup 100% biaya operasional-pemeliharaan dari iuran</td><td>Rasio penerimaan iuran terhadap biaya O&amp;M per KPSPAMS; % RT membayar tepat waktu</td><td>Pembukuan KPSPAMS diverifikasi triwulanan; rekening kelompok</td><td>A2, A3, A4, A9</td></tr>
+    <tr><td><b>OUTCOME 3</b><br>70% RT menerapkan tiga praktik higiene kunci</td><td>% RT dengan sarana cuci tangan berfungsi &amp; sabun tersedia; % RT menyimpan air secara aman</td><td>Observasi terstruktur pada survei RT</td><td>A6</td></tr>
+    <tr><td><b>OUTPUT 1</b><br>Sarana air dan sanitasi terbangun/direhabilitasi</td><td>6 unit sumber air berfungsi; 18 keran umum; 6 unit sanitasi sekolah; uji kualitas air lulus</td><td>Berita acara serah terima; uji laboratorium; supervisi teknis</td><td>A1, A7</td></tr>
+    <tr><td><b>OUTPUT 2</b><br>Kelembagaan pengelola terbentuk dan berdasar hukum desa</td><td>6 KPSPAMS ber-AD/ART &amp; rekening; 6 kesepakatan tarif; 6 Perdes terbit</td><td>Dokumen KPSPAMS; salinan Perdes; dokumen APBDes</td><td>A3, A9</td></tr>
+    <tr><td><b>OUTPUT 3</b><br>Kapasitas higiene komunitas terbangun</td><td>180 kader lulus pelatihan (uji pra-pasca); 6 rencana kerja higiene disahkan musdes</td><td>Daftar hadir &amp; hasil uji; notulen musyawarah desa</td><td>A6</td></tr>
+    <tr><td><b>AKTIVITAS</b><br>Lihat Bagian 9</td><td>Realisasi jadwal dan anggaran per keluaran</td><td>Laporan kemajuan triwulanan; catatan keuangan</td><td>—<br><i>dalam kendali program</i></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="s8"><span class="no">8</span> Rencana MEAL</h2>
+<p>Setiap outcome memiliki minimal satu indikator lengkap dengan sumber data, frekuensi, dan penanggung jawab — sesuai Modul 6.1. Baseline dikumpulkan pada bulan 1–3, bersamaan dengan pengujian asumsi kritis.</p>
+<div class="tbl-wrap">
+<table class="compact">
+  <thead><tr><th>Outcome</th><th>Indikator</th><th>Baseline</th><th>Target</th><th>Sumber &amp; metode</th><th>Frekuensi</th><th>PJ</th></tr></thead>
+  <tbody>
+    <tr><td>Outcome 1</td><td>% RT sasaran memakai air dari sistem terkelola untuk minum &amp; masak pada puncak kemarau</td><td>Dikumpulkan bln 1–3</td><td>80% (bln 24)</td><td>Survei RT, sampel acak berlapis per desa</td><td>Baseline, bln 12, bln 24</td><td>Koordinator MEAL</td></tr>
+    <tr><td>Outcome 1</td><td>Rata-rata waktu pengambilan air per RT per hari (menit) — dipilah menurut jenis kelamin pengambil</td><td>Dikumpulkan bln 1–3</td><td>Turun ≥50%</td><td>Survei RT + pencatatan harian sampel</td><td>Baseline, bln 12, bln 24</td><td>Koordinator MEAL</td></tr>
+    <tr><td>Outcome 2</td><td>Rasio penerimaan iuran terhadap biaya O&amp;M per KPSPAMS</td><td>0 (belum ada)</td><td>≥1,0 di 6 KPSPAMS (bln 24)</td><td>Verifikasi pembukuan &amp; rekening kelompok</td><td>Triwulanan</td><td>Fasilitator kelembagaan</td></tr>
+    <tr><td>Outcome 2</td><td>% pengurus KPSPAMS perempuan yang hadir &amp; bersuara dalam rapat pengambilan keputusan</td><td>Dikumpulkan bln 4–6</td><td>≥40% (bln 18)</td><td>Notulen rapat + observasi</td><td>Semesteran</td><td>Fasilitator kelembagaan</td></tr>
+    <tr><td>Outcome 3</td><td>% RT dengan sarana cuci tangan berfungsi dan sabun tersedia saat kunjungan tanpa pemberitahuan</td><td>Dikumpulkan bln 1–3</td><td>70% (bln 24)</td><td>Observasi terstruktur</td><td>Baseline, bln 12, bln 24</td><td>Koordinator MEAL</td></tr>
+    <tr><td>Asumsi A3</td><td>Jumlah desa yang mengalokasikan APBDes untuk O&amp;M pada tahun anggaran berjalan</td><td>0</td><td>6 desa (bln 18)</td><td>Salinan dokumen APBDes</td><td>Tahunan</td><td>Manajer program</td></tr>
+    <tr><td>Asumsi A4</td><td>Jumlah KPSPAMS yang menyelenggarakan rapat rutin &amp; menutup pembukuan bulanan</td><td>0</td><td>6 (bln 22)</td><td>Notulen &amp; pembukuan</td><td>Triwulanan</td><td>Fasilitator kelembagaan</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="note"><span class="h">Kualitas klaim yang dijanjikan</span>Sistem pendataan dirancang agar rumah tangga pengguna dapat <b>ditelusuri lintas tahap</b> (terdaftar pada baseline, dilacak pada bulan 12 dan 24). Dengan demikian klaim pada tingkat outcome adalah klaim yang dapat dipertahankan. Untuk tingkat impact, klaim tetap dinyatakan sebagai <b>kontribusi</b> — lihat batas akuntabilitas pada Bagian 5.</div>
+<p><b>Tinjauan ToC.</b> Diagram Bagian 5 ditinjau pada bulan 6, 12, 18, dan 24 dengan agenda khusus: asumsi mana yang bergeser, dan apa konsekuensinya bagi rancangan. Setiap revisi dicatat dalam <b>catatan perubahan</b> yang dilampirkan pada laporan berkala kepada donor — bukan disimpan sampai laporan akhir.</p>
+
+<h2 id="s9"><span class="no">9</span> Strategi pelaksanaan dan jadwal</h2>
+<p>Program dijalankan dalam tiga jalur sejajar (lihat Bagian 5), dengan satu <b>titik keputusan pada akhir bulan ke-3</b> yang menentukan apakah pekerjaan konstruksi dilanjutkan sesuai rancangan awal.</p>
+
+<figure>
+  <div class="fig-title">Gambar 3 — Jadwal 24 bulan dan titik keputusan</div>
+  <svg viewBox="0 0 900 400" role="img" aria-labelledby="gt1 gt2">
+    <title id="gt1">Jadwal pelaksanaan 24 bulan</title>
+    <desc id="gt2">Sepuluh alur kerja sepanjang 24 bulan. Titik keputusan berada pada akhir bulan ketiga, sebelum pekerjaan konstruksi dimulai. Tinjauan Theory of Change dilakukan pada bulan 6, 12, 18, dan 24.</desc>
+    <text x="316" y="16" font-size="11.5" font-weight="800" fill="#8f342c">TITIK KEPUTUSAN — akhir bulan 3:</text>
+    <text x="316" y="31" font-size="10.5" fill="#8f342c">dana konstruksi baru dicairkan setelah asumsi A1 &amp; A2 lolos ambang</text>
+    <g transform="translate(0,22)">
+    <g stroke="#EDF0F5" stroke-width="1">
+      <line x1="262" y1="52" x2="262" y2="318"/><line x1="339.5" y1="52" x2="339.5" y2="318"/>
+      <line x1="417" y1="52" x2="417" y2="318"/><line x1="494.5" y1="52" x2="494.5" y2="318"/>
+      <line x1="572" y1="52" x2="572" y2="318"/><line x1="649.5" y1="52" x2="649.5" y2="318"/>
+      <line x1="727" y1="52" x2="727" y2="318"/><line x1="804.5" y1="52" x2="804.5" y2="318"/>
+      <line x1="882" y1="52" x2="882" y2="318"/>
+    </g>
+    <g font-size="10" fill="#7C8798" text-anchor="middle">
+      <text x="262" y="44">awal</text><text x="339.5" y="44">bln 3</text><text x="417" y="44">bln 6</text>
+      <text x="494.5" y="44">bln 9</text><text x="572" y="44">bln 12</text><text x="649.5" y="44">bln 15</text>
+      <text x="727" y="44">bln 18</text><text x="804.5" y="44">bln 21</text><text x="882" y="44">bln 24</text>
+    </g>
+    <g font-size="11" fill="#1B2430">
+      <text x="10" y="72">Verifikasi asumsi A1 &amp; A2 (hidrogeologi, uji pompa)</text>
+      <rect x="262" y="60" width="77.5" height="16" rx="4" fill="#7A5FBF"/>
+      <text x="10" y="98">Baseline &amp; penetapan enam desa final</text>
+      <rect x="262" y="86" width="103.3" height="16" rx="4" fill="#7A5FBF"/>
+      <text x="10" y="124">Perundingan hak lahan, MoU desa, perizinan</text>
+      <rect x="287.8" y="112" width="103.3" height="16" rx="4" fill="#D9A400"/>
+      <text x="10" y="150">Konstruksi sumber air &amp; jaringan perpipaan</text>
+      <rect x="339.5" y="138" width="232.5" height="16" rx="4" fill="#3572B0"/>
+      <text x="10" y="176">Sarana sanitasi enam sekolah dasar</text>
+      <rect x="417" y="164" width="129.2" height="16" rx="4" fill="#3572B0"/>
+      <text x="10" y="202">Pembentukan &amp; pelatihan enam KPSPAMS</text>
+      <rect x="339.5" y="190" width="284.1" height="16" rx="4" fill="#D9A400"/>
+      <text x="10" y="228">Penyusunan tarif, Perdes, alokasi APBDes</text>
+      <rect x="442.8" y="216" width="206.6" height="16" rx="4" fill="#D9A400"/>
+      <text x="10" y="254">Pelatihan kader &amp; kampanye higiene</text>
+      <rect x="417" y="242" width="361.6" height="16" rx="4" fill="#1E9E6A"/>
+      <text x="10" y="280">Pendampingan menurun &amp; mentoring pengelola</text>
+      <rect x="572" y="268" width="258.3" height="16" rx="4" fill="#D9A400"/>
+      <text x="10" y="306">Tinjauan ToC, MEAL, evaluasi akhir &amp; serah terima</text>
+      <rect x="391.2" y="294" width="490.8" height="16" rx="4" fill="#7A5FBF" opacity=".55"/>
+    </g>
+    <g fill="#4a3a86">
+      <polygon points="417,294 425,302 417,310 409,302"/>
+      <polygon points="572,294 580,302 572,310 564,302"/>
+      <polygon points="727,294 735,302 727,310 719,302"/>
+      <polygon points="882,294 890,302 882,310 874,302"/>
+    </g>
+    <line x1="339.5" y1="52" x2="339.5" y2="322" stroke="#C2483C" stroke-width="2.2" stroke-dasharray="6 4"/>
+    <circle cx="339.5" cy="52" r="4.5" fill="#C2483C"/>
+    <g font-size="10.5" fill="#5B6675">
+      <rect x="10" y="336" width="12" height="12" rx="3" fill="#7A5FBF"/><text x="28" y="346">Riset, MEAL &amp; pembelajaran</text>
+      <rect x="196" y="336" width="12" height="12" rx="3" fill="#3572B0"/><text x="214" y="346">Jalur 1 — sarana</text>
+      <rect x="336" y="336" width="12" height="12" rx="3" fill="#D9A400"/><text x="354" y="346">Jalur 2 — tata kelola &amp; pembiayaan</text>
+      <rect x="570" y="336" width="12" height="12" rx="3" fill="#1E9E6A"/><text x="588" y="346">Jalur 3 — perilaku</text>
+      <polygon points="740,336 748,344 740,352 732,344" fill="#4a3a86"/><text x="756" y="346">Tinjauan ToC</text>
+    </g>
+    </g>
+  </svg>
+  <figcaption>Perhatikan urutannya: <b>tidak ada satu pun pekerjaan konstruksi yang dimulai sebelum bulan ke-4</b>, dan pembentukan KPSPAMS berjalan bersamaan dengan konstruksi — bukan menyusul setelahnya. Ini konsekuensi langsung dari analisis akar penyebab pada Bagian 3.</figcaption>
+</figure>
+
+<h2 id="s10"><span class="no">10</span> Anggaran dan penelusuran ke outcome</h2>
+<p>Total permohonan <b>Rp 3.860.000.000</b> untuk 24 bulan. Setiap mata anggaran dapat ditelusuri ke satu outcome dalam ToC — tabel penelusurannya disajikan setelah grafik.</p>
+
+<figure>
+  <div class="fig-title">Gambar 4 — Komposisi anggaran (Rp juta)</div>
+  <svg viewBox="0 0 900 300" role="img" aria-labelledby="bd1 bd2">
+    <title id="bd1">Komposisi anggaran program</title>
+    <desc id="bd2">Enam kategori anggaran dengan nilai dalam juta rupiah: infrastruktur 1.640, kelembagaan 620, personel 560, higiene 430, riset dan MEAL 385, administrasi dan audit 225.</desc>
+    <g stroke="#EDF0F5" stroke-width="1">
+      <line x1="300" y1="36" x2="300" y2="252"/><line x1="440" y1="36" x2="440" y2="252"/>
+      <line x1="580" y1="36" x2="580" y2="252"/><line x1="720" y1="36" x2="720" y2="252"/>
+    </g>
+    <g font-size="10" fill="#7C8798" text-anchor="middle">
+      <text x="300" y="270">0</text><text x="440" y="270">500</text><text x="580" y="270">1.000</text><text x="720" y="270">1.500</text>
+      <text x="510" y="288" fill="#5B6675">Rp juta</text>
+    </g>
+    <g font-size="12" fill="#1B2430" text-anchor="end">
+      <text x="288" y="61">Infrastruktur air &amp; sanitasi</text>
+      <text x="288" y="97">Penguatan kelembagaan &amp; tata kelola</text>
+      <text x="288" y="133">Personel program &amp; operasional</text>
+      <text x="288" y="169">Perubahan perilaku higiene</text>
+      <text x="288" y="205">Riset awal, uji asumsi &amp; MEAL</text>
+      <text x="288" y="241">Administrasi, audit &amp; pelaporan</text>
+    </g>
+    <g>
+      <rect x="300" y="46" width="460" height="20" rx="4" fill="#3572B0"/>
+      <text x="770" y="61" font-size="12" font-weight="700" fill="#1B2430">1.640 · 42,5%</text>
+      <rect x="300" y="82" width="174" height="20" rx="4" fill="#D9A400"/>
+      <text x="484" y="97" font-size="12" font-weight="700" fill="#1B2430">620 · 16,1%</text>
+      <rect x="300" y="118" width="157" height="20" rx="4" fill="#8A94A3"/>
+      <text x="467" y="133" font-size="12" font-weight="700" fill="#1B2430">560 · 14,5%</text>
+      <rect x="300" y="154" width="121" height="20" rx="4" fill="#1E9E6A"/>
+      <text x="431" y="169" font-size="12" font-weight="700" fill="#1B2430">430 · 11,1%</text>
+      <rect x="300" y="190" width="108" height="20" rx="4" fill="#7A5FBF"/>
+      <text x="418" y="205" font-size="12" font-weight="700" fill="#1B2430">385 · 10,0%</text>
+      <rect x="300" y="226" width="63" height="20" rx="4" fill="#C2483C"/>
+      <text x="373" y="241" font-size="12" font-weight="700" fill="#1B2430">225 · 5,8%</text>
+    </g>
+    <text x="10" y="20" font-size="11" fill="#5B6675">Total Rp 3.860 juta · warna mengikuti jalur perubahan pada Gambar 2</text>
+  </svg>
+  <figcaption><b>Yang perlu dibaca penilai.</b> Porsi <b>riset awal dan MEAL sebesar 10%</b> bukan pemborosan administratif — itulah biaya menguji dua asumsi yang menentukan apakah 42,5% anggaran konstruksi layak dikeluarkan. Porsi <b>tata kelola 16,1%</b> lebih besar daripada porsi kampanye higiene, dan itu konsekuensi langsung dari analisis akar penyebab. <span class="src-note">Seluruh angka adalah ilustrasi pelatihan.</span></figcaption>
+</figure>
+
+<h3>10.1 Penelusuran anggaran ke outcome</h3>
+<div class="tbl-wrap">
+<table class="compact">
+  <thead><tr><th>Mata anggaran</th><th class="num">Rp juta</th><th>Menghasilkan output</th><th>Menopang outcome</th></tr></thead>
+  <tbody>
+    <tr><td>Infrastruktur air &amp; sanitasi (sumber air, perpipaan, keran umum, sanitasi sekolah, supervisi teknis)</td><td class="num">1.640</td><td>Output 1</td><td>Outcome 1</td></tr>
+    <tr><td>Penguatan kelembagaan &amp; tata kelola (fasilitasi KPSPAMS, pelatihan pembukuan, pendampingan tarif &amp; Perdes, mentoring)</td><td class="num">620</td><td>Output 2</td><td>Outcome 2</td></tr>
+    <tr><td>Personel program &amp; operasional lapangan (manajer, 2 fasilitator kelembagaan, 1 teknik, 1 MEAL, transportasi)</td><td class="num">560</td><td>Output 1–3</td><td>Outcome 1–3</td></tr>
+    <tr><td>Perubahan perilaku higiene (pelatihan 180 kader, bahan kampanye, musyawarah desa)</td><td class="num">430</td><td>Output 3</td><td>Outcome 3</td></tr>
+    <tr><td>Riset awal, uji asumsi &amp; MEAL (hidrogeologi, uji pompa, survei kesediaan membayar, baseline, survei tengah &amp; akhir, tinjauan ToC)</td><td class="num">385</td><td>Prasyarat seluruh output</td><td>Menguji A1, A2, A6, A10</td></tr>
+    <tr><td>Administrasi, audit &amp; pelaporan</td><td class="num">225</td><td>—</td><td>Tata kelola program</td></tr>
+    <tr style="background:#F7F8FA"><td><b>Total</b></td><td class="num"><b>3.860</b></td><td colspan="2"><b>Tidak ada mata anggaran yang tidak terhubung ke satu outcome pun</b></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>10.2 Konsekuensi anggaran bila titik keputusan tidak terlampaui</h3>
+<div class="tbl-wrap">
+<table class="compact">
+  <thead><tr><th>Skenario</th><th>Perubahan rancangan</th><th class="num">Perkiraan anggaran</th></tr></thead>
+  <tbody>
+    <tr><td><b>Dasar</b> — A1 dan A2 lolos</td><td>Rancangan berjalan seperti diusulkan, enam desa</td><td class="num">3.860</td></tr>
+    <tr><td><b>A1 tidak lolos</b> pada ≥2 titik</td><td>Jumlah desa turun menjadi empat; dua desa beralih ke pemanenan air hujan komunitas; target Outcome 1 direvisi proporsional</td><td class="num">± 3.150</td></tr>
+    <tr><td><b>A2 tidak lolos</b> (&lt;60% bersedia membayar)</td><td>Model pembiayaan beralih ke subsidi silang APBDes; porsi pendampingan tata kelola naik; target Outcome 2 direvisi menjadi menutup 70% biaya O&amp;M</td><td class="num">± 3.960</td></tr>
+    <tr><td><b>Keduanya tidak lolos</b></td><td>Program dihentikan pada tahap persiapan; dana yang belum terpakai dikembalikan; hasil kajian diserahkan kepada donor dan pemerintah daerah sebagai pengetahuan publik</td><td class="num">± 420</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="note ok"><span class="h">Mengapa skenario ini dicantumkan</span>Modul 5.3 menyebut bahwa mengakui ketidakpastian secara terbuka umumnya lebih kredibel daripada menyajikan kepastian yang tidak dimiliki. Mencantumkan skenario penghentian juga memberi donor kepastian bahwa dana tidak akan dihabiskan pada rancangan yang sudah diketahui tidak akan bekerja.</div>
+
+<h2 id="s11"><span class="no">11</span> Risiko dan mitigasi</h2>
+<p>Asumsi menjawab pertanyaan “apa yang harus benar”; risiko menjawab “apa yang bisa menggagalkan”. Keduanya dipisahkan agar tidak tercampur — kekeliruan yang lazim pada logframe.</p>
+<div class="tbl-wrap">
+<table class="compact">
+  <thead><tr><th style="min-width:190px">Risiko</th><th>Kemungkinan</th><th>Dampak</th><th style="min-width:230px">Mitigasi</th><th>Pemicu tindakan</th></tr></thead>
+  <tbody>
+    <tr><td>Musim kemarau memanjang di luar rerata sepuluh tahun</td><td>Sedang</td><td>Tinggi</td><td>Kapasitas penampungan ditambah pada rancangan; jadwal uji pompa ditempatkan pada puncak kemarau</td><td>Data curah hujan &lt;70% rerata pada dua bulan berurutan</td></tr>
+    <tr><td>Sengketa hak atas lahan atau sumber air</td><td>Sedang</td><td>Tinggi</td><td>Kesepakatan tertulis sebelum survei lanjutan; dua lokasi cadangan per desa</td><td>Keberatan tertulis atau penolakan lisan tercatat</td></tr>
+    <tr><td>Kenaikan harga material dan biaya angkut</td><td>Tinggi</td><td>Sedang</td><td>Kontinjensi 5% di dalam pos infrastruktur; pengadaan bertahap; spesifikasi alternatif disiapkan</td><td>Kenaikan &gt;10% dari harga acuan pengadaan</td></tr>
+    <tr><td>Penolakan dari penyedia air tangki yang kehilangan pasar</td><td>Rendah–sedang</td><td>Sedang</td><td>Pemetaan aktor sejak awal; opsi keterlibatan sebagai pengangkut pada desa yang belum terlayani</td><td>Laporan gangguan operasional dari KPSPAMS</td></tr>
+    <tr><td>Pergantian kepala desa mengubah komitmen APBDes</td><td>Sedang</td><td>Tinggi</td><td>Komitmen dituangkan dalam Perdes, bukan hanya kesepakatan personal; orientasi ulang bagi pemerintahan desa baru</td><td>Pelantikan kepala desa baru di desa sasaran</td></tr>
+    <tr><td>Perempuan tidak terwakili dalam pengambilan keputusan meski kuota terpenuhi</td><td>Sedang</td><td>Sedang</td><td>Pertemuan terpisah; indikator partisipasi bermakna, bukan sekadar kehadiran</td><td>Notulen menunjukkan &lt;20% usulan berasal dari pengurus perempuan</td></tr>
+    <tr><td>Keluhan atau dugaan penyimpangan tidak tersampaikan</td><td>Rendah</td><td>Tinggi</td><td>Mekanisme pengaduan berbasis komunitas dengan jalur di luar staf lapangan; sosialisasi pada tiap musyawarah desa</td><td>Nol pengaduan selama dua triwulan berturut-turut ditinjau sebagai tanda saluran tidak dipercaya</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="s12"><span class="no">12</span> Keberlanjutan dan strategi keluar</h2>
+<p>Keberlanjutan pada program ini bukan bagian penutup, melainkan <b>Outcome 2</b> — dan karenanya diukur, dianggarkan, dan dijadwalkan sejak awal.</p>
+<div class="grid3">
+  <div class="card tight"><h4 style="margin-top:0">Keberlanjutan kelembagaan</h4><p style="font-size:13.2px">KPSPAMS dibentuk pada bulan ke-4, bukan ke-22. Pendampingan menurun bertahap sejak bulan ke-13 sehingga kelompok sudah beroperasi mandiri selama minimal 10 bulan sebelum program berakhir.</p></div>
+  <div class="card tight"><h4 style="margin-top:0">Keberlanjutan pembiayaan</h4><p style="font-size:13.2px">Tarif ditetapkan berdasarkan biaya operasional-pemeliharaan riil, bukan angka simbolik. APBDes menjadi penyangga untuk perbaikan besar, dituangkan dalam Perdes.</p></div>
+  <div class="card tight"><h4 style="margin-top:0">Keberlanjutan teknis</h4><p style="font-size:13.2px">Dua teknisi per desa dilatih; ketersediaan suku cadang di ibu kota kecamatan diverifikasi pada bulan ke-6. Bila tidak tersedia, spesifikasi teknis diubah — bukan dibiarkan.</p></div>
+</div>
+<h3>Rencana serah terima</h3>
+<ol>
+  <li><b>Bulan 18</b> — audit teknis bersama dinas terkait dan KPSPAMS; daftar perbaikan disepakati.</li>
+  <li><b>Bulan 21</b> — perbaikan diselesaikan; dokumen aset, gambar terbangun, dan manual pemeliharaan diserahkan.</li>
+  <li><b>Bulan 23</b> — berita acara serah terima aset kepada desa; status kepemilikan dan tanggung jawab pemeliharaan dinyatakan tertulis.</li>
+  <li><b>Bulan 24</b> — evaluasi akhir dan tinjauan ToC terakhir; catatan perubahan diserahkan kepada donor, desa, dan pemerintah kabupaten.</li>
+  <li><b>Bulan 36 (di luar pendanaan)</b> — INH mengusulkan satu kunjungan pemantauan pasca-program untuk memeriksa apakah sistem masih mengalir. Hasilnya dipublikasikan apa adanya, termasuk bila hasilnya buruk.</li>
+</ol>
+
+<h2 id="s13"><span class="no">13</span> Tata kelola, akuntabilitas, dan perlindungan</h2>
+<div class="grid2">
+  <div class="card tight"><h4 style="margin-top:0">Akuntabilitas kepada komunitas</h4><p style="font-size:13.2px">Rencana kerja, anggaran per desa, dan realisasinya ditempel di balai desa setiap triwulan. Musyawarah desa membahas laporan, bukan hanya menerima. ToC diterjemahkan ke bahasa sehari-hari dan ditempel bersama.</p></div>
+  <div class="card tight"><h4 style="margin-top:0">Mekanisme pengaduan</h4><p style="font-size:13.2px">Tersedia jalur pengaduan yang <b>tidak melewati staf lapangan</b>: nomor telepon lembaga, kotak pengaduan di balai desa, dan penanggung jawab di sekretariat. Tanggapan wajib diberikan dalam 14 hari kerja.</p></div>
+  <div class="card tight"><h4 style="margin-top:0">Perlindungan (safeguarding)</h4><p style="font-size:13.2px">Seluruh staf dan mitra menandatangani kode perilaku; pelatihan perlindungan anak dan orang dewasa rentan dilakukan sebelum penugasan lapangan. <span class="fill">Rujuk kebijakan resmi lembaga</span></p></div>
+  <div class="card tight"><h4 style="margin-top:0">Pengelolaan keuangan</h4><p style="font-size:13.2px">Rekening program terpisah; pengadaan di atas ambang tertentu melalui perbandingan minimal tiga penawaran; audit eksternal tahunan. <span class="fill">Rujuk SOP keuangan lembaga</span></p></div>
+  <div class="card tight"><h4 style="margin-top:0">Perlindungan data</h4><p style="font-size:13.2px">Data rumah tangga yang dilacak lintas tahap disimpan dengan pengenal terpisah dari identitas; persetujuan diambil pada baseline; data mentah tidak dibagikan tanpa anonimisasi.</p></div>
+  <div class="card tight"><h4 style="margin-top:0">Pelaporan kepada donor</h4><p style="font-size:13.2px">Laporan naratif dan keuangan triwulanan; laporan tinjauan ToC pada bulan 6, 12, 18, 24 disertai catatan perubahan; pemberitahuan dalam 14 hari untuk setiap kejadian yang mengubah asumsi kritis.</p></div>
+</div>
+
+<h2 id="s14"><span class="no">14</span> Pemeriksaan mandiri dengan Lampiran B</h2>
+<p>Sebelum dikirim, proposal ini diperiksa dengan <a href="index.html#lampiranB">daftar periksa kualitas ToC (Lampiran B)</a>. Hasilnya dicantumkan apa adanya — termasuk butir yang belum terpenuhi.</p>
+<div class="tbl-wrap">
+<table class="compact">
+  <thead><tr><th>Kelompok</th><th>Terpenuhi</th><th>Catatan atas butir yang belum terpenuhi</th></tr></thead>
+  <tbody>
+    <tr><td>Struktur (4 butir)</td><td>4/4</td><td>—</td></tr>
+    <tr><td>Logika (4 butir)</td><td>3/4</td><td><b>Rujukan bukti</b> untuk hubungan kunci masih bersandar pada pengalaman program sejenis, belum pada evaluasi terdokumentasi. Akan dilengkapi pada tinjauan bulan ke-6.</td></tr>
+    <tr><td>Asumsi (4 butir)</td><td>4/4</td><td>—</td></tr>
+    <tr><td>Pengukuran (4 butir)</td><td>3/4</td><td><b>Baseline belum tersedia</b> — dijadwalkan pada bulan 1–3 dan dianggarkan. Target pada dokumen ini bersifat indikatif sampai baseline selesai.</td></tr>
+    <tr><td>Proses (4 butir)</td><td>3/4</td><td><b>Keterlibatan penerima manfaat</b> baru pada tahap konsultasi awal; pelibatan penuh dalam analisis masalah dijadwalkan bersamaan dengan baseline.</td></tr>
+    <tr style="background:#F4FBF7"><td><b>Total</b></td><td><b>17/20</b></td><td>Tiga butir belum terpenuhi — di bawah ambang lima, sehingga ToC dinilai layak menjadi dasar proposal, dengan catatan yang dinyatakan terbuka di atas.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2><span class="no">15</span> Penutup</h2>
+<p>Program ini dirancang untuk menjawab satu kegagalan yang sudah berulang: sarana air yang dibangun lalu berhenti berfungsi. Karena itu keberhasilannya tidak diukur dari jumlah titik yang terbangun, melainkan dari <b>berapa banyak sistem yang masih mengalir pada bulan kesembilan musim kemarau, dikelola oleh orang yang dibayar dari iuran warga sendiri</b>.</p>
+<p>Kami menyertakan asumsi yang belum kami yakini, ambang yang akan membuat kami mengubah rancangan, dan skenario di mana kami mengusulkan program dihentikan. Itu bukan tanda kelemahan rancangan; itu satu-satunya cara agar angka yang kami janjikan dapat dipercaya.</p>
+
+<div class="sig">
+  <div><div class="nm"></div><b><span class="fill">Nama penanggung jawab</span></b><br><span class="fill">Jabatan</span><br>INH — International Networking for Humanitarian</div>
+  <div><div class="nm"></div><b><span class="fill">Nama penyusun program</span></b><br><span class="fill">Jabatan</span><br><span class="fill">Tempat, tanggal</span></div>
+</div>
+
+<h3>Lampiran yang menyertai proposal</h3>
+<ol>
+  <li>Akta pendirian, SK pengesahan badan hukum, dan NPWP lembaga — <span class="fill">dokumen resmi</span></li>
+  <li>Laporan keuangan teraudit dua tahun terakhir — <span class="fill">dokumen resmi</span></li>
+  <li>Profil tiga program sejenis beserta hasil terverifikasinya — <span class="fill">dokumen resmi</span></li>
+  <li>Kebijakan perlindungan, anti-fraud, pengaduan, dan perlindungan data — <span class="fill">dokumen resmi</span></li>
+  <li>Instrumen baseline dan protokol pengujian asumsi A1 dan A2</li>
+  <li>Rincian anggaran per mata anggaran dan per desa</li>
+  <li>Surat dukungan pemerintah desa dan dinas terkait — <span class="fill">bila sudah tersedia</span></li>
+  <li>Peta lokasi calon titik layanan dan hasil survei pendahuluan</li>
+</ol>
+
+<div class="note bad" style="margin-top:26px"><span class="h">Pengingat penutup</span>Dokumen ini adalah <b>bahan latihan Modul Theory of Change</b>. Yang layak ditiru adalah strukturnya: masalah sebelum tujuan, tujuan sebelum jalur, jalur sebelum aktivitas, asumsi yang diuji sebelum dana besar dikeluarkan, dan batas akuntabilitas yang dinyatakan terbuka. Seluruh angka, nama, dan lokasinya harus diganti dengan data riil sebelum dipakai untuk keperluan apa pun.</div>
+
+<p style="text-align:center;margin-top:30px;font-size:12px;color:var(--muted2)">
+  <a href="index.html#proposal">‹ Kembali ke Sekolah ToC</a> · <a href="index.html#m6">Modul 6 — Dari ToC ke MEAL dan proposal</a> · <a href="index.html#lampiranB">Lampiran B</a>
+</p>
+
+</div>
+</div>
+</body>
+</html>
