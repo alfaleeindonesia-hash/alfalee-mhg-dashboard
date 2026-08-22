@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Sekolah ToC — Modul Belajar Theory of Change</title>
+<meta name="description" content="Sistem belajar internal Theory of Change untuk staf program, MEAL, dan penggalangan dana.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="scrim"></div>
+
+<div class="topbar">
+  <button id="btnMenu" aria-label="Buka daftar modul">☰</button>
+  <div class="tt" id="topTitle">Sekolah ToC</div>
+</div>
+
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar">
+  <div class="sb-head">
+    <div class="eyebrow">Pembelajaran Internal</div>
+    <h1>Sekolah ToC</h1>
+    <div class="ver">Theory of Change · Modul v1.0</div>
+  </div>
+  <div class="sb-prog">
+    <svg class="ring" viewBox="0 0 52 52" aria-hidden="true">
+      <circle class="bgc" cx="26" cy="26" r="22" fill="none" stroke-width="5"></circle>
+      <circle id="ringFg" class="fgc" cx="26" cy="26" r="22" fill="none" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="0 138" transform="rotate(-90 26 26)"></circle>
+      <text id="ringTxt" x="26" y="30" text-anchor="middle">0%</text>
+    </svg>
+    <div class="lab" id="progLab"><b>0 bagian</b>selesai dipelajari</div>
+  </div>
+  <nav class="sb-nav" id="sbNav"></nav>
+  <div class="sb-foot">
+    <button id="btnExport" title="Unduh seluruh isian & progres sebagai berkas JSON">⬇ Ekspor</button>
+    <button id="btnImport" title="Muat kembali berkas hasil ekspor">⬆ Impor</button>
+    <button id="btnPrint" title="Cetak seluruh modul">🖨 Cetak</button>
+    <button id="btnReset" title="Hapus semua data di peramban ini">↺ Reset</button>
+  </div>
+</aside>
+
+<main class="main">
+
+<!-- ================= BERANDA ================= -->
+<section class="lesson" id="beranda" data-group="Mulai di sini" data-num="◆" data-nav="Beranda" data-nofoot="1">
+  <div class="hero">
+    <div class="eyebrow">Modul Belajar Internal · Versi 1.0</div>
+    <h2>Theory of Change untuk NGO</h2>
+    <p>Kalau kami melakukan ini, mengapa kami yakin dunia akan berubah — dan apa saja yang harus benar agar keyakinan itu masuk akal? Delapan modul, tujuh latihan, empat perangkat kerja, dan satu contoh proposal utuh untuk menjawabnya.</p>
+    <div class="cta">
+      <a href="#m0" class="btn gold">Mulai dari Modul 0 ›</a>
+      <a href="#perangkat" class="btn ghost">Buka perangkat kerja</a>
+      <a href="proposal-inh.html" class="btn ghost" target="_blank" rel="noopener">Lihat contoh proposal ↗</a>
+    </div>
+  </div>
+
+  <div class="grid4" style="margin-top:22px">
+    <div class="kpi"><div class="n">8</div><div class="l">Modul inti</div><div class="s">± 12 jam belajar mandiri</div></div>
+    <div class="kpi"><div class="n">7</div><div class="l">Latihan dengan lembar kerja</div><div class="s">Isian tersimpan otomatis</div></div>
+    <div class="kpi"><div class="n">4</div><div class="l">Produk wajib peserta</div><div class="s">Diagram · narasi · asumsi · indikator</div></div>
+    <div class="kpi"><div class="n">12</div><div class="l">Soal ujian akhir</div><div class="s">Ambang lulus 70%</div></div>
+  </div>
+
+  <h3>Cara memakai sistem ini</h3>
+  <div class="grid3">
+    <div class="path-card"><div class="d">Langkah 1</div><h4>Bawa satu program nyata</h4>
+      <p>Modul ini tidak dirancang untuk dibaca saja. Pilih satu program organisasi yang sedang berjalan — semua latihan memakai program itu sebagai bahan.</p></div>
+    <div class="path-card"><div class="d">Langkah 2</div><h4>Kerjakan modul berurutan</h4>
+      <p>Setiap modul ditutup dengan latihan dan kuis. Tandai “selesai” agar lingkaran progres di kiri bergerak. Hasil kuis tersimpan.</p></div>
+    <div class="path-card"><div class="d">Langkah 3</div><h4>Isi perangkat kerja</h4>
+      <p>Kanvas ToC, matriks asumsi, dan kerangka indikator adalah produk akhir Anda. Ekspor ke berkas JSON sebelum berganti perangkat.</p></div>
+  </div>
+
+  <div class="note"><span class="h">Di mana data Anda tersimpan</span>
+    Seluruh isian, jawaban kuis, dan progres tersimpan <b>hanya di peramban yang Anda pakai</b> (localStorage) — tidak dikirim ke mana pun dan tidak terlihat oleh peserta lain. Berpindah komputer atau membersihkan data peramban akan menghapusnya. Gunakan tombol <b>Ekspor</b> di kiri bawah untuk menyimpan salinan, dan <b>Impor</b> untuk memulihkannya.</div>
+
+  <h3>Pilih jalur belajar</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Format</th><th>Durasi</th><th>Cakupan &amp; catatan</th></tr></thead>
+    <tbody>
+      <tr><td><b>Lokakarya tatap muka</b></td><td>2 hari (16 JP)</td>
+        <td>Format yang direkomendasikan; menghasilkan draf ToC organisasi yang siap divalidasi. Agenda rincinya ada di <a href="#m7">Modul 7</a>.</td></tr>
+      <tr><td><b>Seri daring</b></td><td>8 sesi × 90 menit</td><td>Satu modul per sesi, dengan tugas antar sesi.</td></tr>
+      <tr><td><b>Belajar mandiri</b></td><td>± 12 jam</td><td>Perlu pendamping untuk mengulas hasil latihan; tanpa itu kualitas asumsi cenderung lemah.</td></tr>
+      <tr><td><b>Penyegaran singkat</b></td><td>3 jam</td><td>Modul <a href="#m1">1</a>, <a href="#m2">2</a>, dan <a href="#m5">5</a> saja — untuk tim yang sudah punya ToC tetapi tidak memakainya.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Catatan sumber dan keterbatasan</h3>
+  <p>Bagian ini sengaja ditempatkan di depan agar pembaca dapat menilai sendiri dasar penyusunan modul.</p>
+  <div class="note warn"><span class="h">Status tautan yang dirujuk</span>
+    Tautan yang semula diberikan sebagai sumber utama — halaman acara pada domain <code>event.logout.id</code> (“toc-2026”) — <b>tidak dapat diakses</b> pada saat modul ini disusun. Isi halaman tersebut, termasuk silabus dan pemateri, <b>tidak dapat diverifikasi</b>. Karena itu tidak ada satu pun bagian modul ini yang mengklaim berasal dari halaman tersebut.
+    <br><br>Konsekuensinya: jika acara itu ternyata membahas <i>Theory of Constraints</i> (juga disingkat ToC dan lazim dipakai di dunia operasional/logistik) atau topik lain, modul ini tidak relevan dan perlu disusun ulang. Modul dibangun atas asumsi bahwa yang dimaksud adalah <b>Theory of Change</b>, karena permintaannya secara eksplisit menyebut konteks NGO.
+    <br><br><b>Yang perlu dilakukan pengguna modul:</b> (1) buka kembali halaman acara tersebut dan bandingkan silabusnya dengan daftar modul di kiri; (2) tandai bagian yang tidak tercakup lalu tambahkan sebagai lampiran; (3) jika halaman itu membahas topik berbeda, hentikan penggunaan modul ini dan sampaikan koreksinya.</div>
+  <p><b>Dasar penyusunan.</b> Modul disusun dari literatur rujukan yang lazim dipakai lembaga donor, lembaga evaluasi, dan jaringan NGO internasional, ditambah sumber berbahasa Indonesia. Seluruh sumber tercantum pada <a href="#pustaka">Daftar Pustaka</a> lengkap dengan tautan agar dapat ditelusuri kembali.</p>
+  <div class="note bad"><span class="h">Semua angka dalam studi kasus adalah ilustrasi</span>
+    Seluruh nama organisasi, angka, dan skenario dalam studi kasus serta contoh proposal adalah <b>ilustrasi fiktif</b> yang dibuat untuk kebutuhan latihan. Tidak ada data lapangan riil yang digunakan. Jangan mengutip angka mana pun dari modul ini ke dokumen resmi.</div>
+
+  <div class="lesson-foot">
+    <span></span>
+    <div class="nextprev"><a class="btn gold" href="#m0">Modul 0 — Informasi Modul ›</a></div>
+  </div>
+</section>
+
+<!-- ================= MODUL 0 ================= -->
+<section class="lesson" id="m0" data-group="Persiapan" data-num="0" data-nav="Informasi Modul" data-track="1">
+  <div class="crumb">Bagian 0</div>
+  <h2 class="title">Informasi Modul</h2>
+  <p class="lead">Siapa yang dilatih, berapa lama, dan — yang paling menentukan — apa yang harus benar-benar dihasilkan peserta pada akhir pelatihan.</p>
+  <div class="meta-chips"><span>Waktu baca <b>10 menit</b></span><span>Tanpa latihan</span><span>Wajib dibaca fasilitator</span></div>
+
+  <h3>0.1 Sasaran peserta</h3>
+  <ul>
+    <li>Staf program dan koordinator lapangan NGO/organisasi masyarakat sipil</li>
+    <li>Staf monitoring, evaluasi, akuntabilitas, dan pembelajaran (MEAL)</li>
+    <li>Staf penggalangan dana dan penulis proposal hibah</li>
+    <li>Direktur eksekutif, manajer program, dan anggota dewan pengurus</li>
+    <li>Fasilitator internal yang akan melatih ulang tim sendiri</li>
+  </ul>
+  <div class="note"><span class="h">Prasyarat</span>Peserta idealnya pernah terlibat merancang atau menjalankan minimal satu siklus program. Modul ini menuntut peserta membawa <b>satu program nyata</b> sebagai bahan latihan — bukan contoh hipotetis.</div>
+
+  <h3>0.2 Tujuan pembelajaran</h3>
+  <p>Setelah menyelesaikan modul ini, peserta diharapkan mampu:</p>
+  <ol>
+    <li>Menjelaskan apa yang membedakan Theory of Change dari rencana kerja, logic model, dan logframe</li>
+    <li>Membedakan secara konsisten antara <b>output</b> dan <b>outcome</b> pada program sendiri</li>
+    <li>Menyusun jalur perubahan (<i>pathway of change</i>) dengan metode pemetaan mundur</li>
+    <li>Mengidentifikasi, mengklasifikasi, dan menguji asumsi yang menopang setiap hubungan sebab-akibat</li>
+    <li>Menurunkan indikator dan rencana MEAL langsung dari ToC</li>
+    <li>Memfasilitasi lokakarya ToC partisipatif yang melibatkan penerima manfaat, bukan hanya staf dan donor</li>
+    <li>Menilai kualitas sebuah ToC menggunakan kriteria yang dapat dipertanggungjawabkan</li>
+  </ol>
+
+  <h3>0.3 Empat hasil kerja yang wajib dihasilkan</h3>
+  <p>Modul ini menganggap pelatihan <b>gagal</b> jika peserta pulang hanya dengan pemahaman konsep. Setiap peserta atau tim wajib menghasilkan empat produk berikut:</p>
+  <div class="grid4">
+    <div class="kpi"><div class="n">1</div><div class="l"><b>Diagram ToC</b></div><div class="s">Satu halaman: impact, outcome, output, aktivitas, beserta panah kausalnya.</div></div>
+    <div class="kpi"><div class="n">2</div><div class="l"><b>Narasi ToC</b></div><div class="s">2–4 halaman yang menjelaskan logika di balik diagram — bukan sekadar mendeskripsikan kotaknya.</div></div>
+    <div class="kpi"><div class="n">3</div><div class="l"><b>Daftar asumsi</b></div><div class="s">Minimal 10 asumsi terklasifikasi, dengan penilaian risiko dan kekuatan bukti.</div></div>
+    <div class="kpi"><div class="n">4</div><div class="l"><b>Kerangka indikator</b></div><div class="s">Minimal satu indikator untuk <i>setiap outcome</i> — bukan hanya untuk output.</div></div>
+  </div>
+  <p style="margin-top:14px">Ketiga produk pertama dapat langsung dikerjakan pada <a href="#perangkat">Perangkat Kerja</a> di sistem ini, dan diekspor sebagai satu berkas.</p>
+
+  <h3>0.4 Peta seluruh modul</h3>
+  <div class="tbl-wrap">
+  <table class="compact">
+    <thead><tr><th>Modul</th><th>Isi</th><th>Latihan</th><th>Perkiraan waktu</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#m1"><b>1</b></a></td><td>Mengapa NGO memerlukan ToC</td><td>Latihan 1 — kalimat sebab-akibat</td><td>60 menit</td></tr>
+      <tr><td><a href="#m2"><b>2</b></a></td><td>Anatomi ToC: rantai hasil, prasyarat, asumsi, batas akuntabilitas</td><td>Latihan 2 — pilah output/outcome</td><td>90 menit</td></tr>
+      <tr><td><a href="#m3"><b>3</b></a></td><td>ToC, logic model, dan logframe</td><td>—</td><td>45 menit</td></tr>
+      <tr><td><a href="#m4"><b>4</b></a></td><td>Delapan langkah menyusun ToC</td><td>Latihan 4 — pemetaan mundur (inti pelatihan)</td><td>150 menit</td></tr>
+      <tr><td><a href="#m5"><b>5</b></a></td><td>Asumsi: bagian yang paling sering diabaikan</td><td>Latihan 5 — matriks asumsi</td><td>90 menit</td></tr>
+      <tr><td><a href="#m6"><b>6</b></a></td><td>Dari ToC ke MEAL dan proposal</td><td>Latihan 6 — kerangka indikator</td><td>90 menit</td></tr>
+      <tr><td><a href="#m7"><b>7</b></a></td><td>Memfasilitasi lokakarya ToC</td><td>—</td><td>60 menit</td></tr>
+      <tr><td><a href="#m8"><b>8</b></a></td><td>Kualitas, kritik, dan jebakan umum</td><td>Daftar periksa kualitas</td><td>60 menit</td></tr>
+      <tr><td><a href="#kasus"><b>9</b></a></td><td>Studi kasus dan latihan terpadu</td><td>Latihan terpadu (2–3 jam)</td><td>180 menit</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ================= MODUL 1 ================= -->
+<section class="lesson" id="m1" data-group="Bagian I — Dasar" data-num="1" data-nav="Mengapa perlu ToC" data-track="1">
+  <div class="crumb">Modul 1</div>
+  <h2 class="title">Mengapa NGO Memerlukan Theory of Change</h2>
+  <p class="lead">Angka aktivitas menunjukkan bahwa organisasi sibuk. Angka aktivitas tidak menunjukkan bahwa ada sesuatu yang berubah.</p>
+  <div class="meta-chips"><span>Waktu <b>60 menit</b></span><span>Latihan 1 · 20 menit</span><span>Kuis 4 soal</span></div>
+
+  <h3>1.1 Masalah yang hendak dipecahkan</h3>
+  <p>Sebagian besar laporan program NGO didominasi angka aktivitas: jumlah pelatihan yang diselenggarakan, jumlah peserta yang hadir, jumlah modul yang dicetak, jumlah desa yang dikunjungi. Angka-angka ini menunjukkan bahwa organisasi sibuk. Angka-angka ini tidak menunjukkan bahwa ada sesuatu yang berubah.</p>
+  <p>Persoalannya bukan pada niat atau kompetensi. Persoalannya adalah <b>tidak adanya peta logis yang eksplisit</b> tentang bagaimana aktivitas diyakini menghasilkan perubahan. Ketika peta itu tidak pernah ditulis, ia tetap ada — hanya saja tersimpan sebagai keyakinan tak terucap di kepala masing-masing orang, berbeda-beda antar anggota tim, dan tidak pernah diuji.</p>
+  <div class="note ok"><span class="h">Inti Modul 1</span>Theory of Change adalah upaya menuliskan peta itu, membuatnya <b>dapat diperdebatkan</b>, dan menjadikannya <b>dapat diuji</b>.</div>
+
+  <figure>
+    <div class="fig-title">Gambar 1.1 — Peta yang tak tertulis vs peta yang tertulis</div>
+    <svg viewBox="0 0 800 250" role="img" aria-labelledby="f11t f11d">
+      <title id="f11t">Perbandingan tim tanpa ToC dan tim dengan ToC</title>
+      <desc id="f11d">Kiri: empat anggota tim memegang keyakinan sebab-akibat yang berbeda-beda dan tidak terhubung. Kanan: satu jalur perubahan bersama yang dapat diperdebatkan dan diuji.</desc>
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#5B6675"/></marker>
+        <marker id="ar1g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#C9A227"/></marker>
+      </defs>
+      <rect x="4" y="4" width="378" height="242" rx="12" fill="#FCF0EE" stroke="#F0D5D0"/>
+      <text x="24" y="30" font-size="13" font-weight="800" fill="#8f342c">TANPA ToC — peta ada di kepala, berbeda-beda</text>
+      <g font-size="10.5" fill="#1B2430">
+        <rect x="24" y="46" width="160" height="46" rx="8" fill="#fff" stroke="#E4CBC6"/>
+        <text x="34" y="64">Direktur: “yang penting</text><text x="34" y="79">jangkauannya luas”</text>
+        <rect x="212" y="46" width="150" height="46" rx="8" fill="#fff" stroke="#E4CBC6"/>
+        <text x="222" y="64">MEAL: “yang penting</text><text x="222" y="79">datanya lengkap”</text>
+        <rect x="24" y="118" width="160" height="46" rx="8" fill="#fff" stroke="#E4CBC6"/>
+        <text x="34" y="136">Lapangan: “yang penting</text><text x="34" y="151">warga hadir”</text>
+        <rect x="212" y="118" width="150" height="46" rx="8" fill="#fff" stroke="#E4CBC6"/>
+        <text x="222" y="136">Fundraiser: “yang penting</text><text x="222" y="151">laporannya rapi”</text>
+      </g>
+      <text x="193" y="196" text-anchor="middle" font-size="26" fill="#C2483C">?</text>
+      <text x="193" y="224" text-anchor="middle" font-size="11.5" fill="#8f342c">Tak ada satu pun yang tertulis — karena itu tak ada yang bisa diuji</text>
+
+      <rect x="418" y="4" width="378" height="242" rx="12" fill="#F4FBF7" stroke="#CDE9DC"/>
+      <text x="438" y="30" font-size="13" font-weight="800" fill="#14624a">DENGAN ToC — satu peta bersama, tertulis</text>
+      <g font-size="10.5">
+        <rect x="438" y="52" width="112" height="38" rx="8" fill="#fff" stroke="#B9DECD"/>
+        <text x="494" y="70" text-anchor="middle" font-weight="700" fill="#1B2A4A">Aktivitas</text>
+        <text x="494" y="83" text-anchor="middle" fill="#5B6675">yang kami kerjakan</text>
+        <rect x="578" y="52" width="112" height="38" rx="8" fill="#fff" stroke="#B9DECD"/>
+        <text x="634" y="70" text-anchor="middle" font-weight="700" fill="#1B2A4A">Outcome</text>
+        <text x="634" y="83" text-anchor="middle" fill="#5B6675">yang berubah pada</text>
+        <rect x="508" y="128" width="182" height="38" rx="8" fill="#1B2A4A"/>
+        <text x="599" y="152" text-anchor="middle" font-weight="700" fill="#fff">Impact yang dituju</text>
+        <line x1="550" y1="71" x2="574" y2="71" stroke="#5B6675" stroke-width="2" marker-end="url(#ar1)"/>
+        <line x1="634" y1="94" x2="620" y2="124" stroke="#5B6675" stroke-width="2" marker-end="url(#ar1)"/>
+        <rect x="438" y="186" width="340" height="44" rx="8" fill="#FBF3DE" stroke="#EAD9A8"/>
+        <text x="452" y="204" font-weight="700" fill="#8a6d1f">Asumsi tertulis di setiap panah</text>
+        <text x="452" y="220" fill="#6b5514">…karena itulah yang bisa dibantah, dipantau, dan direvisi</text>
+        <line x1="600" y1="182" x2="600" y2="170" stroke="#C9A227" stroke-width="2" marker-end="url(#ar1g)"/>
+      </g>
+    </svg>
+    <figcaption><b>Bacaan gambar.</b> Perbedaannya bukan pada kerapian dokumen, melainkan pada apakah keyakinan sebab-akibat organisasi <i>bisa dibantah orang lain</i>. Peta yang tersimpan di kepala tidak bisa salah — karena itu juga tidak bisa diperbaiki.</figcaption>
+  </figure>
+
+  <h3>1.2 Definisi kerja</h3>
+  <p>Tidak ada satu definisi tunggal yang disepakati semua pihak. Tinjauan literatur Stein dan Valters (2012) menyimpulkan bahwa istilah ini dipahami secara beragam, meski intinya konsisten: <b>artikulasi tentang bagaimana dan mengapa suatu intervensi diyakini menghasilkan perubahan tertentu.</b></p>
+  <p>Tiga rumusan yang berguna dipakai bersamaan:</p>
+  <div class="grid3">
+    <div class="card tight"><h5 style="color:#3E6B9E">Rogers · UNICEF 2014</h5>
+      <p style="font-size:13.4px">Teori program atau ToC menjelaskan <b>bagaimana sebuah intervensi</b> — proyek, program, kebijakan, atau strategi — dipahami berkontribusi pada rantai hasil yang menghasilkan dampak yang dimaksudkan.</p></div>
+    <div class="card tight"><h5 style="color:#3E6B9E">Vogel · DFID 2012</h5>
+      <p style="font-size:13.4px">ToC adalah pendekatan <b>berbasis outcome</b> yang menerapkan <b>berpikir kritis</b> pada desain, implementasi, dan evaluasi inisiatif yang dimaksudkan untuk mendukung perubahan dalam konteksnya.</p></div>
+    <div class="card tight" style="border-color:var(--gold);border-width:1.5px"><h5 style="color:#8a6d1f">Rumusan praktis untuk kelas</h5>
+      <p style="font-size:13.4px">ToC adalah jawaban tertulis atas pertanyaan: <b>“kalau kami melakukan ini, mengapa kami yakin dunia akan berubah — dan apa saja yang harus benar agar keyakinan itu masuk akal?”</b></p></div>
+  </div>
+
+  <h3>1.3 Akar historis singkat</h3>
+  <p>Gagasan ini tumbuh dari <b>bidang evaluasi program</b>, bukan dari manajemen proyek. Sejak dekade 1990-an, kalangan evaluator mendorong agar program dievaluasi berdasarkan teori yang mendasarinya, bukan hanya berdasarkan apakah aktivitas terlaksana. Carol Weiss termasuk yang paling sering dikutip sebagai pempopuler awal istilah ini.</p>
+  <p>Pengembangan konseptual lanjutan dilakukan antara lain oleh Aspen Institute Roundtable on Community Change, ActKnowledge, dan Center for Theory of Change. Di sisi lembaga donor, DFID (Inggris) mulai bekerja secara formal dengan ToC sejak 2010, dan menugaskan tinjauan menyeluruh atas praktik ini pada 2012.</p>
+  <div class="note warn"><span class="h">Implikasi praktis dari sejarah ini</span>ToC lahir sebagai <b>alat berpikir kritis</b>, bukan sebagai format pelaporan. Ketika ia diperlakukan semata sebagai formulir yang harus diisi untuk mendapat hibah, ia kehilangan fungsi aslinya.</div>
+
+  <h3>1.4 Empat fungsi ToC — dan ketegangan di antaranya</h3>
+  <p>Stein dan Valters (2012) mengidentifikasi empat tujuan penggunaan ToC yang saling tumpang tindih. Persoalannya, keempatnya <b>menarik dokumen ke arah yang berbeda</b>.</p>
+
+  <figure>
+    <div class="fig-title">Gambar 1.2 — Empat fungsi yang saling menarik</div>
+    <svg viewBox="0 0 740 400" role="img" aria-labelledby="f12t f12d">
+      <title id="f12t">Empat fungsi Theory of Change dan ketegangan di antaranya</title>
+      <desc id="f12d">Perencanaan strategis, deskripsi/komunikasi, monitoring dan evaluasi, serta pembelajaran mengelilingi satu dokumen ToC; garis putus-putus menandai ketegangan antar fungsi.</desc>
+      <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#C2483C"/></marker></defs>
+      <g>
+        <rect x="30" y="26" width="252" height="82" rx="11" fill="#fff" stroke="#3572B0" stroke-width="1.6"/>
+        <text x="46" y="50" font-size="13.5" font-weight="800" fill="#1B2A4A">Perencanaan strategis</text>
+        <text x="46" y="70" font-size="11" fill="#5B6675">Memilih fokus, intervensi, alokasi sumber daya</text>
+        <text x="46" y="90" font-size="10.5" fill="#C2483C">Risiko: ToC jadi terlalu ambisius, mencakup segalanya</text>
+
+        <rect x="458" y="26" width="252" height="82" rx="11" fill="#fff" stroke="#D9A400" stroke-width="1.6"/>
+        <text x="474" y="50" font-size="13.5" font-weight="800" fill="#1B2A4A">Deskripsi / komunikasi</text>
+        <text x="474" y="70" font-size="11" fill="#5B6675">Menjelaskan program ke donor, mitra, publik</text>
+        <text x="474" y="90" font-size="10.5" fill="#C2483C">Risiko: rapi tetapi tidak jujur soal ketidakpastian</text>
+
+        <rect x="30" y="292" width="252" height="82" rx="11" fill="#fff" stroke="#1E9E6A" stroke-width="1.6"/>
+        <text x="46" y="316" font-size="13.5" font-weight="800" fill="#1B2A4A">Monitoring &amp; evaluasi</text>
+        <text x="46" y="336" font-size="11" fill="#5B6675">Indikator, titik ukur, rancangan evaluasi</text>
+        <text x="46" y="356" font-size="10.5" fill="#C2483C">Risiko: direduksi jadi logframe; jalur alternatif hilang</text>
+
+        <rect x="458" y="292" width="252" height="82" rx="11" fill="#fff" stroke="#7A5FBF" stroke-width="1.6"/>
+        <text x="474" y="316" font-size="13.5" font-weight="800" fill="#1B2A4A">Pembelajaran</text>
+        <text x="474" y="336" font-size="11" fill="#5B6675">Meninjau asumsi, merevisi strategi dari bukti</text>
+        <text x="474" y="356" font-size="10.5" fill="#C2483C">Risiko: paling cepat dikorbankan — donor jarang memintanya</text>
+      </g>
+      <line x1="200" y1="112" x2="330" y2="168" stroke="#DDE2EA" stroke-width="2"/>
+      <line x1="540" y1="112" x2="410" y2="168" stroke="#DDE2EA" stroke-width="2"/>
+      <line x1="200" y1="288" x2="330" y2="232" stroke="#DDE2EA" stroke-width="2"/>
+      <line x1="540" y1="288" x2="410" y2="232" stroke="#DDE2EA" stroke-width="2"/>
+      <circle cx="370" cy="200" r="58" fill="#1B2A4A"/>
+      <text x="370" y="195" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">Satu</text>
+      <text x="370" y="214" text-anchor="middle" font-size="15" font-weight="800" fill="#E8CE6C">dokumen</text>
+      <path d="M300 60 C 210 150, 210 250, 300 340" fill="none" stroke="#C2483C" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ar2)" marker-start="url(#ar2)"/>
+      <path d="M440 60 C 530 150, 530 250, 440 340" fill="none" stroke="#C2483C" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ar2)" marker-start="url(#ar2)"/>
+      <text x="370" y="392" text-anchor="middle" font-size="11.5" fill="#8f342c" font-weight="700">Garis putus-putus = ketegangan. Satu dokumen tidak bisa melayani empat tuan sekaligus dengan sempurna.</text>
+    </svg>
+    <figcaption><b>Yang harus diputuskan sadar.</b> Valters (2014) menunjukkan bahwa ToC yang dirancang untuk memuaskan donor cenderung menghasilkan narasi dari atas ke bawah yang lebih berbicara pada kepentingan donor ketimbang realitas lapangan. Ini bukan alasan untuk tidak memakai ToC; ini alasan untuk <b>sadar sedang memakainya untuk tujuan yang mana</b>.</figcaption>
+  </figure>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Fungsi</th><th>Wujud praktisnya</th><th>Risiko jika fungsi ini dominan</th></tr></thead>
+    <tbody>
+      <tr><td><b>Perencanaan strategis</b></td><td>Menentukan fokus organisasi, memilih intervensi, mengalokasikan sumber daya</td><td>ToC menjadi terlalu ambisius dan mencakup segalanya</td></tr>
+      <tr><td><b>Deskripsi / komunikasi</b></td><td>Menjelaskan program ke donor, mitra, pemerintah, publik</td><td>Menjadi materi pemasaran yang rapi tetapi tidak jujur soal ketidakpastian</td></tr>
+      <tr><td><b>Monitoring &amp; evaluasi</b></td><td>Menurunkan indikator, menetapkan titik ukur, merancang evaluasi</td><td>Direduksi menjadi logframe; nuansa dan jalur alternatif hilang</td></tr>
+      <tr><td><b>Pembelajaran</b></td><td>Meninjau ulang asumsi, merevisi strategi berdasarkan bukti lapangan</td><td>Sering menjadi fungsi yang paling cepat dikorbankan karena tidak diminta donor</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>1.5 Manfaat konkret bagi NGO</h3>
+  <div class="grid2">
+    <div class="card tight"><h4 style="margin-top:0">Kualitas proposal hibah</h4><p style="font-size:13.4px">Banyak penilai hibah menilai koherensi logika <b>sebelum</b> menilai anggaran. ToC yang lemah membuat sisa proposal kehilangan kredibilitas.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Koordinasi konsorsium</h4><p style="font-size:13.4px">ToC bersama memaksa perbedaan asumsi antar lembaga muncul ke permukaan <b>sejak awal</b>, bukan pada tahun kedua.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Orientasi staf baru</h4><p style="font-size:13.4px">Satu halaman ToC menjelaskan strategi organisasi lebih cepat daripada tumpukan laporan tahunan.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Negosiasi dengan pemerintah daerah</h4><p style="font-size:13.4px">Jalur perubahan yang eksplisit memudahkan menunjukkan di titik mana peran pemerintah dibutuhkan — dan di titik mana tidak.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Akuntabilitas ke komunitas</h4><p style="font-size:13.4px">ToC partisipatif memberi komunitas dasar untuk <b>menagih janji perubahan</b>, bukan sekadar menerima kegiatan.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Keputusan menghentikan program</h4><p style="font-size:13.4px">ToC memberi dasar rasional untuk berhenti — jika asumsi kunci terbukti salah, melanjutkan program adalah pemborosan.</p></div>
+  </div>
+
+  <div class="exercise">
+    <span class="tag">Latihan 1</span>
+    <h4>Satu kalimat sebab-akibat</h4>
+    <div class="dur">20 menit · berpasangan · hasilnya dipakai lagi di Modul 5</div>
+    <p>Ambil satu program yang sedang berjalan di organisasi Anda dan lengkapi kalimat berikut.</p>
+    <p style="background:var(--cream);padding:10px 14px;border-radius:9px;font-size:14px">“Kami melakukan <b>______</b> karena kami yakin hal itu akan menyebabkan <b>______</b>, yang pada akhirnya akan membuat <b>______</b> berubah.”</p>
+    <textarea data-save="l1_kalimat" placeholder="Tulis kalimat lengkap Anda di sini…"></textarea>
+    <p style="font-size:13.4px;margin-top:12px"><b>Tugas pasangan Anda:</b> cari satu titik dalam kalimat itu yang menurutnya belum tentu benar, dan sampaikan alasannya. Catat titik tersebut di bawah — <b>itu adalah asumsi pertama Anda</b>.</p>
+    <textarea data-save="l1_asumsi" placeholder="Titik yang belum tentu benar menurut pasangan saya, dan alasannya…"></textarea>
+    <div class="saved"></div>
+  </div>
+
+  <div class="quiz" data-quiz="m1"></div>
+</section>
+
+<!-- ================= MODUL 2 ================= -->
+<section class="lesson" id="m2" data-group="Bagian I — Dasar" data-num="2" data-nav="Anatomi ToC" data-track="1">
+  <div class="crumb">Modul 2</div>
+  <h2 class="title">Anatomi Theory of Change</h2>
+  <p class="lead">Terdapat variasi istilah antar lembaga, tetapi elemen dasarnya relatif konsisten. Modul ini memakai istilah yang paling umum dipakai lembaga donor.</p>
+  <div class="meta-chips"><span>Waktu <b>90 menit</b></span><span>Latihan 2 · 30 menit</span><span>Kuis 5 soal</span></div>
+
+  <h3>2.1 Rantai hasil</h3>
+  <figure>
+    <div class="fig-title">Gambar 2.1 — Rantai hasil dan tiga lingkup tanggung jawab</div>
+    <svg viewBox="0 0 1000 336" role="img" aria-labelledby="f21t f21d">
+      <title id="f21t">Rantai hasil dari input hingga impact</title>
+      <desc id="f21d">Enam tahap berurutan: input, aktivitas, output, outcome jangka pendek, outcome jangka menengah, dan impact. Tiga tahap pertama berada di lingkup kendali, dua outcome di lingkup pengaruh, impact di lingkup kepentingan. Batas akuntabilitas berada antara outcome jangka menengah dan impact.</desc>
+      <defs>
+        <marker id="arc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8A94A3"/></marker>
+      </defs>
+      <!-- band lingkup -->
+      <rect x="8" y="6" width="483" height="26" rx="7" fill="#E7EFF7" stroke="#C7D9EA"/>
+      <text x="249" y="24" text-anchor="middle" font-size="11.5" font-weight="800" fill="#1e4a76">KENDALI — organisasi bertanggung jawab penuh</text>
+      <rect x="509" y="6" width="316" height="26" rx="7" fill="#E4F3EC" stroke="#BFE3D2"/>
+      <text x="667" y="24" text-anchor="middle" font-size="11.5" font-weight="800" fill="#14624a">PENGARUH — bertanggung jawab atas kontribusi</text>
+      <rect x="843" y="6" width="149" height="26" rx="7" fill="#E9E6F5" stroke="#CFC7E8"/>
+      <text x="917" y="24" text-anchor="middle" font-size="11.5" font-weight="800" fill="#4a3a86">KEPENTINGAN</text>
+
+      <!-- kotak definisi -->
+      <g font-size="10.2" fill="#5B6675">
+        <rect x="10" y="46" width="145" height="96" rx="10" fill="#fff" stroke="#8A94A3" stroke-width="1.4"/>
+        <text x="22" y="66" font-size="12" font-weight="800" fill="#1B2A4A">INPUT</text>
+        <text x="22" y="86">Sumber daya yang<tspan x="22" dy="13">dimasukkan: dana, staf,</tspan><tspan x="22" dy="13">waktu, alat, jejaring</tspan></text>
+
+        <rect x="177" y="46" width="145" height="96" rx="10" fill="#fff" stroke="#8A94A3" stroke-width="1.4"/>
+        <text x="189" y="66" font-size="12" font-weight="800" fill="#1B2A4A">AKTIVITAS</text>
+        <text x="189" y="86">Apa yang dikerjakan<tspan x="189" dy="13">organisasi dengan input</tspan><tspan x="189" dy="13">tersebut</tspan></text>
+
+        <rect x="344" y="46" width="145" height="96" rx="10" fill="#fff" stroke="#3572B0" stroke-width="1.8"/>
+        <text x="356" y="66" font-size="12" font-weight="800" fill="#1e4a76">OUTPUT</text>
+        <text x="356" y="86">Produk langsung<tspan x="356" dy="13">aktivitas; berada dalam</tspan><tspan x="356" dy="13">kendali organisasi</tspan></text>
+
+        <rect x="511" y="46" width="145" height="96" rx="10" fill="#fff" stroke="#1E9E6A" stroke-width="1.8"/>
+        <text x="523" y="63" font-size="12" font-weight="800" fill="#14624a">OUTCOME</text>
+        <text x="523" y="76" font-size="12" font-weight="800" fill="#14624a">PENDEK</text>
+        <text x="523" y="96">Perubahan pengetahuan,<tspan x="523" dy="13">sikap, keterampilan</tspan><tspan x="523" dy="13">pihak lain</tspan></text>
+
+        <rect x="678" y="46" width="145" height="96" rx="10" fill="#fff" stroke="#1E9E6A" stroke-width="1.8"/>
+        <text x="690" y="63" font-size="12" font-weight="800" fill="#14624a">OUTCOME</text>
+        <text x="690" y="76" font-size="12" font-weight="800" fill="#14624a">MENENGAH</text>
+        <text x="690" y="96">Perubahan perilaku,<tspan x="690" dy="13">praktik, relasi, atau</tspan><tspan x="690" dy="13">kebijakan</tspan></text>
+
+        <rect x="845" y="46" width="145" height="96" rx="10" fill="#1B2A4A"/>
+        <text x="857" y="66" font-size="12" font-weight="800" fill="#E8CE6C">IMPACT</text>
+        <text x="857" y="86" fill="rgba(255,255,255,.86)">Perubahan kondisi<tspan x="857" dy="13">jangka panjang yang jadi</tspan><tspan x="857" dy="13">alasan program ada</tspan></text>
+      </g>
+
+      <!-- panah -->
+      <g stroke="#8A94A3" stroke-width="2" marker-end="url(#arc)">
+        <line x1="157" y1="94" x2="173" y2="94"/><line x1="324" y1="94" x2="340" y2="94"/>
+        <line x1="491" y1="94" x2="507" y2="94"/><line x1="658" y1="94" x2="674" y2="94"/>
+        <line x1="825" y1="94" x2="841" y2="94"/>
+      </g>
+
+      <!-- contoh -->
+      <text x="10" y="168" font-size="10.5" font-weight="800" fill="#8a6d1f">CONTOH — ILUSTRASI FIKTIF: program literasi keuangan perempuan nelayan</text>
+      <g font-size="10.2" fill="#5B6675">
+        <rect x="10" y="178" width="145" height="92" rx="9" fill="#FCFCFA" stroke="#DDE2EA" stroke-dasharray="4 3"/>
+        <text x="22" y="198">Dana hibah, 3<tspan x="22" dy="13">fasilitator, kurikulum,</tspan><tspan x="22" dy="13">kemitraan dengan</tspan><tspan x="22" dy="13">koperasi setempat</tspan></text>
+        <rect x="177" y="178" width="145" height="92" rx="9" fill="#FCFCFA" stroke="#DDE2EA" stroke-dasharray="4 3"/>
+        <text x="189" y="198">12 sesi pelatihan<tspan x="189" dy="13">pengelolaan kas rumah</tspan><tspan x="189" dy="13">tangga; pendampingan</tspan><tspan x="189" dy="13">kelompok bulanan</tspan></text>
+        <rect x="344" y="178" width="145" height="92" rx="9" fill="#F7FAFD" stroke="#C7D9EA" stroke-dasharray="4 3"/>
+        <text x="356" y="198">240 perempuan<tspan x="356" dy="13">menyelesaikan pelatihan;</tspan><tspan x="356" dy="13">20 kelompok simpan-</tspan><tspan x="356" dy="13">pinjam terbentuk</tspan></text>
+        <rect x="511" y="178" width="145" height="92" rx="9" fill="#F4FBF7" stroke="#BFE3D2" stroke-dasharray="4 3"/>
+        <text x="523" y="198">Peserta mampu<tspan x="523" dy="13">menyusun catatan kas</tspan><tspan x="523" dy="13">mingguan &amp; menjelaskan</tspan><tspan x="523" dy="13">bunga pinjaman</tspan></text>
+        <rect x="678" y="178" width="145" height="92" rx="9" fill="#F4FBF7" stroke="#BFE3D2" stroke-dasharray="4 3"/>
+        <text x="690" y="198">Peserta rutin menabung;<tspan x="690" dy="13">berkurangnya</tspan><tspan x="690" dy="13">ketergantungan pada</tspan><tspan x="690" dy="13">rentenir</tspan></text>
+        <rect x="845" y="178" width="145" height="92" rx="9" fill="#F2F0FA" stroke="#CFC7E8" stroke-dasharray="4 3"/>
+        <text x="857" y="198">Ketahanan ekonomi<tspan x="857" dy="13">rumah tangga nelayan</tspan><tspan x="857" dy="13">meningkat pada musim</tspan><tspan x="857" dy="13">paceklik</tspan></text>
+      </g>
+
+      <!-- batas akuntabilitas -->
+      <line x1="834" y1="40" x2="834" y2="280" stroke="#C2483C" stroke-width="2" stroke-dasharray="7 5"/>
+      <circle cx="834" cy="40" r="4" fill="#C2483C"/>
+      <text x="828" y="300" text-anchor="end" font-size="11.5" font-weight="800" fill="#8f342c">BATAS AKUNTABILITAS ▸</text>
+      <text x="828" y="316" text-anchor="end" font-size="10.5" fill="#8f342c">di kanan garis ini, klaim tunggal tidak kredibel — banyak aktor ikut menentukan</text>
+    </svg>
+    <figcaption><b>Cara membaca.</b> Semakin ke kanan, semakin besar nilainya bagi masyarakat dan semakin kecil kendali organisasi atasnya. Kesalahan paling mahal dalam pelaporan NGO adalah berhenti di kotak ketiga sambil menjanjikan kotak keenam.</figcaption>
+  </figure>
+
+  <h4>Titik yang paling sering keliru: batas output dan outcome</h4>
+  <p><b>Aturan praktis:</b> output adalah sesuatu yang <b>Anda produksi</b> dan bisa Anda pastikan terjadi; outcome adalah <b>perubahan pada orang atau sistem lain</b> yang tidak sepenuhnya Anda kendalikan.</p>
+  <div class="grid2">
+    <div class="card tight" style="border-left:4px solid var(--steel)">
+      <span class="badge b-out">Output</span>
+      <p style="font-size:14px"><b>“200 orang dilatih.”</b><br>Kehadiran bisa dipastikan dengan mengundang dan menyediakan konsumsi.</p></div>
+    <div class="card tight" style="border-left:4px solid var(--ok)">
+      <span class="badge b-outc">Outcome</span>
+      <p style="font-size:14px"><b>“200 orang mengubah cara mengelola uangnya.”</b><br>Tidak ada undangan yang bisa memastikan itu terjadi.</p></div>
+  </div>
+  <div class="note warn"><span class="h">Uji cepat</span>Jika sebuah pernyataan hasil bisa dicapai <b>hanya dengan menambah anggaran dan tenaga</b>, kemungkinan besar itu output, bukan outcome.</div>
+
+  <h3>2.2 Prasyarat (precondition) dan jalur perubahan</h3>
+  <p>Jalur perubahan adalah rangkaian outcome yang saling terhubung, disusun dari tujuan jangka panjang <b>mundur ke belakang</b>. Pada setiap tingkat, pertanyaannya sama: <i>apa yang harus benar terlebih dahulu agar hasil di atasnya dapat terjadi?</i> Kondisi-kondisi itulah yang disebut prasyarat.</p>
+  <p>Center for Theory of Change menjelaskan bahwa proses ini menuntut perencana berpikir mundur dari tujuan jangka panjang ke perubahan antara dan perubahan awal, sehingga terbentuk rangkaian outcome yang terhubung. Metode ini disebut <b>pemetaan mundur</b> (<i>backward mapping</i>) dan menjadi ciri pembeda utama ToC dari rencana kerja biasa.</p>
+  <div class="note"><span class="h">Konsekuensi penting</span>Pemetaan mundur sering memunculkan prasyarat yang <b>berada di luar kemampuan organisasi</b>. Itu bukan kegagalan metode — justru itulah gunanya. Prasyarat semacam itu menjadi bahan untuk mencari mitra, atau menjadi asumsi yang harus dipantau.</div>
+
+  <h3>2.3 Asumsi, risiko, dan faktor eksternal</h3>
+  <div class="grid3">
+    <div class="card tight"><span class="badge b-warn">Asumsi</span><p style="font-size:13.4px">Keyakinan atau kondisi yang <b>harus benar</b> agar rantai sebab-akibat berjalan.<br><i>“Ada pasar yang mau menyerap produk kelompok.”</i></p></div>
+    <div class="card tight"><span class="badge b-risk">Risiko</span><p style="font-size:13.4px">Hal di luar kendali program yang <b>berpotensi menggagalkan</b> outcome.<br><i>“Perubahan regulasi perizinan usaha mikro.”</i></p></div>
+    <div class="card tight"><span class="badge b-act">Faktor eksternal</span><p style="font-size:13.4px">Kondisi konteks yang memengaruhi jalannya perubahan, positif maupun negatif.<br><i>Musim, dinamika politik lokal, program pemerintah yang berjalan bersamaan.</i></p></div>
+  </div>
+  <p><a href="#m5">Modul 5</a> membahas asumsi secara khusus, karena di sinilah sebagian besar ToC gagal.</p>
+
+  <h3>2.4 Rasional dan bukti pendukung</h3>
+  <p>Setiap panah dalam diagram ToC adalah <b>klaim sebab-akibat</b>, dan setiap klaim membutuhkan alasan. Rasional adalah penjelasan singkat mengapa hubungan itu diyakini berlaku, disertai rujukan bukti bila ada: hasil evaluasi program sejenis, riset, pengalaman lapangan terdokumentasi, atau pengetahuan komunitas.</p>
+  <div class="note bad"><span class="h">Peringatan</span>ToC tanpa rasional adalah diagram kotak dan panah. <b>Kotak dan panah tidak meyakinkan siapa pun yang membaca dengan kritis.</b></div>
+
+  <h3>2.5 Indikator</h3>
+  <p>Indikator adalah cara mengetahui apakah suatu outcome benar-benar terjadi. Indikator yang baik menyebutkan empat hal: <b>siapa</b> yang berubah, berubah <b>dalam hal apa</b>, <b>seberapa banyak</b>, dan <b>dalam jangka waktu berapa lama</b>.</p>
+  <p><b>Kesalahan paling umum:</b> indikator hanya tersedia di level output karena data output paling mudah dikumpulkan. Akibatnya organisasi bisa melaporkan keberhasilan penuh sambil tidak tahu apa-apa tentang perubahan yang sebenarnya dijanjikan.</p>
+
+  <h3>2.6 Narasi ToC</h3>
+  <p>Diagram menyampaikan <b>struktur</b>; narasi menyampaikan <b>penalaran</b>. Narasi ToC menjelaskan mengapa jalur ini yang dipilih dan bukan jalur lain, asumsi apa yang paling rapuh, di mana batas tanggung jawab organisasi, dan apa yang akan membuat organisasi mengubah pendekatannya.</p>
+  <div class="note"><span class="h">Aturan praktis</span>Sebuah ToC yang hanya berupa diagram satu halaman <b>hampir selalu merupakan ToC yang belum selesai dipikirkan</b>.</div>
+
+  <h3>2.7 Lingkup kendali, pengaruh, dan kepentingan</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Lingkup</th><th>Isi</th><th>Konsekuensi akuntabilitas</th></tr></thead>
+    <tbody>
+      <tr><td><b>Kendali</b> <i>(control)</i></td><td>Input, aktivitas, output</td><td>Organisasi bertanggung jawab penuh dan wajib melaporkannya</td></tr>
+      <tr><td><b>Pengaruh</b> <i>(influence)</i></td><td>Outcome jangka pendek dan menengah</td><td>Organisasi bertanggung jawab atas <b>kontribusi</b>, bukan atas hasil tunggal</td></tr>
+      <tr><td><b>Kepentingan</b> <i>(interest)</i></td><td>Impact jangka panjang</td><td>Organisasi berkontribusi bersama banyak aktor; klaim tunggal tidak kredibel</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Garis antara “pengaruh” dan “kepentingan” sering disebut <b>batas akuntabilitas</b> (<i>ceiling of accountability</i>). Menetapkan garis ini secara eksplisit dalam ToC melindungi organisasi dari dua hal sekaligus: menjanjikan sesuatu yang tidak mungkin dijamin, <b>dan</b> menghindar dari tanggung jawab atas hal yang sebenarnya bisa dijamin.</p>
+
+  <div class="exercise">
+    <span class="tag">Latihan 2</span>
+    <h4>Pilah pernyataan hasil program Anda</h4>
+    <div class="dur">30 menit · kelompok</div>
+    <ol>
+      <li>Ambil kerangka logis program Anda yang ada sekarang (apa pun bentuknya).</li>
+      <li>Pilah setiap pernyataan hasil ke dalam kolom: output / outcome jangka pendek / outcome jangka menengah / impact.</li>
+      <li>Hitung berapa banyak yang ternyata <b>output</b>. Pada kebanyakan tim, jumlahnya di atas 70 persen.</li>
+      <li>Tarik garis batas akuntabilitas: sampai tingkat mana organisasi bersedia dinilai?</li>
+    </ol>
+    <div class="grid2" style="margin-top:10px">
+      <div><label style="font-size:12px;font-weight:700;color:#1B2A4A">Pernyataan yang ternyata OUTPUT</label>
+        <textarea data-save="l2_output" placeholder="Daftar pernyataan yang sebenarnya output…"></textarea></div>
+      <div><label style="font-size:12px;font-weight:700;color:#1B2A4A">Pernyataan yang benar-benar OUTCOME</label>
+        <textarea data-save="l2_outcome" placeholder="Daftar pernyataan yang benar-benar outcome…"></textarea></div>
+    </div>
+    <div style="margin-top:10px"><label style="font-size:12px;font-weight:700;color:#1B2A4A">Di tingkat mana organisasi kami bersedia dinilai? (batas akuntabilitas)</label>
+      <textarea data-save="l2_batas" placeholder="Contoh: kami bersedia dinilai sampai outcome jangka menengah — perubahan praktik pada 60% rumah tangga dampingan. Untuk impact kami hanya mengklaim kontribusi karena…"></textarea></div>
+    <div class="saved"></div>
+  </div>
+
+  <div class="quiz" data-quiz="m2"></div>
+</section>
+
+<!-- ================= MODUL 3 ================= -->
+<section class="lesson" id="m3" data-group="Bagian I — Dasar" data-num="3" data-nav="ToC vs Logframe" data-track="1">
+  <div class="crumb">Modul 3</div>
+  <h2 class="title">ToC, Logic Model, dan Logframe</h2>
+  <p class="lead">Ketiga istilah ini sering dipakai bergantian, dan kekeliruan ini menimbulkan biaya nyata: banyak organisasi mengubah judul logframe lamanya menjadi “Theory of Change”, lalu bingung mengapa penilai hibah tetap menganggap logikanya lemah.</p>
+  <div class="meta-chips"><span>Waktu <b>45 menit</b></span><span>Kuis 3 soal</span></div>
+
+  <figure>
+    <div class="fig-title">Gambar 3.1 — Tiga bentuk, tiga pertanyaan yang berbeda</div>
+    <svg viewBox="0 0 920 250" role="img" aria-labelledby="f31t f31d">
+      <title id="f31t">Perbandingan bentuk logic model, logframe, dan theory of change</title>
+      <desc id="f31d">Logic model digambarkan sebagai rantai linear, logframe sebagai matriks empat kali empat, dan theory of change sebagai diagram bercabang dengan catatan asumsi.</desc>
+      <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#8A94A3"/></marker></defs>
+
+      <rect x="6" y="6" width="292" height="238" rx="12" fill="#fff" stroke="#DDE2EA"/>
+      <text x="22" y="30" font-size="13" font-weight="800" fill="#1B2A4A">LOGIC MODEL</text>
+      <text x="22" y="48" font-size="11" fill="#5B6675">“Apa yang kita masukkan dan hasilkan?”</text>
+      <g>
+        <rect x="22" y="72" width="58" height="34" rx="6" fill="#F0F1F4" stroke="#C9CFD9"/><text x="51" y="93" text-anchor="middle" font-size="9.5" fill="#5B6675">Input</text>
+        <rect x="92" y="72" width="58" height="34" rx="6" fill="#F0F1F4" stroke="#C9CFD9"/><text x="121" y="93" text-anchor="middle" font-size="9.5" fill="#5B6675">Aktivitas</text>
+        <rect x="162" y="72" width="58" height="34" rx="6" fill="#F0F1F4" stroke="#C9CFD9"/><text x="191" y="93" text-anchor="middle" font-size="9.5" fill="#5B6675">Output</text>
+        <rect x="232" y="72" width="58" height="34" rx="6" fill="#F0F1F4" stroke="#C9CFD9"/><text x="261" y="93" text-anchor="middle" font-size="9.5" fill="#5B6675">Outcome</text>
+        <g stroke="#8A94A3" stroke-width="1.6" marker-end="url(#ar3)">
+          <line x1="80" y1="89" x2="89" y2="89"/><line x1="150" y1="89" x2="159" y2="89"/><line x1="220" y1="89" x2="229" y2="89"/></g>
+      </g>
+      <text x="22" y="140" font-size="10.5" fill="#5B6675">Rantai linear. Asumsi umumnya</text>
+      <text x="22" y="155" font-size="10.5" fill="#5B6675">tidak eksplisit; aktor lain jarang muncul.</text>
+      <text x="22" y="180" font-size="10.5" font-weight="700" fill="#1e4a76">Fungsi utama: komunikasi sederhana</text>
+      <rect x="22" y="196" width="254" height="30" rx="6" fill="#F7FAFD" stroke="#C7D9EA"/>
+      <text x="34" y="215" font-size="10.5" fill="#1e4a76">Statis — sekali dibuat, jarang berubah</text>
+
+      <rect x="314" y="6" width="292" height="238" rx="12" fill="#fff" stroke="#DDE2EA"/>
+      <text x="330" y="30" font-size="13" font-weight="800" fill="#1B2A4A">LOGFRAME</text>
+      <text x="330" y="48" font-size="11" fill="#5B6675">“Apa yang dicapai &amp; bagaimana diverifikasi?”</text>
+      <g>
+        <rect x="330" y="66" width="240" height="80" rx="5" fill="none" stroke="#C9CFD9"/>
+        <line x1="330" y1="86" x2="570" y2="86" stroke="#C9CFD9"/><line x1="330" y1="106" x2="570" y2="106" stroke="#C9CFD9"/><line x1="330" y1="126" x2="570" y2="126" stroke="#C9CFD9"/>
+        <line x1="420" y1="66" x2="420" y2="146" stroke="#C9CFD9"/><line x1="470" y1="66" x2="470" y2="146" stroke="#C9CFD9"/><line x1="520" y1="66" x2="520" y2="146" stroke="#C9CFD9"/>
+        <rect x="330" y="66" width="240" height="20" fill="#1B2A4A"/>
+        <text x="336" y="80" font-size="8.5" fill="#fff">Ringkasan</text><text x="426" y="80" font-size="8.5" fill="#fff">Indikator</text>
+        <text x="476" y="80" font-size="8.5" fill="#fff">Verifikasi</text><text x="526" y="80" font-size="8.5" fill="#E8CE6C">Asumsi</text>
+        <rect x="520" y="86" width="50" height="60" fill="#FBF3DE"/>
+        <text x="524" y="102" font-size="8" fill="#8a6d1f">sering diisi</text><text x="524" y="114" font-size="8" fill="#8a6d1f">seadanya</text>
+      </g>
+      <text x="330" y="170" font-size="10.5" fill="#5B6675">Matriks 4×4. Aktor lain muncul sebagai</text>
+      <text x="330" y="185" font-size="10.5" fill="#5B6675">risiko; terkunci pada kontrak hibah.</text>
+      <text x="330" y="208" font-size="10.5" font-weight="700" fill="#1e4a76">Fungsi utama: manajemen kontrak</text>
+      <rect x="330" y="216" width="254" height="0" fill="none"/>
+
+      <rect x="622" y="6" width="292" height="238" rx="12" fill="#FCFAF3" stroke="#C9A227" stroke-width="1.6"/>
+      <text x="638" y="30" font-size="13" font-weight="800" fill="#1B2A4A">THEORY OF CHANGE</text>
+      <text x="638" y="48" font-size="11" fill="#8a6d1f">“Mengapa kita yakin ini menghasilkan perubahan?”</text>
+      <g>
+        <rect x="762" y="64" width="90" height="26" rx="6" fill="#1B2A4A"/><text x="807" y="81" text-anchor="middle" font-size="9.5" fill="#fff">Impact</text>
+        <rect x="700" y="108" width="80" height="24" rx="6" fill="#E4F3EC" stroke="#1E9E6A"/><text x="740" y="124" text-anchor="middle" font-size="9" fill="#14624a">Outcome A</text>
+        <rect x="800" y="108" width="80" height="24" rx="6" fill="#E4F3EC" stroke="#1E9E6A"/><text x="840" y="124" text-anchor="middle" font-size="9" fill="#14624a">Outcome B</text>
+        <rect x="660" y="152" width="76" height="24" rx="6" fill="#E7EFF7" stroke="#3572B0"/><text x="698" y="168" text-anchor="middle" font-size="9" fill="#1e4a76">Output</text>
+        <rect x="748" y="152" width="76" height="24" rx="6" fill="#E7EFF7" stroke="#3572B0"/><text x="786" y="168" text-anchor="middle" font-size="9" fill="#1e4a76">Output</text>
+        <rect x="836" y="152" width="76" height="24" rx="6" fill="#F0F1F4" stroke="#8A94A3" stroke-dasharray="3 2"/><text x="874" y="168" text-anchor="middle" font-size="8.5" fill="#5B6675">peran mitra</text>
+        <g stroke="#8A94A3" stroke-width="1.5" marker-end="url(#ar3)">
+          <line x1="740" y1="106" x2="780" y2="92"/><line x1="840" y1="106" x2="826" y2="92"/>
+          <line x1="698" y1="150" x2="730" y2="134"/><line x1="786" y1="150" x2="756" y2="134"/>
+          <line x1="874" y1="150" x2="850" y2="134"/></g>
+        <rect x="638" y="192" width="264" height="42" rx="7" fill="#FBF3DE" stroke="#EAD9A8"/>
+        <text x="650" y="209" font-size="10" font-weight="700" fill="#8a6d1f">Setiap panah membawa asumsi + rasional</text>
+        <text x="650" y="225" font-size="10" fill="#6b5514">Dokumen hidup — direvisi saat asumsi terbukti salah</text>
+      </g>
+    </svg>
+    <figcaption><b>Perbedaan bentuk mengikuti perbedaan pertanyaan.</b> ToC boleh bercabang karena kenyataan bercabang; logframe harus rapi karena ia instrumen kontrak. Memaksa ToC menjadi matriks berarti membuang justru bagian yang membuatnya berguna.</figcaption>
+  </figure>
+
+  <h3>3.1 Perbandingan</h3>
+  <div class="tbl-wrap">
+  <table class="compact">
+    <thead><tr><th>Dimensi</th><th>Logic Model</th><th>Logframe</th><th>Theory of Change</th></tr></thead>
+    <tbody>
+      <tr><td><b>Pertanyaan utama</b></td><td>Apa yang kita masukkan dan hasilkan?</td><td>Apa yang akan dicapai dan bagaimana diverifikasi?</td><td>Mengapa kita yakin ini akan menghasilkan perubahan?</td></tr>
+      <tr><td><b>Bentuk</b></td><td>Rantai linear input–aktivitas–output–outcome</td><td>Matriks 4×4 dengan indikator dan alat verifikasi</td><td>Diagram jalur (bisa bercabang) plus narasi penjelas</td></tr>
+      <tr><td><b>Asumsi</b></td><td>Umumnya tidak eksplisit</td><td>Ada satu kolom, sering diisi seadanya</td><td>Elemen inti; dibahas per hubungan sebab-akibat</td></tr>
+      <tr><td><b>Aktor lain</b></td><td>Jarang muncul</td><td>Muncul sebagai risiko</td><td>Muncul sebagai bagian jalur perubahan</td></tr>
+      <tr><td><b>Fleksibilitas</b></td><td>Statis</td><td>Terkunci pada kontrak hibah</td><td>Dokumen hidup, direvisi saat asumsi terbukti salah</td></tr>
+      <tr><td><b>Fungsi utama</b></td><td>Komunikasi sederhana</td><td>Manajemen kontrak dan pelaporan</td><td>Berpikir strategis dan pembelajaran</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>3.2 Hubungan yang sehat antara ketiganya</h3>
+  <p>Ketiganya tidak saling menggantikan. Urutan kerja yang lazim: <b>susun ToC lebih dahulu</b> sebagai kerangka berpikir, lalu <b>turunkan logframe dari ToC</b> untuk kebutuhan kontrak donor. Logframe yang diturunkan dari ToC akan konsisten; logframe yang disusun lebih dulu lalu “dijelaskan mundur” biasanya menghasilkan ToC yang hanya membenarkan aktivitas yang sudah terlanjur direncanakan.</p>
+  <p>Vogel (2012) mencatat bahwa terdapat konsensus mengenai elemen dasar ToC, tetapi bentuknya sebaiknya <b>tidak diseragamkan secara kaku</b> — ToC lebih baik dijaga fleksibel ketimbang diresepkan. Bagi NGO, ini berarti tidak perlu memaksakan format satu donor ke seluruh program.</p>
+
+  <div class="note bad"><span class="h">Empat kesalahan yang perlu dihindari</span>
+    <ol style="margin:6px 0 0 18px">
+      <li>Mengganti judul logframe menjadi “Theory of Change” tanpa menambahkan asumsi dan rasional.</li>
+      <li>Menyusun ToC hanya sekali, saat menulis proposal, lalu tidak pernah membukanya lagi.</li>
+      <li>Menyalin ToC organisasi lain karena bekerja di isu yang sama — konteks lokal yang berbeda menghasilkan jalur perubahan yang berbeda.</li>
+      <li>Membuat diagram yang begitu rumit sehingga tidak ada anggota tim yang mampu menjelaskannya tanpa membaca.</li>
+    </ol></div>
+
+  <div class="quiz" data-quiz="m3"></div>
+</section>
+
+<!-- ================= MODUL 4 ================= -->
+<section class="lesson" id="m4" data-group="Bagian II — Menyusun" data-num="4" data-nav="Delapan langkah" data-track="1">
+  <div class="crumb">Modul 4</div>
+  <h2 class="title">Delapan Langkah Menyusun ToC</h2>
+  <p class="lead">Urutan berikut menggabungkan praktik yang lazim dipakai dalam panduan lembaga donor dan lembaga pelatihan. <b>Urutannya penting</b> — terutama Langkah 1 yang paling sering dilewati.</p>
+  <div class="meta-chips"><span>Waktu <b>150 menit</b></span><span>Latihan 4 · 90 menit — inti pelatihan</span><span>Kuis 4 soal</span></div>
+
+  <figure>
+    <div class="fig-title">Gambar 4.1 — Delapan langkah, dan mengapa ia melingkar</div>
+    <svg viewBox="0 0 960 210" role="img" aria-labelledby="f41t f41d">
+      <title id="f41t">Delapan langkah menyusun Theory of Change</title>
+      <desc id="f41d">Analisis situasi, tujuan jangka panjang, pemetaan mundur, identifikasi intervensi, memunculkan asumsi, menetapkan indikator, menulis narasi, lalu uji dan revisi yang mengembalikan proses ke langkah pertama.</desc>
+      <defs><marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#C9A227"/></marker></defs>
+      <line x1="56" y1="52" x2="910" y2="52" stroke="#DDE2EA" stroke-width="3"/>
+      <g font-size="9.6" fill="#5B6675" text-anchor="middle">
+        <circle cx="56" cy="52" r="21" fill="#C2483C"/><text x="56" y="57" font-size="15" font-weight="800" fill="#fff">1</text>
+        <text x="56" y="92" font-weight="700" fill="#8f342c">Analisis situasi</text><text x="56" y="105">&amp; masalah</text>
+        <circle cx="178" cy="52" r="21" fill="#1B2A4A"/><text x="178" y="57" font-size="15" font-weight="800" fill="#fff">2</text>
+        <text x="178" y="92" font-weight="700" fill="#1B2A4A">Tujuan jangka</text><text x="178" y="105">panjang</text>
+        <circle cx="300" cy="52" r="21" fill="#1B2A4A"/><text x="300" y="57" font-size="15" font-weight="800" fill="#fff">3</text>
+        <text x="300" y="92" font-weight="700" fill="#1B2A4A">Pemetaan mundur</text><text x="300" y="105">prasyarat</text>
+        <circle cx="422" cy="52" r="21" fill="#1B2A4A"/><text x="422" y="57" font-size="15" font-weight="800" fill="#fff">4</text>
+        <text x="422" y="92" font-weight="700" fill="#1B2A4A">Identifikasi</text><text x="422" y="105">intervensi</text>
+        <circle cx="544" cy="52" r="21" fill="#D9A400"/><text x="544" y="57" font-size="15" font-weight="800" fill="#3a2d00">5</text>
+        <text x="544" y="92" font-weight="700" fill="#8a6d1f">Munculkan</text><text x="544" y="105">asumsi</text>
+        <circle cx="666" cy="52" r="21" fill="#1E9E6A"/><text x="666" y="57" font-size="15" font-weight="800" fill="#fff">6</text>
+        <text x="666" y="92" font-weight="700" fill="#14624a">Tetapkan</text><text x="666" y="105">indikator</text>
+        <circle cx="788" cy="52" r="21" fill="#3572B0"/><text x="788" y="57" font-size="15" font-weight="800" fill="#fff">7</text>
+        <text x="788" y="92" font-weight="700" fill="#1e4a76">Tulis narasi</text>
+        <circle cx="910" cy="52" r="21" fill="#7A5FBF"/><text x="910" y="57" font-size="15" font-weight="800" fill="#fff">8</text>
+        <text x="910" y="92" font-weight="700" fill="#4a3a86">Uji, validasi,</text><text x="910" y="105">revisi</text>
+      </g>
+      <path d="M910 128 C 880 172, 200 190, 56 138" fill="none" stroke="#C9A227" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#ar4)"/>
+      <text x="480" y="196" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8a6d1f">Langkah 8 mengembalikan proses ke Langkah 1 — ToC adalah dokumen hidup, bukan dokumen sekali jadi</text>
+    </svg>
+    <figcaption>Langkah 1 diberi warna berbeda karena inilah langkah yang paling sering dilewati. Langkah 5 (asumsi) berwarna emas karena di sinilah sebagian besar ToC gagal — lihat <a href="#m5">Modul 5</a>.</figcaption>
+  </figure>
+
+  <h3>Langkah 1 — Analisis situasi dan masalah</h3>
+  <p>Godaan terbesar adalah langsung memetakan mundur dari tujuan. New Philanthropy Capital menyarankan justru sebaliknya: <b>mulai dengan pemahaman menyeluruh atas persoalan dan penyebabnya</b> melalui analisis situasi, agar kelompok sasaran dapat ditentukan secara tepat — baru kemudian lakukan pemetaan mundur.</p>
+
+  <figure>
+    <div class="fig-title">Gambar 4.2 — Pohon masalah: perangkat utama Langkah 1</div>
+    <svg viewBox="0 0 860 372" role="img" aria-labelledby="f42t f42d">
+      <title id="f42t">Pohon masalah</title>
+      <desc id="f42d">Akar penyebab di bawah, masalah inti di tengah sebagai batang, dan dampak yang ditimbulkan di atas sebagai tajuk.</desc>
+      <defs><marker id="ar5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#8A94A3"/></marker></defs>
+      <text x="16" y="22" font-size="11.5" font-weight="800" fill="#8f342c">DAMPAK YANG DITIMBULKAN — “kalau dibiarkan, apa akibatnya?”</text>
+      <g font-size="10.5" fill="#8f342c">
+        <rect x="16" y="32" width="256" height="52" rx="9" fill="#FCF0EE" stroke="#F0D5D0"/>
+        <text x="30" y="53">Pendapatan rumah tangga turun<tspan x="30" dy="14">pada musim paceklik</tspan></text>
+        <rect x="298" y="32" width="256" height="52" rx="9" fill="#FCF0EE" stroke="#F0D5D0"/>
+        <text x="312" y="53">Anak putus sekolah karena biaya<tspan x="312" dy="14">tak tertutup</tspan></text>
+        <rect x="580" y="32" width="264" height="52" rx="9" fill="#FCF0EE" stroke="#F0D5D0"/>
+        <text x="594" y="53">Ketergantungan pada pemberi<tspan x="594" dy="14">pinjaman berbunga tinggi menetap</tspan></text>
+      </g>
+      <g stroke="#8A94A3" stroke-width="1.8" marker-end="url(#ar5)">
+        <line x1="180" y1="128" x2="144" y2="90"/><line x1="430" y1="128" x2="430" y2="90"/><line x1="680" y1="128" x2="712" y2="90"/>
+      </g>
+      <rect x="230" y="134" width="400" height="58" rx="11" fill="#1B2A4A"/>
+      <text x="430" y="158" text-anchor="middle" font-size="12" font-weight="800" fill="#E8CE6C">MASALAH INTI</text>
+      <text x="430" y="178" text-anchor="middle" font-size="11.5" fill="#fff">Rumah tangga nelayan tidak memiliki penyangga kas antar musim</text>
+      <g stroke="#8A94A3" stroke-width="1.8" marker-end="url(#ar5)">
+        <line x1="150" y1="240" x2="290" y2="196"/><line x1="430" y1="240" x2="430" y2="196"/><line x1="700" y1="240" x2="570" y2="196"/>
+      </g>
+      <text x="16" y="262" font-size="11.5" font-weight="800" fill="#1e4a76">AKAR PENYEBAB — “mengapa masalah ini belum terselesaikan?”</text>
+      <g font-size="10.5" fill="#1e4a76">
+        <rect x="16" y="272" width="256" height="66" rx="9" fill="#E7EFF7" stroke="#C7D9EA"/>
+        <text x="30" y="293">Tidak ada layanan keuangan<tspan x="30" dy="14">formal yang menjangkau desa</tspan><tspan x="30" dy="14">pada jam kerja nelayan</tspan></text>
+        <rect x="298" y="272" width="256" height="66" rx="9" fill="#E7EFF7" stroke="#C7D9EA"/>
+        <text x="312" y="293">Pengetahuan mengelola kas<tspan x="312" dy="14">antar musim tidak pernah</tspan><tspan x="312" dy="14">diajarkan</tspan></text>
+        <rect x="580" y="272" width="264" height="66" rx="9" fill="#E7EFF7" stroke="#C7D9EA"/>
+        <text x="594" y="293">Harga tangkapan ditentukan<tspan x="594" dy="14">sepihak oleh pengepul yang</tspan><tspan x="594" dy="14">juga pemberi pinjaman</tspan></text>
+      </g>
+      <text x="430" y="362" text-anchor="middle" font-size="11" fill="#5B6675" font-style="italic">Perhatikan akar ketiga: ia berada di luar kendali program pelatihan — dan itulah yang harus ketahuan sejak Langkah 1, bukan di tahun kedua.</text>
+    </svg>
+    <figcaption><b>Perangkat Langkah 1:</b> pohon masalah · analisis pemangku kepentingan (siapa terdampak, siapa berkuasa, siapa berpotensi menghambat) · tinjauan bukti (apa yang sudah diketahui berhasil dan gagal) · pemetaan aktor lain yang bekerja pada masalah sama di wilayah sama.<br><b>Keluaran langkah ini:</b> rumusan masalah yang disepakati, kelompok sasaran yang jelas, dan pemahaman mengapa masalah itu belum terselesaikan. <span class="src-note">Angka dan situasi pada gambar adalah ilustrasi fiktif.</span></figcaption>
+  </figure>
+
+  <h3>Langkah 2 — Tetapkan tujuan jangka panjang</h3>
+  <p>Rumuskan <b>satu</b> tujuan jangka panjang. Tujuan yang baik menyebutkan siapa yang berubah, berubah dalam hal apa, di wilayah mana, dan dalam horizon waktu berapa lama. Tujuan yang kabur menghasilkan seluruh ToC yang kabur.</p>
+  <div class="grid2">
+    <div class="card tight" style="border-left:4px solid var(--bad)"><span class="badge b-risk">Lemah</span>
+      <p style="font-size:14px">“Meningkatkan kesejahteraan masyarakat pesisir.”</p>
+      <p style="font-size:12.5px;color:var(--muted)">Siapa? Berubah dalam hal apa? Sampai kapan? Tidak ada satu pun yang bisa dijawab — sehingga tidak ada satu pun yang bisa diukur.</p></div>
+    <div class="card tight" style="border-left:4px solid var(--ok)"><span class="badge b-outc">Lebih kuat</span>
+      <p style="font-size:14px">“Dalam lima tahun, rumah tangga nelayan skala kecil di tiga kecamatan mampu mempertahankan pendapatan pada musim paceklik tanpa berutang pada pemberi pinjaman berbunga tinggi.”</p>
+      <p style="font-size:12.5px;color:var(--muted)">Siapa (rumah tangga nelayan skala kecil), di mana (tiga kecamatan), berubah dalam hal apa (mempertahankan pendapatan tanpa utang berbunga tinggi), sampai kapan (lima tahun).</p></div>
+  </div>
+
+  <h3>Langkah 3 — Pemetaan mundur prasyarat</h3>
+  <p>Mulai dari tujuan jangka panjang, ajukan pertanyaan berulang: <b>“Apa yang harus benar agar ini terjadi?”</b> Setiap jawaban menjadi prasyarat pada tingkat di bawahnya. Lanjutkan sampai tiba pada kondisi yang secara masuk akal dapat dipengaruhi oleh program.</p>
+
+  <figure>
+    <div class="fig-title">Gambar 4.3 — Dua arah yang berbeda: berpikir dan menjelaskan</div>
+    <svg viewBox="0 0 820 400" role="img" aria-labelledby="f43t f43d">
+      <title id="f43t">Arah pemetaan mundur versus arah pelaksanaan</title>
+      <desc id="f43d">Empat tingkat bertumpuk. Panah kiri menunjukkan arah berpikir dari impact turun ke aktivitas; panah kanan menunjukkan arah pelaksanaan dan penjelasan dari aktivitas naik ke impact.</desc>
+      <defs>
+        <marker id="ar6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#C2483C"/></marker>
+        <marker id="ar7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1E9E6A"/></marker>
+      </defs>
+      <g>
+        <rect x="120" y="16" width="580" height="66" rx="10" fill="#1B2A4A"/>
+        <text x="140" y="42" font-size="11" font-weight="800" fill="#E8CE6C">TINGKAT 4 · TUJUAN JANGKA PANJANG</text>
+        <text x="140" y="64" font-size="12.5" fill="#fff">Rumah tangga nelayan mampu bertahan pada musim paceklik tanpa utang berbunga tinggi</text>
+
+        <rect x="120" y="100" width="580" height="66" rx="10" fill="#E4F3EC" stroke="#1E9E6A" stroke-width="1.5"/>
+        <text x="140" y="126" font-size="11" font-weight="800" fill="#14624a">TINGKAT 3 · PRASYARAT</text>
+        <text x="140" y="148" font-size="12.5" fill="#14624a">Rumah tangga rutin menyisihkan kas &amp; punya akses pinjaman berbunga wajar</text>
+
+        <rect x="120" y="184" width="580" height="66" rx="10" fill="#E4F3EC" stroke="#1E9E6A" stroke-width="1.5"/>
+        <text x="140" y="210" font-size="11" font-weight="800" fill="#14624a">TINGKAT 2 · PRASYARAT</text>
+        <text x="140" y="232" font-size="12.5" fill="#14624a">Kelompok simpan-pinjam berjalan &amp; anggotanya mampu mencatat kas mingguan</text>
+
+        <rect x="120" y="268" width="580" height="66" rx="10" fill="#E7EFF7" stroke="#3572B0" stroke-width="1.5"/>
+        <text x="140" y="294" font-size="11" font-weight="800" fill="#1e4a76">TINGKAT 1 · YANG DAPAT KAMI KERJAKAN</text>
+        <text x="140" y="316" font-size="12.5" fill="#1e4a76">Pelatihan pengelolaan kas + pendampingan pembentukan kelompok</text>
+      </g>
+      <path d="M78 26 L78 324" fill="none" stroke="#C2483C" stroke-width="2.4" marker-end="url(#ar6)"/>
+      <text transform="translate(60,300) rotate(-90)" font-size="11.5" font-weight="800" fill="#8f342c">ARAH BERPIKIR (mundur) — “apa yang harus benar agar ini terjadi?”</text>
+      <path d="M742 324 L742 26" fill="none" stroke="#1E9E6A" stroke-width="2.4" marker-end="url(#ar7)"/>
+      <text transform="translate(762,336) rotate(-90)" font-size="11.5" font-weight="800" fill="#14624a">ARAH PELAKSANAAN &amp; PENJELASAN (maju)</text>
+      <text x="410" y="368" text-anchor="middle" font-size="11.5" fill="#5B6675">Isi dari atas ke bawah saat berpikir. Baca dari bawah ke atas saat menjelaskan ke donor atau komunitas.</text>
+      <text x="410" y="388" text-anchor="middle" font-size="11" font-style="italic" fill="#7C8798">Ilustrasi fiktif — dipakai hanya untuk menunjukkan arah kerja.</text>
+    </svg>
+    <figcaption><b>Panduan praktis saat memfasilitasi:</b> satu kartu tempel untuk satu prasyarat (jangan menumpuk dua gagasan dalam satu kartu) · jangan menghapus prasyarat di luar kendali organisasi — pindahkan ke kolom terpisah · berhenti ketika tiga sampai empat tingkat sudah terbentuk · terima bahwa peta akan direvisi berkali-kali, sebab itulah alasan kartu tempel dipilih.</figcaption>
+  </figure>
+
+  <h3>Langkah 4 — Identifikasi intervensi</h3>
+  <p><b>Baru pada tahap ini aktivitas ditentukan.</b> Untuk setiap prasyarat, tanyakan intervensi apa yang akan menciptakannya. Satu prasyarat sering membutuhkan lebih dari satu intervensi, dan sebagian prasyarat mungkin lebih baik diserahkan pada mitra.</p>
+  <div class="note warn"><span class="h">Uji kejujuran</span>Apakah aktivitas yang muncul di sini <b>sama persis</b> dengan aktivitas yang sudah biasa dijalankan organisasi? Jika ya, ada kemungkinan pemetaan mundur tidak benar-benar dilakukan, melainkan dibuat untuk membenarkan kebiasaan lama.</div>
+
+  <h3>Langkah 5 — Munculkan asumsi</h3>
+  <p>Untuk setiap panah yang menghubungkan intervensi ke prasyarat, dan prasyarat satu ke prasyarat berikutnya, tuliskan asumsi yang membuat hubungan itu masuk akal. Rinciannya dibahas pada <a href="#m5">Modul 5</a>.</p>
+
+  <h3>Langkah 6 — Tetapkan indikator</h3>
+  <p>Turunkan indikator dari <b>setiap outcome</b>, bukan hanya dari output. Untuk setiap indikator, tentukan sumber data, metode pengumpulan, frekuensi, dan penanggung jawab. Jika sebuah outcome tidak dapat diukur dengan sumber daya yang tersedia, itu <b>keputusan yang harus diambil secara sadar dan dicatat</b> — bukan diabaikan diam-diam.</p>
+
+  <h3>Langkah 7 — Tulis narasi</h3>
+  <p>Susun 2–4 halaman yang menjelaskan: konteks dan masalah, tujuan jangka panjang, jalur perubahan utama beserta alasan pemilihannya, asumsi paling kritis, batas akuntabilitas, dan kondisi yang akan mendorong organisasi mengubah strategi.</p>
+
+  <h3>Langkah 8 — Uji, validasi, revisi</h3>
+  <p>ToC yang belum diuji hanyalah pendapat internal. Empat bentuk pengujian:</p>
+  <div class="grid4">
+    <div class="card tight"><h5>Validasi ke komunitas</h5><p style="font-size:13px">Apakah penerima manfaat mengenali masalah dan jalur perubahan seperti yang digambarkan?</p></div>
+    <div class="card tight"><h5>Uji sejawat</h5><p style="font-size:13px">Minta pihak luar mencari titik terlemah dalam rantai logika.</p></div>
+    <div class="card tight"><h5>Uji bukti</h5><p style="font-size:13px">Adakah riset atau evaluasi yang mendukung — atau justru membantah — hubungan kunci?</p></div>
+    <div class="card tight"><h5>Tinjauan berkala</h5><p style="font-size:13px">Jadwalkan peninjauan minimal setahun sekali; catat perubahan dan alasannya.</p></div>
+  </div>
+
+  <div class="exercise">
+    <span class="tag">Latihan 4 — inti pelatihan</span>
+    <h4>Pemetaan mundur untuk satu program nyata</h4>
+    <div class="dur">90 menit · kelompok · dinding dan kartu tempel</div>
+    <ol>
+      <li>Lakukan Langkah 2 sampai Langkah 4 untuk satu program nyata organisasi Anda.</li>
+      <li>Gunakan dinding dan kartu tempel <b>tiga warna</b>: satu warna untuk outcome, satu untuk aktivitas, satu untuk prasyarat di luar kendali.</li>
+      <li><b>Aturan keras:</b> tidak boleh menempelkan satu pun kartu aktivitas sebelum seluruh jalur outcome selesai dipetakan.</li>
+      <li>Presentasikan hasil ke kelompok lain selama 5 menit. Tugas kelompok pendengar: <b>mencari panah yang paling lemah</b>.</li>
+    </ol>
+    <div style="margin-top:10px"><label style="font-size:12px;font-weight:700;color:#1B2A4A">Tujuan jangka panjang (Langkah 2) — siapa, berubah dalam hal apa, di mana, berapa lama</label>
+      <textarea data-save="l4_tujuan" placeholder="Dalam ___ tahun, ___ di ___ mampu ___"></textarea></div>
+    <div style="margin-top:10px"><label style="font-size:12px;font-weight:700;color:#1B2A4A">Prasyarat hasil pemetaan mundur (Langkah 3) — tulis dari tingkat teratas ke bawah</label>
+      <textarea data-save="l4_prasyarat" style="min-height:120px" placeholder="Tingkat 3: …&#10;Tingkat 2: …&#10;Tingkat 1: …&#10;&#10;Prasyarat DI LUAR KENDALI kami: …"></textarea></div>
+    <div style="margin-top:10px"><label style="font-size:12px;font-weight:700;color:#1B2A4A">Intervensi untuk setiap prasyarat (Langkah 4) — dan mana yang lebih baik diserahkan pada mitra</label>
+      <textarea data-save="l4_intervensi" placeholder="Prasyarat 1 → intervensi …&#10;Prasyarat 2 → intervensi … (mitra: …)"></textarea></div>
+    <div style="margin-top:10px"><label style="font-size:12px;font-weight:700;color:#1B2A4A">Uji kejujuran: apa yang BERBEDA dari yang biasa kami kerjakan?</label>
+      <textarea data-save="l4_jujur" placeholder="Jika jawabannya “tidak ada yang berbeda”, ulangi Langkah 3 tanpa melihat daftar kegiatan tahun lalu."></textarea></div>
+    <div class="saved"></div>
+  </div>
+
+  <div class="quiz" data-quiz="m4"></div>
+</section>
+
+<!-- ================= MODUL 5 ================= -->
+<section class="lesson" id="m5" data-group="Bagian II — Menyusun" data-num="5" data-nav="Asumsi" data-track="1">
+  <div class="crumb">Modul 5</div>
+  <h2 class="title">Asumsi — Bagian yang Paling Sering Diabaikan</h2>
+  <p class="lead">Tinjauan DFID yang disusun Vogel (2012) menegaskan bahwa bekerja dengan ToC menuntut bukan hanya berpikir logis, tetapi juga refleksi kritis yang lebih dalam. Refleksi kritis itu, pada praktiknya, terjadi di kolom asumsi.</p>
+  <div class="meta-chips"><span>Waktu <b>90 menit</b></span><span>Latihan 5 · perangkat interaktif</span><span>Kuis 5 soal</span></div>
+
+  <div class="note bad"><span class="h">Penanda ToC yang belum bekerja</span>ToC yang kolom asumsinya diisi kalimat generik seperti <i>“situasi keamanan tetap kondusif”</i> adalah ToC yang <b>belum melakukan pekerjaan sesungguhnya</b>.</div>
+
+  <h3>5.1 Empat jenis asumsi</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th style="min-width:130px">Jenis</th><th>Pertanyaan penguji</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td><b>Kausal</b></td><td>Mengapa A menyebabkan B? Apa buktinya?</td><td><i>“Pengetahuan tentang gizi akan mengubah pola makan keluarga.”</i></td></tr>
+      <tr><td><b>Implementasi</b></td><td>Apakah kita mampu benar-benar melaksanakannya?</td><td><i>“Fasilitator lokal akan bertahan sepanjang tiga tahun program.”</i></td></tr>
+      <tr><td><b>Kontekstual</b></td><td>Kondisi luar apa yang harus tetap berlaku?</td><td><i>“Tidak ada perubahan regulasi yang menutup akses kelompok ke pasar.”</i></td></tr>
+      <tr><td style="background:#FBF3DE"><b>Normatif / paradigma</b></td><td style="background:#FBF3DE">Keyakinan <b>siapa</b> tentang bagaimana perubahan terjadi yang sedang kita pakai?</td><td style="background:#FBF3DE"><i>“Perubahan perilaku individu adalah titik ungkit utama, bukan perubahan struktur harga.”</i></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note warn"><span class="h">Jenis keempat adalah yang paling berbahaya</span>Asumsi normatif paling jarang ditulis karena dianggap akal sehat. Padahal ia menentukan <b>seluruh bentuk program</b>. Menuliskannya membuka kemungkinan bahwa seluruh pendekatan program perlu diubah — dan itulah sebabnya ia jarang ditulis.</div>
+
+  <h3>5.2 Matriks penilaian asumsi</h3>
+  <p>Tidak semua asumsi perlu diperlakukan sama. Nilai setiap asumsi pada dua sumbu: <b>seberapa besar akibatnya jika asumsi itu salah</b>, dan <b>seberapa kuat bukti yang mendukungnya</b>.</p>
+
+  <figure>
+    <div class="fig-title">Gambar 5.1 — Matriks asumsi: akibat × kekuatan bukti</div>
+    <svg viewBox="0 0 760 420" role="img" aria-labelledby="f51t f51d">
+      <title id="f51t">Matriks dua kali dua penilaian asumsi</title>
+      <desc id="f51d">Sumbu tegak akibat jika salah, sumbu datar kekuatan bukti. Kuadran akibat besar dengan bukti lemah adalah prioritas tertinggi.</desc>
+      <text x="130" y="34" font-size="12" font-weight="800" fill="#1B2A4A" text-anchor="middle">BUKTI KUAT</text>
+      <text x="510" y="34" font-size="12" font-weight="800" fill="#1B2A4A" text-anchor="middle">BUKTI LEMAH ATAU TIDAK ADA</text>
+      <text transform="translate(26,190) rotate(-90)" text-anchor="middle" font-size="12" font-weight="800" fill="#1B2A4A">AKIBAT BESAR</text>
+      <text transform="translate(26,340) rotate(-90)" text-anchor="middle" font-size="12" font-weight="800" fill="#1B2A4A">AKIBAT KECIL</text>
+
+      <rect x="46" y="48" width="330" height="176" rx="12" fill="#FBF3DE" stroke="#EAD9A8" stroke-width="1.5"/>
+      <text x="66" y="78" font-size="13.5" font-weight="800" fill="#8a6d1f">Pantau secara rutin</text>
+      <text x="66" y="102" font-size="11.5" fill="#6b5514">Jadikan bagian dari laporan berkala. Bukti sudah</text>
+      <text x="66" y="118" font-size="11.5" fill="#6b5514">kuat, tetapi taruhannya besar — jangan sampai</text>
+      <text x="66" y="134" font-size="11.5" fill="#6b5514">pergeseran konteks lolos dari perhatian.</text>
+      <text x="66" y="166" font-size="10.5" font-weight="700" fill="#8a6d1f">CONTOH</text>
+      <text x="66" y="184" font-size="11" fill="#6b5514" font-style="italic">“Pemerintah desa bersedia menerbitkan dan</text>
+      <text x="66" y="200" font-size="11" fill="#6b5514" font-style="italic">menegakkan peraturan” (bukti sedang–kuat)</text>
+
+      <rect x="392" y="48" width="330" height="176" rx="12" fill="#FCF0EE" stroke="#C2483C" stroke-width="2"/>
+      <rect x="392" y="48" width="330" height="26" rx="12" fill="#C2483C"/>
+      <text x="557" y="67" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">PRIORITAS TERTINGGI</text>
+      <text x="412" y="98" font-size="11.5" fill="#8f342c">Uji sebelum program berjalan penuh, atau rancang</text>
+      <text x="412" y="114" font-size="11.5" fill="#8f342c">uji coba skala kecil lebih dulu. Asumsi di kuadran ini</text>
+      <text x="412" y="130" font-size="11.5" fill="#8f342c"><tspan font-weight="800">seharusnya mengubah rancangan program</tspan> —</text>
+      <text x="412" y="146" font-size="11.5" fill="#8f342c">riset awal, uji coba terbatas, atau titik keputusan</text>
+      <text x="412" y="162" font-size="11.5" fill="#8f342c">sebelum sumber daya besar dikeluarkan.</text>
+      <text x="412" y="190" font-size="10.5" font-weight="700" fill="#8f342c">CONTOH</text>
+      <text x="412" y="208" font-size="11" fill="#8f342c" font-style="italic">“Pelaku usaha wisata bersedia menanggung sebagian biaya”</text>
+
+      <rect x="46" y="240" width="330" height="150" rx="12" fill="#F7F8FA" stroke="#DDE2EA"/>
+      <text x="66" y="270" font-size="13.5" font-weight="800" fill="#5B6675">Catat saja</text>
+      <text x="66" y="294" font-size="11.5" fill="#7C8798">Tidak perlu tindakan khusus. Menghabiskan energi</text>
+      <text x="66" y="310" font-size="11.5" fill="#7C8798">pemantauan di kuadran ini justru mengalihkan</text>
+      <text x="66" y="326" font-size="11.5" fill="#7C8798">perhatian dari yang benar-benar berisiko.</text>
+
+      <rect x="392" y="240" width="330" height="150" rx="12" fill="#E7EFF7" stroke="#C7D9EA"/>
+      <text x="412" y="270" font-size="13.5" font-weight="800" fill="#1e4a76">Tinjau saat evaluasi tengah periode</text>
+      <text x="412" y="294" font-size="11.5" fill="#1e4a76">Bukti lemah, tetapi kalaupun salah kerugiannya</text>
+      <text x="412" y="310" font-size="11.5" fill="#1e4a76">terbatas. Jadwalkan peninjauan, jangan</text>
+      <text x="412" y="326" font-size="11.5" fill="#1e4a76">menghabiskan sumber daya menguji di awal.</text>
+
+      <text x="384" y="412" text-anchor="middle" font-size="11" font-style="italic" fill="#7C8798">Contoh diambil dari studi kasus fiktif Yayasan Bahari Lestari — lihat bagian Studi Kasus.</text>
+    </svg>
+    <figcaption>Kuadran kanan atas bukan sekadar “perlu perhatian lebih”. Ia adalah <b>sinyal bahwa rancangan program mungkin perlu berubah</b> sebelum sumber daya besar dikeluarkan.</figcaption>
+  </figure>
+
+  <h3>5.3 Dari asumsi ke tindakan</h3>
+  <div class="grid3">
+    <div class="card tight"><h4 style="margin-top:0">Asumsi berisiko tinggi menjadi indikator</h4>
+      <p style="font-size:13.3px">Jika keberhasilan bergantung pada dukungan pemerintah desa, maka <b>tingkat dukungan itu harus dipantau</b> — bukan diasumsikan.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Asumsi yang gugur menjadi pemicu revisi</h4>
+      <p style="font-size:13.3px">Tetapkan sejak awal: <b>apa yang akan kita lakukan jika asumsi ini terbukti salah?</b> Jawaban itu bagian dari rancangan, bukan improvisasi.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Asumsi menjadi bahan percakapan dengan donor</h4>
+      <p style="font-size:13.3px">Mengakui ketidakpastian secara terbuka umumnya <b>lebih kredibel</b> daripada menyajikan kepastian yang tidak dimiliki.</p></div>
+  </div>
+
+  <div class="exercise">
+    <span class="tag">Latihan 5</span>
+    <h4>Daftar dan matriks asumsi Anda</h4>
+    <div class="dur">45 menit · target minimal 10 asumsi · tersimpan otomatis</div>
+    <ol>
+      <li>Kembali ke jalur perubahan hasil <a href="#m4">Latihan 4</a>.</li>
+      <li>Tuliskan minimal <b>10 asumsi</b>, lalu klasifikasikan ke dalam empat jenis pada bagian 5.1.</li>
+      <li>Tempatkan setiap asumsi ke dalam matriks 5.2 (kolom “akibat” dan “bukti” di bawah otomatis memetakannya).</li>
+      <li>Untuk setiap asumsi di kuadran <b>akibat besar–bukti lemah</b>: tuliskan satu tindakan konkret — riset, uji coba, konsultasi, atau perubahan rancangan.</li>
+      <li>Diskusikan: adakah <b>asumsi normatif</b> yang selama ini tidak pernah diperdebatkan di organisasi Anda?</li>
+    </ol>
+
+    <div style="display:flex;gap:9px;align-items:center;margin:14px 0 6px;flex-wrap:wrap">
+      <button class="btn sm" id="asumsiAdd">+ Tambah asumsi</button>
+      <span style="font-size:12px;color:var(--muted)">Isian tersimpan otomatis di peramban ini. Gunakan <b>Ekspor</b> di kiri bawah untuk menyimpan salinan.</span>
+    </div>
+    <div id="asumsiTable"></div>
+
+    <h5 style="margin-top:18px">Pemetaan otomatis ke matriks</h5>
+    <div class="grid2" style="gap:12px">
+      <div class="card tight" id="qBK" style="background:#FBF3DE;border-color:#EAD9A8;margin:0">
+        <div style="font-size:11px;font-weight:800;color:#8a6d1f;letter-spacing:.06em">AKIBAT BESAR · BUKTI KUAT</div>
+        <div style="font-size:13.5px;font-weight:700;color:#1B2A4A;margin:3px 0">Pantau secara rutin</div>
+        <div class="nums" style="font-size:12.5px;color:#6b5514">—</div></div>
+      <div class="card tight" id="qBL" style="background:#FCF0EE;border-color:#C2483C;border-width:1.5px;margin:0">
+        <div style="font-size:11px;font-weight:800;color:#8f342c;letter-spacing:.06em">AKIBAT BESAR · BUKTI LEMAH</div>
+        <div style="font-size:13.5px;font-weight:700;color:#8f342c;margin:3px 0">PRIORITAS TERTINGGI — uji sebelum program berjalan penuh</div>
+        <div class="nums" style="font-size:12.5px;color:#8f342c">—</div></div>
+      <div class="card tight" id="qKK" style="background:#F7F8FA;margin:0">
+        <div style="font-size:11px;font-weight:800;color:#5B6675;letter-spacing:.06em">AKIBAT KECIL · BUKTI KUAT</div>
+        <div style="font-size:13.5px;font-weight:700;color:#1B2A4A;margin:3px 0">Catat saja</div>
+        <div class="nums" style="font-size:12.5px;color:#7C8798">—</div></div>
+      <div class="card tight" id="qKL" style="background:#E7EFF7;border-color:#C7D9EA;margin:0">
+        <div style="font-size:11px;font-weight:800;color:#1e4a76;letter-spacing:.06em">AKIBAT KECIL · BUKTI LEMAH</div>
+        <div style="font-size:13.5px;font-weight:700;color:#1e4a76;margin:3px 0">Tinjau saat evaluasi tengah periode</div>
+        <div class="nums" style="font-size:12.5px;color:#1e4a76">—</div></div>
+    </div>
+
+    <div style="margin-top:14px"><label style="font-size:12px;font-weight:700;color:#1B2A4A">Asumsi normatif yang belum pernah diperdebatkan di organisasi kami</label>
+      <textarea data-save="l5_normatif" placeholder="Contoh: kami selalu menganggap pelatihan adalah titik ungkit utama. Kami belum pernah membahas kemungkinan bahwa yang menentukan justru tersedianya layanan."></textarea></div>
+    <div class="saved"></div>
+  </div>
+
+  <div class="quiz" data-quiz="m5"></div>
+</section>
+
+<!-- ================= MODUL 6 ================= -->
+<section class="lesson" id="m6" data-group="Bagian III — Menggunakan" data-num="6" data-nav="ToC ke MEAL &amp; proposal" data-track="1">
+  <div class="crumb">Modul 6</div>
+  <h2 class="title">Dari ToC ke MEAL dan Proposal</h2>
+  <p class="lead">Setiap outcome dalam ToC adalah spesifikasi indikator yang belum selesai ditulis.</p>
+  <div class="meta-chips"><span>Waktu <b>90 menit</b></span><span>Latihan 6 · perangkat interaktif</span><span>Kuis 4 soal</span></div>
+
+  <h3>6.1 Menurunkan indikator</h3>
+  <p>“Meningkatnya keterampilan mengelola kas” adalah <b>outcome</b>; indikatornya adalah cara mengetahui apakah keterampilan itu benar-benar meningkat dan pada berapa banyak orang. Selama pertanyaan itu belum dijawab, outcome tersebut hanya sebuah harapan yang ditulis rapi.</p>
+
+  <div class="exercise">
+    <span class="tag">Latihan 6</span>
+    <h4>Kerangka indikator (rencana MEAL minimal)</h4>
+    <div class="dur">Aturan: satu indikator untuk setiap outcome — bukan hanya untuk output</div>
+    <div style="display:flex;gap:9px;align-items:center;margin:12px 0 6px;flex-wrap:wrap">
+      <button class="btn sm" id="indAdd">+ Tambah baris indikator</button>
+      <span style="font-size:12px;color:var(--muted)">Tersimpan otomatis. Gulir tabel ke samping bila layar sempit.</span>
+    </div>
+    <div id="indTable"></div>
+    <div class="saved"></div>
+  </div>
+
+  <h3>6.2 Peringatan tentang klaim dampak</h3>
+  <p>Menghubungkan ToC ke data memerlukan kehati-hatian dalam mengklaim sebab-akibat. Tanpa pencatatan yang menghubungkan <b>individu yang sama</b> dari satu tahap outcome ke tahap berikutnya, yang diperoleh adalah <b>perbandingan antar populasi</b>, bukan pelacakan individu. Ini menghasilkan korelasi, bukan kausalitas — dan penilai hibah yang berpengalaman umumnya dapat membedakan keduanya.</p>
+
+  <figure>
+    <div class="fig-title">Gambar 6.1 — Kontribusi atau atribusi: apa yang boleh Anda klaim</div>
+    <svg viewBox="0 0 860 268" role="img" aria-labelledby="f61t f61d">
+      <title id="f61t">Perbedaan klaim kontribusi dan atribusi</title>
+      <desc id="f61d">Kiri: perbandingan antar populasi tanpa pelacakan individu menghasilkan klaim kontribusi. Kanan: pelacakan individu lintas tahap memungkinkan klaim yang lebih kuat.</desc>
+      <rect x="6" y="6" width="418" height="256" rx="12" fill="#fff" stroke="#DDE2EA"/>
+      <text x="24" y="32" font-size="13" font-weight="800" fill="#1B2A4A">Tanpa pelacakan individu</text>
+      <text x="24" y="52" font-size="11" fill="#5B6675">Data tahap A dan tahap B dikumpulkan dari orang yang berbeda-beda</text>
+      <g>
+        <rect x="24" y="70" width="170" height="66" rx="9" fill="#E7EFF7" stroke="#C7D9EA"/>
+        <text x="109" y="96" text-anchor="middle" font-size="11" fill="#1e4a76">240 peserta pelatihan</text>
+        <text x="109" y="114" text-anchor="middle" font-size="11" fill="#1e4a76">(survei akhir sesi)</text>
+        <rect x="236" y="70" width="170" height="66" rx="9" fill="#E4F3EC" stroke="#BFE3D2"/>
+        <text x="321" y="96" text-anchor="middle" font-size="11" fill="#14624a">62% rumah tangga desa</text>
+        <text x="321" y="114" text-anchor="middle" font-size="11" fill="#14624a">menabung (survei desa)</text>
+        <text x="215" y="108" text-anchor="middle" font-size="18" fill="#C2483C">≠</text>
+      </g>
+      <rect x="24" y="154" width="382" height="44" rx="8" fill="#FBF3DE" stroke="#EAD9A8"/>
+      <text x="38" y="172" font-size="11.5" font-weight="700" fill="#8a6d1f">Yang jujur dikatakan: KLAIM KONTRIBUSI</text>
+      <text x="38" y="189" font-size="11" fill="#6b5514">“Program ikut menyumbang pada perubahan ini, bersama faktor lain.”</text>
+      <text x="24" y="222" font-size="11" fill="#8f342c">Yang TIDAK boleh dikatakan: “program menyebabkan 62% rumah</text>
+      <text x="24" y="238" font-size="11" fill="#8f342c">tangga menabung” — dua angka itu berasal dari populasi berbeda.</text>
+
+      <rect x="440" y="6" width="414" height="256" rx="12" fill="#F4FBF7" stroke="#CDE9DC"/>
+      <text x="458" y="32" font-size="13" font-weight="800" fill="#14624a">Dengan pelacakan individu lintas tahap</text>
+      <text x="458" y="52" font-size="11" fill="#14624a">Peserta yang sama diikuti dari output ke outcome</text>
+      <g>
+        <rect x="458" y="70" width="112" height="66" rx="9" fill="#fff" stroke="#BFE3D2"/>
+        <text x="514" y="96" text-anchor="middle" font-size="11" fill="#14624a">240 peserta</text>
+        <text x="514" y="114" text-anchor="middle" font-size="11" fill="#14624a">(terdaftar, ber-ID)</text>
+        <rect x="596" y="70" width="112" height="66" rx="9" fill="#fff" stroke="#BFE3D2"/>
+        <text x="652" y="96" text-anchor="middle" font-size="11" fill="#14624a">198 masih</text>
+        <text x="652" y="114" text-anchor="middle" font-size="11" fill="#14624a">terlacak bulan 12</text>
+        <rect x="734" y="70" width="106" height="66" rx="9" fill="#fff" stroke="#BFE3D2"/>
+        <text x="787" y="96" text-anchor="middle" font-size="11" fill="#14624a">143 menabung</text>
+        <text x="787" y="114" text-anchor="middle" font-size="11" fill="#14624a">rutin (72%)</text>
+        <text x="583" y="108" text-anchor="middle" font-size="15" fill="#1E9E6A">→</text>
+        <text x="721" y="108" text-anchor="middle" font-size="15" fill="#1E9E6A">→</text>
+      </g>
+      <rect x="458" y="154" width="382" height="44" rx="8" fill="#E4F3EC" stroke="#BFE3D2"/>
+      <text x="472" y="172" font-size="11.5" font-weight="700" fill="#14624a">Klaim yang dapat dipertahankan</text>
+      <text x="472" y="189" font-size="11" fill="#14624a">“72% dari peserta yang terlacak menabung rutin pada bulan ke-12.”</text>
+      <text x="458" y="222" font-size="11" fill="#14624a">Implikasi praktis: rancang sistem pendataan sejak awal agar peserta</text>
+      <text x="458" y="238" font-size="11" fill="#14624a">dapat ditelusuri lintas tahap — ini keputusan bulan pertama, bukan bulan ke-30.</text>
+    </svg>
+    <figcaption>Angka pada gambar adalah ilustrasi fiktif. Yang perlu dibawa pulang: <b>kualitas klaim ditentukan oleh rancangan pendataan</b>, dan rancangan itu ditetapkan di awal — atau tidak sama sekali.</figcaption>
+  </figure>
+
+  <h3>6.3 Menggunakan ToC dalam proposal hibah</h3>
+  <ul>
+    <li>Tempatkan diagram ToC di bagian <b>pendekatan atau metodologi</b> — bukan di lampiran.</li>
+    <li>Pastikan setiap aktivitas yang dianggarkan dapat ditelusuri ke <b>satu outcome</b> dalam ToC; aktivitas yang tidak terhubung akan dipertanyakan.</li>
+    <li>Cantumkan asumsi paling kritis secara terbuka beserta rencana mitigasinya.</li>
+    <li>Jaga konsistensi istilah antara ToC, logframe, dan narasi proposal — ketidakkonsistenan istilah adalah salah satu penanda kelemahan yang <b>paling mudah dikenali penilai</b>.</li>
+  </ul>
+  <div class="note ok"><span class="h">Contoh utuh tersedia</span>Sebuah contoh proposal permohonan dana yang seluruh strukturnya dibangun dari ToC — lengkap dengan diagram, matriks asumsi, logframe turunan, rencana MEAL, dan anggaran — dapat dibuka di <a href="proposal-inh.html" target="_blank" rel="noopener"><b>Contoh Proposal INH ↗</b></a>. Bacalah bersama daftar periksa di <a href="#lampiranB">Lampiran B</a>.</div>
+
+  <h3>6.4 ToC sebagai alat pembelajaran adaptif</h3>
+  <p>Vogel (2012) mencatat bahwa bekerja dengan ToC menuntut pendekatan manajemen kinerja yang <b>mampu mengakomodasi ketidakpastian dan fleksibilitas</b>. Artinya, sistem pelaporan yang mengunci organisasi pada target yang ditetapkan tiga tahun sebelumnya bertentangan dengan semangat ToC.</p>
+  <p>Praktik minimal yang bisa diterapkan NGO:</p>
+  <div class="timeline">
+    <div class="ev"><div class="w">Setiap 6–12 bulan</div><h4>Tinjauan ToC</h4><p>Agenda khusus: asumsi mana yang bergeser? Bukan rapat kemajuan aktivitas.</p></div>
+    <div class="ev"><div class="w">Setiap revisi</div><h4>Catatan perubahan (change log)</h4><p>Dokumentasikan revisi jalur <b>beserta alasannya</b>. Tanpa alasan, revisi berikutnya akan mengulang perdebatan yang sama.</p></div>
+    <div class="ev"><div class="w">Segera setelah tinjauan</div><h4>Bicarakan dengan donor</h4><p>Sampaikan hasil tinjauan — jangan menyembunyikannya sampai laporan akhir. Donor yang mengetahui pergeseran asumsi di bulan ke-8 adalah mitra; yang mengetahuinya di bulan ke-36 adalah auditor.</p></div>
+  </div>
+
+  <div class="quiz" data-quiz="m6"></div>
+</section>
+
+<!-- ================= MODUL 7 ================= -->
+<section class="lesson" id="m7" data-group="Bagian III — Menggunakan" data-num="7" data-nav="Fasilitasi lokakarya" data-track="1">
+  <div class="crumb">Modul 7</div>
+  <h2 class="title">Memfasilitasi Lokakarya ToC</h2>
+  <p class="lead">Kritik paling serius terhadap praktik ToC — kecenderungannya menghasilkan narasi dari atas ke bawah — tidak bisa diselesaikan dengan format dokumen. Ia hanya bisa diimbangi dengan <b>cara memfasilitasi</b>.</p>
+  <div class="meta-chips"><span>Waktu <b>60 menit</b></span><span>Untuk fasilitator internal</span><span>Kuis 4 soal</span></div>
+
+  <h3>7.1 Prinsip partisipatif</h3>
+  <ul>
+    <li>Libatkan penerima manfaat pada tahap <b>analisis masalah</b>, bukan hanya pada tahap validasi hasil.</li>
+    <li>Bedakan sesi teknis untuk staf dan sesi terbuka untuk komunitas; menggabungkan keduanya sering membungkam pihak yang kurang menguasai istilah.</li>
+    <li>Gunakan bahasa sehari-hari di dinding kerja; terjemahkan ke istilah teknis belakangan.</li>
+    <li>Catat perbedaan pendapat yang tidak terselesaikan — <b>jangan dipaksa menjadi konsensus semu</b>.</li>
+  </ul>
+
+  <h3>7.2 Rancangan agenda dua hari</h3>
+  <figure>
+    <div class="fig-title">Gambar 7.1 — Alur lokakarya dua hari dan keluaran tiap blok</div>
+    <svg viewBox="0 0 900 300" role="img" aria-labelledby="f71t f71d">
+      <title id="f71t">Agenda lokakarya dua hari</title>
+      <desc id="f71d">Enam blok waktu dari hari pertama pagi sampai hari kedua sore, masing-masing dengan keluaran yang harus dihasilkan.</desc>
+      <text x="10" y="22" font-size="12" font-weight="800" fill="#1B2A4A">HARI 1</text>
+      <text x="470" y="22" font-size="12" font-weight="800" fill="#1B2A4A">HARI 2</text>
+      <line x1="455" y1="10" x2="455" y2="290" stroke="#DDE2EA" stroke-width="2" stroke-dasharray="5 4"/>
+      <g font-size="10.4">
+        <rect x="10" y="34" width="140" height="120" rx="10" fill="#E7EFF7" stroke="#3572B0" stroke-width="1.4"/>
+        <text x="22" y="54" font-size="11" font-weight="800" fill="#1e4a76">PAGI</text>
+        <text x="22" y="74" fill="#1e4a76">Pembukaan, Modul 1<tspan x="22" dy="13">&amp; 2, Latihan 1 dan 2</tspan></text>
+        <rect x="22" y="106" width="116" height="38" rx="6" fill="#fff"/>
+        <text x="30" y="121" font-size="9.5" font-weight="700" fill="#1B2A4A">KELUARAN</text>
+        <text x="30" y="135" font-size="9.5" fill="#5B6675">Paham output vs outcome</text>
+
+        <rect x="160" y="34" width="140" height="120" rx="10" fill="#E7EFF7" stroke="#3572B0" stroke-width="1.4"/>
+        <text x="172" y="54" font-size="11" font-weight="800" fill="#1e4a76">SIANG</text>
+        <text x="172" y="74" fill="#1e4a76">Langkah 1: analisis<tspan x="172" dy="13">situasi, pohon masalah,</tspan><tspan x="172" dy="13">pemangku kepentingan</tspan></text>
+        <rect x="172" y="106" width="116" height="38" rx="6" fill="#fff"/>
+        <text x="180" y="121" font-size="9.5" font-weight="700" fill="#1B2A4A">KELUARAN</text>
+        <text x="180" y="135" font-size="9.5" fill="#5B6675">Rumusan masalah disepakati</text>
+
+        <rect x="310" y="34" width="135" height="120" rx="10" fill="#E7EFF7" stroke="#3572B0" stroke-width="1.4"/>
+        <text x="322" y="54" font-size="11" font-weight="800" fill="#1e4a76">SORE</text>
+        <text x="322" y="74" fill="#1e4a76">Langkah 2 &amp; 3: tujuan<tspan x="322" dy="13">jangka panjang dan</tspan><tspan x="322" dy="13">pemetaan mundur</tspan></text>
+        <rect x="322" y="106" width="111" height="38" rx="6" fill="#fff"/>
+        <text x="330" y="121" font-size="9.5" font-weight="700" fill="#1B2A4A">KELUARAN</text>
+        <text x="330" y="135" font-size="9.5" fill="#5B6675">Draf jalur di dinding</text>
+
+        <rect x="466" y="34" width="140" height="120" rx="10" fill="#FBF3DE" stroke="#C9A227" stroke-width="1.4"/>
+        <text x="478" y="54" font-size="11" font-weight="800" fill="#8a6d1f">PAGI</text>
+        <text x="478" y="74" fill="#6b5514">Langkah 4, lalu Modul 5:<tspan x="478" dy="13">asumsi</tspan></text>
+        <rect x="478" y="106" width="116" height="38" rx="6" fill="#fff"/>
+        <text x="486" y="121" font-size="9.5" font-weight="700" fill="#1B2A4A">KELUARAN</text>
+        <text x="486" y="135" font-size="9.5" fill="#5B6675">Jalur + daftar asumsi</text>
+
+        <rect x="616" y="34" width="135" height="120" rx="10" fill="#E4F3EC" stroke="#1E9E6A" stroke-width="1.4"/>
+        <text x="628" y="54" font-size="11" font-weight="800" fill="#14624a">SIANG</text>
+        <text x="628" y="74" fill="#14624a">Modul 6: indikator dan<tspan x="628" dy="13">kerangka MEAL</tspan></text>
+        <rect x="628" y="106" width="111" height="38" rx="6" fill="#fff"/>
+        <text x="636" y="121" font-size="9.5" font-weight="700" fill="#1B2A4A">KELUARAN</text>
+        <text x="636" y="135" font-size="9.5" fill="#5B6675">Indikator tiap outcome</text>
+
+        <rect x="761" y="34" width="129" height="120" rx="10" fill="#E9E6F5" stroke="#7A5FBF" stroke-width="1.4"/>
+        <text x="773" y="54" font-size="11" font-weight="800" fill="#4a3a86">SORE</text>
+        <text x="773" y="74" fill="#4a3a86">Uji sejawat antar<tspan x="773" dy="13">kelompok, Modul 8,</tspan><tspan x="773" dy="13">rencana tindak lanjut</tspan></text>
+        <rect x="773" y="106" width="105" height="38" rx="6" fill="#fff"/>
+        <text x="781" y="121" font-size="9.5" font-weight="700" fill="#1B2A4A">KELUARAN</text>
+        <text x="781" y="135" font-size="9.5" fill="#5B6675">Titik lemah + tenggat</text>
+      </g>
+      <rect x="10" y="176" width="880" height="46" rx="9" fill="#FCF0EE" stroke="#F0D5D0"/>
+      <text x="26" y="196" font-size="11.5" font-weight="800" fill="#8f342c">Aturan yang menentukan keberhasilan hari pertama</text>
+      <text x="26" y="213" font-size="11" fill="#8f342c">Tidak satu pun kartu aktivitas boleh ditempel sebelum seluruh jalur outcome selesai dipetakan. Melanggar aturan ini mengubah lokakarya ToC menjadi rapat perencanaan kegiatan biasa.</text>
+      <rect x="10" y="234" width="880" height="56" rx="9" fill="#F7F8FA" stroke="#DDE2EA"/>
+      <text x="26" y="254" font-size="11.5" font-weight="800" fill="#1B2A4A">Perlengkapan dan pengaturan ruang</text>
+      <text x="26" y="271" font-size="11" fill="#5B6675">Dinding kosong minimal 4 meter — bukan meja · kartu tempel minimal tiga warna dengan konvensi disepakati di awal ·</text>
+      <text x="26" y="285" font-size="11" fill="#5B6675">spidol tebal agar terbaca dari jarak tiga meter · kamera untuk mendokumentasikan setiap versi dinding sebelum diubah.</text>
+    </svg>
+    <figcaption>Peta ToC harus dapat dilihat seluruh peserta sekaligus. Bekerja di meja menghasilkan diskusi kelompok kecil yang tidak pernah bertemu.</figcaption>
+  </figure>
+
+  <h3>7.4 Pembagian peran</h3>
+  <div class="grid2">
+    <div class="card tight"><h4 style="margin-top:0">Fasilitator</h4><p style="font-size:13.3px">Menjaga proses, <b>tidak menyumbang isi</b>. Jika fasilitator adalah direktur program, kemungkinan besar hasilnya adalah ToC versi direktur.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Pencatat</h4><p style="font-size:13.3px">Mendokumentasikan <b>alasan di balik setiap keputusan</b>, bukan hanya hasil akhirnya. Catatan ini menjadi bahan utama narasi ToC.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Penantang asumsi</h4><p style="font-size:13.3px">Satu orang ditugaskan khusus mencari kelemahan di setiap tahap. Peran ini sebaiknya <b>digilir</b> agar tidak dianggap sikap pribadi.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Penjaga waktu</h4><p style="font-size:13.3px">Pemetaan mundur mudah berlarut; batasi setiap tingkat prasyarat dengan waktu tegas.</p></div>
+  </div>
+
+  <h3>7.5 Dinamika yang perlu diantisipasi</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th style="min-width:210px">Gejala</th><th>Penanganan</th></tr></thead>
+    <tbody>
+      <tr><td>Pimpinan mendominasi pembahasan</td><td>Gunakan <b>penulisan senyap</b>: semua peserta menulis kartu sendiri sebelum ada diskusi lisan</td></tr>
+      <tr><td>Peserta langsung membahas aktivitas</td><td>Tegakkan aturan: kartu aktivitas ditahan sampai jalur outcome selesai</td></tr>
+      <tr><td>Jalur menjadi terlalu rumit</td><td>Batasi tiga sampai empat tingkat perubahan; sisanya dipindahkan ke catatan narasi</td></tr>
+      <tr><td>Perwakilan komunitas diam</td><td>Sesi terpisah dengan bahasa lokal, dilaporkan kembali ke pleno <b>oleh perwakilan mereka sendiri</b></td></tr>
+      <tr><td>Diskusi berhenti pada perdebatan istilah</td><td>Sepakati definisi kerja di awal dan tempel di dinding; tunda perdebatan konseptual ke akhir sesi</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="quiz" data-quiz="m7"></div>
+</section>
+
+<!-- ================= MODUL 8 ================= -->
+<section class="lesson" id="m8" data-group="Bagian III — Menggunakan" data-num="8" data-nav="Kualitas &amp; kritik" data-track="1">
+  <div class="crumb">Modul 8</div>
+  <h2 class="title">Kualitas, Kritik, dan Jebakan Umum</h2>
+  <p class="lead">Modul yang hanya memuji sebuah alat tidak menyiapkan penggunanya.</p>
+  <div class="meta-chips"><span>Waktu <b>60 menit</b></span><span>Daftar periksa di Lampiran B</span><span>Kuis 4 soal</span></div>
+
+  <h3>8.1 Empat kriteria kualitas</h3>
+  <div class="grid4">
+    <div class="card tight" style="border-top:4px solid var(--s1)"><h4 style="margin-top:0">Bermakna<br><span style="font-weight:400;font-size:12px;color:var(--muted)">meaningful</span></h4>
+      <p style="font-size:13.2px">Apakah ToC menggambarkan kerja yang menjawab <b>kebutuhan nyata dan penting</b>, secara meyakinkan?</p></div>
+    <div class="card tight" style="border-top:4px solid var(--s2)"><h4 style="margin-top:0">Masuk akal<br><span style="font-weight:400;font-size:12px;color:var(--muted)">plausible</span></h4>
+      <p style="font-size:13.2px">Apakah <b>bukti dan penalaran</b> wajar menunjukkan bahwa komponen inti program akan menghasilkan perubahan yang diinginkan?</p></div>
+    <div class="card tight" style="border-top:4px solid var(--s3)"><h4 style="margin-top:0">Dapat dicapai<br><span style="font-weight:400;font-size:12px;color:var(--muted)">achievable</span></h4>
+      <p style="font-size:13.2px">Apakah <b>sumber daya dan waktu</b> yang tersedia memadai untuk menjalankannya?</p></div>
+    <div class="card tight" style="border-top:4px solid var(--s4)"><h4 style="margin-top:0">Dapat diuji<br><span style="font-weight:400;font-size:12px;color:var(--muted)">testable</span></h4>
+      <p style="font-size:13.2px">Apakah ToC cukup lengkap, kredibel, dan berguna untuk <b>melacak serta mengukur</b> kemajuan dan hasil?</p></div>
+  </div>
+  <p>Empat kriteria ini sebaiknya dipakai sebagai daftar periksa saat meninjau ToC milik sendiri <b>maupun milik mitra</b>. Versi rinci 20 butir tersedia di <a href="#lampiranB">Lampiran B</a>.</p>
+
+  <h3>8.2 Kritik yang perlu diketahui</h3>
+  <div class="grid2">
+    <div class="card tight"><h4 style="margin-top:0">Tidak ada konsensus definisi</h4>
+      <p style="font-size:13.2px">Stein dan Valters (2012) menemukan bahwa literatur tidak sepakat mengenai definisi ToC, dan terdapat kekaburan pada istilah “asumsi” dan “bukti” itu sendiri.<br><b>Dampaknya bagi NGO:</b> klarifikasi definisi yang dipakai donor <i>sebelum</i> menyusun dokumen.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Ketegangan antara fungsi</h4>
+      <p style="font-size:13.2px">Valters (2014) menunjukkan bahwa penggunaan ToC untuk berkomunikasi, belajar, dan dipertanggungjawabkan saling bertegangan; ruang untuk refleksi kritis menuntut komitmen yang jauh lebih luas dari sekadar mengadopsi format.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Risiko menjadi ritual kepatuhan</h4>
+      <p style="font-size:13.2px">Ketika ToC menjadi syarat administratif hibah, organisasi cenderung memproduksi dokumen yang memenuhi format <b>tanpa mengubah cara berpikir</b>.</p></div>
+    <div class="card tight"><h4 style="margin-top:0">Bukan model prediktif</h4>
+      <p style="font-size:13.2px">ToC tidak boleh diperlakukan sebagai ramalan. Perubahan sosial jarang berjalan linear; <b>kemajuan bisa berupa tertahannya kemunduran</b> — dan itu sulit digambarkan dalam diagram.</p></div>
+    <div class="card tight" style="grid-column:span 2;border-left:4px solid var(--bad)"><h4 style="margin-top:0">Pertanyaan etis</h4>
+      <p style="font-size:13.2px">Siapa yang berhak menentukan “perubahan yang diinginkan”? <b>Jika jawabannya adalah staf dan donor saja, ToC memperkuat ketimpangan yang justru hendak dikoreksi.</b></p></div>
+  </div>
+
+  <h3>8.3 Sepuluh jebakan yang paling sering terjadi</h3>
+  <p>Gunakan daftar ini sebagai pemeriksaan mandiri. Centang yang <b>pernah terjadi</b> di organisasi Anda — kejujuran di sini lebih berguna daripada nilai bagus.</p>
+  <label class="chk"><input type="checkbox" data-save="jeb1"><span>Menyusun ToC hanya untuk memenuhi syarat proposal, lalu tidak pernah membukanya lagi</span></label>
+  <label class="chk"><input type="checkbox" data-save="jeb2"><span>Mencampuradukkan output dan outcome, sehingga seluruh indikator berhenti di level output</span></label>
+  <label class="chk"><input type="checkbox" data-save="jeb3"><span>Mengisi kolom asumsi dengan kalimat generik yang tidak dapat diuji</span></label>
+  <label class="chk"><input type="checkbox" data-save="jeb4"><span>Melewati analisis situasi dan langsung memetakan mundur dari tujuan</span></label>
+  <label class="chk"><input type="checkbox" data-save="jeb5"><span>Menyusun jalur perubahan yang hanya berisi aktivitas yang sudah biasa dijalankan organisasi</span></label>
+  <label class="chk"><input type="checkbox" data-save="jeb6"><span>Membuat diagram yang terlalu rumit sehingga tidak dapat dijelaskan tanpa membaca</span></label>
+  <label class="chk"><input type="checkbox" data-save="jeb7"><span>Tidak menetapkan batas akuntabilitas, lalu menjanjikan dampak yang tidak mungkin dijamin</span></label>
+  <label class="chk"><input type="checkbox" data-save="jeb8"><span>Menyusun ToC tanpa melibatkan penerima manfaat sama sekali</span></label>
+  <label class="chk"><input type="checkbox" data-save="jeb9"><span>Menyalin ToC organisasi lain yang bekerja pada isu serupa di konteks berbeda</span></label>
+  <label class="chk"><input type="checkbox" data-save="jeb10"><span>Tidak pernah merevisi ToC meskipun asumsi kunci sudah terbukti keliru di lapangan</span></label>
+  <div class="note" style="margin-top:14px"><span class="h">Cara memakai hasil centangan</span>Setiap butir yang tercentang adalah agenda perbaikan, bukan vonis. Pilih <b>dua</b> yang paling merugikan program Anda saat ini, dan tetapkan siapa yang menanganinya sebelum tinjauan ToC berikutnya.</div>
+
+  <div class="quiz" data-quiz="m8"></div>
+</section>
+
+<!-- ================= STUDI KASUS ================= -->
+<section class="lesson" id="kasus" data-group="Bagian IV — Praktik" data-num="9" data-nav="Studi kasus" data-track="1">
+  <div class="crumb">Bagian 9</div>
+  <h2 class="title">Studi Kasus dan Latihan Terpadu</h2>
+  <div class="note bad"><span class="h">Ilustrasi fiktif</span>Seluruh nama, angka, dan situasi berikut adalah <b>ilustrasi fiktif</b> yang dibuat khusus untuk keperluan latihan. Tidak ada data lapangan riil yang digunakan.</div>
+
+  <h3>9.1 Kasus: Yayasan Bahari Lestari</h3>
+  <p>Yayasan Bahari Lestari bekerja di tiga desa pesisir pada satu kawasan wisata. Persoalan yang diangkat: sampah plastik dari kegiatan wisata dan rumah tangga mencemari perairan, merusak daya tarik wisata, dan mengganggu kegiatan perikanan skala kecil. Program yang selama ini dijalankan berupa <b>kampanye kebersihan dan aksi bersih pantai bulanan</b>.</p>
+  <p>Setelah tiga tahun: jumlah sampah yang terkumpul <b>meningkat</b>, tetapi volume sampah yang masuk ke perairan <b>tidak berkurang</b>.</p>
+
+  <div class="card" style="border-left:4px solid var(--bad)">
+    <h4 style="margin-top:0">Diagnosis awal menggunakan kerangka ToC</h4>
+    <ul style="margin-bottom:0">
+      <li>Aksi bersih pantai adalah <b>output</b>. Ia mengukur kemampuan organisasi mengumpulkan orang dan karung, <b>bukan perubahan pada aliran sampah</b>.</li>
+      <li>Tidak ada <b>outcome</b> yang dirumuskan di antara aktivitas dan tujuan akhir — jaraknya dilompati.</li>
+      <li>Asumsi utama yang tidak pernah ditulis: <i>bahwa kesadaran yang meningkat akan otomatis mengubah praktik pembuangan sampah rumah tangga dan usaha wisata.</i></li>
+    </ul>
+  </div>
+
+  <h4>Rekonstruksi jalur perubahan (disederhanakan)</h4>
+  <figure>
+    <div class="fig-title">Gambar 9.1 — Jalur perubahan hasil rekonstruksi</div>
+    <svg viewBox="0 0 900 440" role="img" aria-labelledby="f91t f91d">
+      <title id="f91t">Jalur perubahan Yayasan Bahari Lestari hasil rekonstruksi</title>
+      <desc id="f91d">Lima tingkat dari aktivitas sampai impact, dibaca dari bawah ke atas.</desc>
+      <defs><marker id="ar8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#8A94A3"/></marker></defs>
+
+      <text x="10" y="30" font-size="11" font-weight="800" fill="#4a3a86">IMPACT</text>
+      <text x="10" y="46" font-size="10" fill="#7C8798">5 tahun</text>
+      <rect x="150" y="10" width="740" height="58" rx="10" fill="#1B2A4A"/>
+      <text x="170" y="36" font-size="12.5" fill="#fff">Volume sampah plastik yang masuk ke perairan di tiga desa berkurang</text>
+      <text x="170" y="55" font-size="12.5" fill="#fff">secara signifikan dan kualitas perairan pulih</text>
+
+      <line x1="520" y1="96" x2="520" y2="72" stroke="#8A94A3" stroke-width="2.2" marker-end="url(#ar8)"/>
+      <text x="10" y="122" font-size="11" font-weight="800" fill="#14624a">OUTCOME</text>
+      <text x="10" y="137" font-size="11" font-weight="800" fill="#14624a">MENENGAH</text>
+      <rect x="150" y="100" width="740" height="58" rx="10" fill="#E4F3EC" stroke="#1E9E6A" stroke-width="1.6"/>
+      <text x="170" y="126" font-size="12.5" fill="#14624a">Rumah tangga dan usaha wisata memilah sampah secara rutin; sampah terpilah</text>
+      <text x="170" y="145" font-size="12.5" fill="#14624a">terangkut ke fasilitas pengelolaan — bukan dibuang ke saluran air</text>
+
+      <line x1="520" y1="186" x2="520" y2="162" stroke="#8A94A3" stroke-width="2.2" marker-end="url(#ar8)"/>
+      <text x="10" y="212" font-size="11" font-weight="800" fill="#14624a">OUTCOME</text>
+      <text x="10" y="227" font-size="11" font-weight="800" fill="#14624a">PENDEK</text>
+      <rect x="150" y="190" width="740" height="76" rx="10" fill="#E4F3EC" stroke="#1E9E6A" stroke-width="1.6"/>
+      <text x="170" y="214" font-size="12.5" fill="#14624a">Tersedia layanan pengangkutan sampah terpilah yang berjalan teratur;</text>
+      <text x="170" y="233" font-size="12.5" fill="#14624a">pengelola usaha wisata menyepakati aturan pengelolaan sampah bersama;</text>
+      <text x="170" y="252" font-size="12.5" fill="#14624a">rumah tangga mengetahui cara memilah dan ke mana sampah dibawa</text>
+
+      <line x1="520" y1="294" x2="520" y2="270" stroke="#8A94A3" stroke-width="2.2" marker-end="url(#ar8)"/>
+      <text x="10" y="322" font-size="11" font-weight="800" fill="#1e4a76">OUTPUT</text>
+      <rect x="150" y="298" width="740" height="58" rx="10" fill="#E7EFF7" stroke="#3572B0" stroke-width="1.6"/>
+      <text x="170" y="324" font-size="12.5" fill="#1e4a76">Kesepakatan tertulis antar pelaku usaha wisata; kelompok pengelola sampah</text>
+      <text x="170" y="343" font-size="12.5" fill="#1e4a76">desa terbentuk dan terlatih; jadwal pengangkutan disusun dan diumumkan</text>
+
+      <line x1="520" y1="384" x2="520" y2="360" stroke="#8A94A3" stroke-width="2.2" marker-end="url(#ar8)"/>
+      <text x="10" y="412" font-size="11" font-weight="800" fill="#5B6675">AKTIVITAS</text>
+      <rect x="150" y="388" width="740" height="46" rx="10" fill="#F7F8FA" stroke="#C9CFD9"/>
+      <text x="170" y="406" font-size="12" fill="#5B6675">Fasilitasi perundingan antar pelaku usaha · pelatihan pengelolaan sampah · pendampingan</text>
+      <text x="170" y="424" font-size="12" fill="#5B6675">penyusunan peraturan desa · penghubungan dengan fasilitas pengelolaan tingkat kabupaten</text>
+    </svg>
+    <figcaption><b>Yang berubah dari program lama.</b> Aksi bersih pantai tidak dihapus, tetapi ia bukan lagi jantung program. Jantungnya berpindah ke <b>tersedianya layanan</b> dan <b>kesepakatan antar pelaku usaha</b> — dua hal yang sebelumnya tidak pernah dirumuskan sebagai hasil yang harus dicapai.</figcaption>
+  </figure>
+
+  <h4>Asumsi kunci yang muncul</h4>
+  <div class="tbl-wrap">
+  <table class="compact">
+    <thead><tr><th style="min-width:250px">Asumsi</th><th>Jenis</th><th>Akibat</th><th>Bukti</th></tr></thead>
+    <tbody>
+      <tr style="background:#FCF0EE"><td>Terdapat fasilitas pengolahan di tingkat kabupaten yang <b>mampu dan bersedia</b> menerima sampah terpilah dari tiga desa</td><td>Kontekstual</td><td><b>Besar</b></td><td><b>Lemah</b></td></tr>
+      <tr style="background:#FCF0EE"><td>Pelaku usaha wisata bersedia menanggung sebagian biaya pengangkutan</td><td>Kausal &amp; kontekstual</td><td><b>Besar</b></td><td><b>Lemah</b></td></tr>
+      <tr><td>Pemerintah desa bersedia menerbitkan dan menegakkan peraturan</td><td>Kontekstual</td><td>Besar</td><td>Sedang</td></tr>
+      <tr><td>Kelompok pengelola sampah bertahan setelah pendampingan berakhir</td><td>Implementasi</td><td>Besar</td><td>Lemah</td></tr>
+      <tr style="background:#FBF3DE"><td>Perubahan praktik pembuangan lebih ditentukan oleh <b>tersedianya layanan</b> daripada oleh kesadaran individu</td><td><b>Normatif</b></td><td colspan="2"><b>Inilah pergeseran paradigma dari program lama</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note bad"><span class="h">Implikasi yang harus dibaca</span>Dua asumsi teratas berada di kuadran berisiko tinggi, dan keduanya <b>harus diuji sebelum program diperluas</b>. Verifikasi kapasitas fasilitas kabupaten dan kesediaan pelaku usaha adalah <b>pekerjaan bulan pertama, bukan pekerjaan tahun ketiga</b>.</div>
+
+  <div class="exercise">
+    <span class="tag">Latihan terpadu</span>
+    <h4>Susun ToC lengkap untuk program organisasi Anda</h4>
+    <div class="dur">2–3 jam · dikerjakan per organisasi</div>
+    <ol>
+      <li>Susun ToC lengkap untuk satu program: diagram, narasi 2–4 halaman, minimal 10 asumsi terklasifikasi, dan kerangka indikator per outcome. Gunakan <a href="#perangkat">Perangkat Kerja</a>.</li>
+      <li>Presentasikan ke kelompok lain. Kelompok penilai menggunakan <a href="#lampiranB">Lampiran B</a> sebagai daftar periksa.</li>
+      <li>Catat tiga perbaikan prioritas beserta penanggung jawab dan tenggatnya.</li>
+      <li><b>Tetapkan tanggal peninjauan pertama ToC ini.</b> Jika tanggal itu tidak ditetapkan hari ini, kemungkinan besar peninjauan tidak akan pernah terjadi.</li>
+    </ol>
+    <div style="margin-top:10px"><label style="font-size:12px;font-weight:700;color:#1B2A4A">Tiga perbaikan prioritas — penanggung jawab — tenggat</label>
+      <textarea data-save="lt_perbaikan" style="min-height:100px" placeholder="1. … — PJ: … — tenggat: …&#10;2. …&#10;3. …"></textarea></div>
+    <div style="margin-top:10px"><label style="font-size:12px;font-weight:700;color:#1B2A4A">Tanggal peninjauan pertama ToC ini</label>
+      <input type="text" data-save="lt_tanggal" placeholder="Contoh: 15 Februari 2027 — agenda rapat koordinasi program kuartal I">
+    </div>
+    <div class="saved"></div>
+  </div>
+</section>
+
+<!-- ================= PERANGKAT KERJA / LAMPIRAN A ================= -->
+<section class="lesson" id="perangkat" data-group="Bagian IV — Praktik" data-num="A" data-nav="Kanvas ToC (Lampiran A)" data-track="1">
+  <div class="crumb">Lampiran A · Perangkat kerja</div>
+  <h2 class="title">Kanvas ToC Satu Halaman</h2>
+  <p class="lead">Isi dari <b>bawah ke atas</b> saat berpikir, tetapi baca dari <b>atas ke bawah</b> saat menjelaskan. Seluruh isian tersimpan otomatis di peramban ini dan ikut terbawa saat Anda menekan <b>Ekspor</b>.</p>
+  <div class="meta-chips"><span>Produk wajib <b>no. 1</b></span><span>Tersimpan otomatis</span><span>Dapat dicetak</span></div>
+
+  <div class="tool">
+    <div class="canvas-grid">
+      <div class="cbox span2"><div class="cl">Masalah inti</div><textarea data-save="k_masalah" placeholder="Rumusan masalah yang disepakati pada Langkah 1 — bukan gejalanya"></textarea></div>
+      <div class="cbox span2"><div class="cl">Kelompok sasaran</div><textarea data-save="k_sasaran" placeholder="Siapa persisnya — jumlah, wilayah, ciri yang membedakan"></textarea></div>
+
+      <div class="cbox imp span4"><div class="cl">Impact (5–10 tahun)</div><textarea data-save="k_impact" placeholder="Siapa yang berubah, dalam hal apa, di wilayah mana, dalam horizon berapa lama"></textarea></div>
+
+      <div class="cbox outc span2"><div class="cl">Outcome jangka menengah</div><textarea data-save="k_outc_men" placeholder="Perubahan perilaku, praktik, relasi, atau kebijakan"></textarea></div>
+      <div class="cbox outc span2"><div class="cl">Outcome jangka pendek</div><textarea data-save="k_outc_pen" placeholder="Perubahan pengetahuan, sikap, keterampilan pihak lain"></textarea></div>
+
+      <div class="cbox outp span2"><div class="cl">Output</div><textarea data-save="k_output" placeholder="Produk langsung aktivitas — yang bisa Anda pastikan terjadi"></textarea></div>
+      <div class="cbox act span2"><div class="cl">Aktivitas</div><textarea data-save="k_aktivitas" placeholder="Ditentukan TERAKHIR — diturunkan dari prasyarat, bukan dari kebiasaan"></textarea></div>
+
+      <div class="cbox span2"><div class="cl">Input</div><textarea data-save="k_input" placeholder="Dana, staf, waktu, alat, jejaring"></textarea></div>
+      <div class="cbox span2"><div class="cl">Mitra dan aktor lain</div><textarea data-save="k_mitra" placeholder="Siapa yang menangani prasyarat di luar kendali kami"></textarea></div>
+
+      <div class="cbox asum span2"><div class="cl">Asumsi kritis</div><textarea data-save="k_asumsi" placeholder="Ambil dari kuadran akibat besar–bukti lemah pada Latihan 5"></textarea></div>
+      <div class="cbox asum span2"><div class="cl">Risiko dan mitigasi</div><textarea data-save="k_risiko" placeholder="Risiko — apa yang kami lakukan bila terjadi"></textarea></div>
+
+      <div class="cbox span4" style="border-color:#C2483C"><div class="cl" style="background:#FCF0EE;color:#8f342c">Batas akuntabilitas — sampai tingkat mana kami bersedia dinilai</div>
+        <textarea data-save="k_batas" placeholder="Kami bersedia dinilai sampai … Untuk tingkat di atasnya kami mengklaim kontribusi, bukan atribusi, karena …"></textarea></div>
+    </div>
+    <div class="saved"></div>
+    <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn sm ghost" onclick="window.print()">🖨 Cetak kanvas</button>
+      <span style="font-size:12px;color:var(--muted);align-self:center">Perangkat lain: <a href="#m5">matriks asumsi (Latihan 5)</a> · <a href="#m6">kerangka indikator (Latihan 6)</a></span>
+    </div>
+  </div>
+
+  <h3>Lampiran C — Struktur matriks asumsi</h3>
+  <p>Matriks interaktifnya ada di <a href="#m5">Latihan 5</a>. Struktur kolom yang dipakai:</p>
+  <div class="tbl-wrap">
+  <table class="compact">
+    <thead><tr><th>Asumsi</th><th>Jenis</th><th>Akibat jika salah</th><th>Kekuatan bukti</th><th>Tindakan</th></tr></thead>
+    <tbody><tr><td style="color:#7C8798" colspan="5">Ditulis spesifik dan dapat diuji · kausal / implementasi / kontekstual / normatif · besar atau kecil · kuat atau lemah · riset, uji coba, konsultasi, atau perubahan rancangan</td></tr></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ================= LAMPIRAN B ================= -->
+<section class="lesson" id="lampiranB" data-group="Bagian IV — Praktik" data-num="B" data-nav="Daftar periksa kualitas" data-track="1">
+  <div class="crumb">Lampiran B</div>
+  <h2 class="title">Daftar Periksa Kualitas ToC</h2>
+  <p class="lead">Beri tanda pada setiap pertanyaan yang <b>sudah terpenuhi</b>. Jika lebih dari lima jawaban “tidak”, ToC belum siap dipakai sebagai dasar proposal.</p>
+
+  <div class="tool">
+    <h5>Struktur</h5>
+    <label class="chk"><input type="checkbox" data-save="B1" data-scoregroup="lampB"><span>Tujuan jangka panjang menyebutkan siapa yang berubah, dalam hal apa, dan dalam jangka waktu berapa</span></label>
+    <label class="chk"><input type="checkbox" data-save="B2" data-scoregroup="lampB"><span>Setiap tingkat hasil dibedakan dengan jelas antara output dan outcome</span></label>
+    <label class="chk"><input type="checkbox" data-save="B3" data-scoregroup="lampB"><span>Jalur perubahan terdiri dari tiga sampai empat tingkat, tidak lebih</span></label>
+    <label class="chk"><input type="checkbox" data-save="B4" data-scoregroup="lampB"><span>Terdapat narasi tertulis, bukan hanya diagram</span></label>
+
+    <h5>Logika</h5>
+    <label class="chk"><input type="checkbox" data-save="B5" data-scoregroup="lampB"><span>Setiap panah memiliki penjelasan mengapa hubungan itu diyakini berlaku</span></label>
+    <label class="chk"><input type="checkbox" data-save="B6" data-scoregroup="lampB"><span>Terdapat rujukan bukti untuk hubungan-hubungan yang paling penting</span></label>
+    <label class="chk"><input type="checkbox" data-save="B7" data-scoregroup="lampB"><span>Aktivitas diturunkan dari prasyarat, bukan sebaliknya</span></label>
+    <label class="chk"><input type="checkbox" data-save="B8" data-scoregroup="lampB"><span>Prasyarat yang berada di luar kendali organisasi diidentifikasi secara terpisah</span></label>
+
+    <h5>Asumsi</h5>
+    <label class="chk"><input type="checkbox" data-save="B9" data-scoregroup="lampB"><span>Terdapat minimal sepuluh asumsi yang tertulis spesifik, bukan generik</span></label>
+    <label class="chk"><input type="checkbox" data-save="B10" data-scoregroup="lampB"><span>Asumsi diklasifikasikan menurut jenisnya</span></label>
+    <label class="chk"><input type="checkbox" data-save="B11" data-scoregroup="lampB"><span>Asumsi berisiko tinggi memiliki rencana pengujian atau pemantauan</span></label>
+    <label class="chk"><input type="checkbox" data-save="B12" data-scoregroup="lampB"><span>Asumsi normatif tentang bagaimana perubahan terjadi telah dituliskan</span></label>
+
+    <h5>Pengukuran</h5>
+    <label class="chk"><input type="checkbox" data-save="B13" data-scoregroup="lampB"><span>Setiap outcome memiliki minimal satu indikator</span></label>
+    <label class="chk"><input type="checkbox" data-save="B14" data-scoregroup="lampB"><span>Setiap indikator memiliki sumber data, metode, frekuensi, dan penanggung jawab</span></label>
+    <label class="chk"><input type="checkbox" data-save="B15" data-scoregroup="lampB"><span>Baseline tersedia atau dijadwalkan pengumpulannya</span></label>
+    <label class="chk"><input type="checkbox" data-save="B16" data-scoregroup="lampB"><span>Klaim yang dibuat sesuai dengan kualitas data — kontribusi atau atribusi dinyatakan secara jujur</span></label>
+
+    <h5>Proses</h5>
+    <label class="chk"><input type="checkbox" data-save="B17" data-scoregroup="lampB"><span>Penerima manfaat terlibat dalam penyusunan, bukan hanya dalam validasi</span></label>
+    <label class="chk"><input type="checkbox" data-save="B18" data-scoregroup="lampB"><span>Perbedaan pendapat yang belum terselesaikan tercatat</span></label>
+    <label class="chk"><input type="checkbox" data-save="B19" data-scoregroup="lampB"><span>Batas akuntabilitas ditetapkan dan disepakati</span></label>
+    <label class="chk"><input type="checkbox" data-save="B20" data-scoregroup="lampB"><span>Tanggal peninjauan berikutnya sudah ditetapkan</span></label>
+
+    <div class="chk-score" data-scoreout="lampB"></div>
+  </div>
+</section>
+
+<!-- ================= LAMPIRAN E — RUBRIK ================= -->
+<section class="lesson" id="rubrik" data-group="Bagian IV — Praktik" data-num="E" data-nav="Rubrik penilaian" data-track="1">
+  <div class="crumb">Lampiran E</div>
+  <h2 class="title">Rubrik Penilaian Hasil Belajar</h2>
+  <p class="lead">Dipakai fasilitator untuk menilai hasil kerja peserta, dan oleh peserta untuk menilai diri sendiri sebelum presentasi.</p>
+  <div class="tbl-wrap">
+  <table class="compact">
+    <thead><tr><th style="min-width:150px">Aspek</th><th>Belum memadai</th><th>Memadai</th><th>Kuat</th></tr></thead>
+    <tbody>
+      <tr><td><b>Membedakan output dan outcome</b></td><td>Masih tercampur di sebagian besar pernyataan</td><td>Konsisten pada jalur utama</td><td>Konsisten, dan mampu menjelaskan mengapa batasnya di situ</td></tr>
+      <tr><td><b>Kualitas jalur perubahan</b></td><td>Merupakan daftar aktivitas yang disusun ulang</td><td>Jalur logis terbentuk dengan tiga tingkat</td><td>Jalur logis, memuat aktor lain dan jalur alternatif</td></tr>
+      <tr><td><b>Asumsi</b></td><td>Generik atau kurang dari lima</td><td>Sepuluh asumsi spesifik, terklasifikasi</td><td>Terklasifikasi, dinilai risikonya, dan ada rencana pengujian</td></tr>
+      <tr><td><b>Indikator</b></td><td>Hanya di level output</td><td>Ada untuk setiap outcome</td><td>Lengkap dengan sumber data, frekuensi, dan penanggung jawab</td></tr>
+      <tr><td><b>Partisipasi</b></td><td>Disusun staf saja</td><td>Divalidasi ke penerima manfaat</td><td>Penerima manfaat terlibat sejak analisis masalah</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note"><span class="h">Cara memakai rubrik</span>Nilai per aspek, bukan nilai tunggal. Sebuah tim bisa “kuat” pada jalur perubahan tetapi “belum memadai” pada partisipasi — dan justru kombinasi itulah yang perlu terlihat, karena ia menunjukkan ToC yang rapi tetapi belum diuji ke orang yang paling berkepentingan.</div>
+</section>
+
+<!-- ================= UJIAN AKHIR ================= -->
+<section class="lesson" id="ujian" data-group="Penilaian" data-num="✓" data-nav="Ujian akhir" data-track="1">
+  <div class="crumb">Penilaian</div>
+  <h2 class="title">Ujian Akhir</h2>
+  <p class="lead">Dua belas soal yang mencakup Modul 1–8 dan studi kasus. Ambang kelulusan 70% — minimal 9 jawaban benar. Hasil terakhir tersimpan di peramban Anda dan dapat diulang sebanyak yang Anda perlukan.</p>
+  <div class="note warn"><span class="h">Ujian bukan produk akhir</span>Kelulusan ujian ini tidak menggantikan <b>empat hasil kerja wajib</b>: diagram, narasi, daftar asumsi, dan kerangka indikator. Fasilitator menilai keempatnya dengan <a href="#rubrik">Rubrik Lampiran E</a>, bukan dengan nilai ujian.</div>
+  <div class="quiz" data-quiz="ujian"></div>
+</section>
+
+<!-- ================= VIDEO ================= -->
+<section class="lesson" id="video" data-group="Rujukan" data-num="▶" data-nav="Pustaka video">
+  <div class="crumb">Rujukan</div>
+  <h2 class="title">Pustaka Video</h2>
+  <p class="lead">Lima video yang tercantum pada daftar pustaka modul. Klik gambar untuk memuat pemutar — video baru dimuat setelah diklik, sehingga halaman tetap ringan dan tidak menghubungi YouTube sebelum Anda memintanya.</p>
+  <div class="note"><span class="h">Catatan kejujuran</span>Judul dan penerbit di bawah dikutip apa adanya dari daftar pustaka modul sumber. Isi setiap video <b>tidak ditinjau ulang</b> saat sistem ini disusun, dan ketersediaannya bergantung pada pengunggah masing-masing. Perlakukan sebagai bahan pendamping, bukan sebagai pengganti Modul 1–8.</div>
+
+  <div class="vid-grid">
+    <div class="vid">
+      <div class="frame" data-yt="KF6Bo-IPPiQ" role="button" tabindex="0" aria-label="Putar video Theory of Change Explained">
+        <img src="https://i.ytimg.com/vi/KF6Bo-IPPiQ/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <div class="play"><span>▶</span></div></div>
+      <div class="meta"><div class="tagline">Pengantar konsep</div><h4>Theory of Change Explained</h4>
+        <p>Penjelasan dasar mengapa ToC dipakai dan bagaimana ia berbeda dari perencanaan biasa.</p>
+        <span class="src">Brouwers, J. — Centre for Development Innovation, Wageningen UR</span></div>
+    </div>
+    <div class="vid">
+      <div class="frame" data-yt="BJDN0cpxJv4" role="button" tabindex="0" aria-label="Putar video Theory of Change Explainer">
+        <img src="https://i.ytimg.com/vi/BJDN0cpxJv4/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <div class="play"><span>▶</span></div></div>
+      <div class="meta"><div class="tagline">Penjelas ringkas</div><h4>Theory of Change Explainer</h4>
+        <p>Ikhtisar singkat elemen ToC — cocok diputar sebagai pembuka sesi.</p>
+        <span class="src">Onkka, A. — Aurora Consulting</span></div>
+    </div>
+    <div class="vid">
+      <div class="frame" data-yt="wUiKdwgJpD8" role="button" tabindex="0" aria-label="Putar video Theory of Change: It's Easier Than You Think">
+        <img src="https://i.ytimg.com/vi/wUiKdwgJpD8/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <div class="play"><span>▶</span></div></div>
+      <div class="meta"><div class="tagline">Untuk peserta baru</div><h4>Theory of Change: It’s Easier Than You Think</h4>
+        <p>Pendekatan yang menurunkan hambatan psikologis bagi tim yang menganggap ToC rumit.</p>
+        <span class="src">YouTube</span></div>
+    </div>
+    <div class="vid">
+      <div class="frame" data-yt="cg4J1g0IVHg" role="button" tabindex="0" aria-label="Putar video Theory of Change Explained — Why Every Nonprofit Needs This">
+        <img src="https://i.ytimg.com/vi/cg4J1g0IVHg/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <div class="play"><span>▶</span></div></div>
+      <div class="meta"><div class="tagline">Sudut pandang lembaga nirlaba</div><h4>Theory of Change Explained — Why Every Nonprofit Needs This</h4>
+        <p>Argumen mengapa organisasi nirlaba memerlukan ToC, dari sisi kelembagaan.</p>
+        <span class="src">YouTube</span></div>
+    </div>
+    <div class="vid">
+      <div class="frame" data-yt="Z7m-VMYAJiE" role="button" tabindex="0" aria-label="Putar video Training Pembuatan Proposal Theory of Change">
+        <img src="https://i.ytimg.com/vi/Z7m-VMYAJiE/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <div class="play"><span>▶</span></div></div>
+      <div class="meta"><div class="tagline">Bahasa Indonesia</div><h4>Training Pembuatan Proposal Theory of Change</h4>
+        <p>Materi berbahasa Indonesia yang menghubungkan ToC dengan penulisan proposal — pasangkan dengan <a href="#m6">Modul 6</a> dan <a href="proposal-inh.html" target="_blank" rel="noopener">contoh proposal</a>.</p>
+        <span class="src">YouTube — berbahasa Indonesia</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTOH PROPOSAL ================= -->
+<section class="lesson" id="proposal" data-group="Rujukan" data-num="★" data-nav="Contoh proposal">
+  <div class="crumb">Rujukan · penerapan</div>
+  <h2 class="title">Contoh Proposal Permohonan Dana Berbasis ToC</h2>
+  <p class="lead">Satu proposal utuh yang seluruh strukturnya diturunkan dari Theory of Change — dipakai sebagai bahan bedah di Modul 6 dan sebagai templat kerja bagi tim penggalangan dana.</p>
+
+  <div class="note bad"><span class="h">Dokumen latihan — bukan proposal resmi</span>
+    Proposal ini adalah <b>contoh untuk pelatihan internal</b>. Nama program, lokasi, angka anggaran, target, dan nama donor di dalamnya adalah <b>ilustrasi yang dibuat untuk keperluan latihan</b> — bukan data riil dan bukan komitmen organisasi. Profil lembaga di dalamnya berisi <b>tempat kosong</b> yang harus diisi dengan data resmi sebelum dokumen dipakai untuk keperluan apa pun di luar kelas.</div>
+
+  <div class="card">
+    <h4 style="margin-top:0">Yang bisa dipelajari dari contoh ini</h4>
+    <ul style="margin-bottom:0">
+      <li><b>Diagram ToC di bagian pendekatan</b>, bukan di lampiran — sesuai anjuran Modul 6.3.</li>
+      <li><b>Setiap mata anggaran dapat ditelusuri</b> ke satu outcome; ada tabel penelusuran anggaran→outcome.</li>
+      <li><b>Asumsi kritis dicantumkan terbuka</b> beserta rencana pengujiannya, termasuk dua asumsi yang diuji lebih dulu pada tiga bulan pertama sebelum dana besar dicairkan.</li>
+      <li><b>Logframe diturunkan dari ToC</b>, bukan sebaliknya — dan istilahnya konsisten antar bagian.</li>
+      <li><b>Batas akuntabilitas dinyatakan eksplisit</b>: apa yang dijamin, apa yang hanya dikontribusikan.</li>
+    </ul>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+    <a class="btn gold" href="proposal-inh.html" target="_blank" rel="noopener">Buka contoh proposal ↗</a>
+    <a class="btn ghost" href="#lampiranB">Bedah dengan daftar periksa Lampiran B</a>
+  </div>
+
+  <h3>Latihan bedah proposal (45 menit)</h3>
+  <ol>
+    <li>Baca proposal sampai bagian anggaran.</li>
+    <li>Jalankan <a href="#lampiranB">Lampiran B</a> terhadap proposal itu — berapa butir yang “tidak”?</li>
+    <li>Cari <b>satu</b> hubungan sebab-akibat yang menurut Anda paling lemah, dan tuliskan mengapa.</li>
+    <li>Bandingkan dengan proposal terakhir yang organisasi Anda kirim. Apa yang berbeda pada strukturnya?</li>
+  </ol>
+  <div class="exercise">
+    <span class="tag">Catatan bedah</span>
+    <h4>Hasil pembacaan kritis Anda</h4>
+    <div class="dur">Tersimpan otomatis</div>
+    <textarea data-save="bedah_lemah" style="min-height:110px" placeholder="Hubungan sebab-akibat yang paling lemah menurut saya, dan alasannya…&#10;&#10;Yang berbeda dibanding proposal terakhir kami…"></textarea>
+    <div class="saved"></div>
+  </div>
+</section>
+
+<!-- ================= GLOSARIUM ================= -->
+<section class="lesson" id="glosarium" data-group="Rujukan" data-num="D" data-nav="Glosarium">
+  <div class="crumb">Lampiran D</div>
+  <h2 class="title">Glosarium</h2>
+  <p class="lead">Sepakati definisi kerja di awal lokakarya dan tempel di dinding — Modul 7.5 menyebut perdebatan istilah sebagai salah satu penghenti diskusi yang paling sering.</p>
+  <div class="gl-search"><input type="text" id="glSearch" placeholder="Cari istilah… (misalnya: outcome, asumsi, atribusi)"></div>
+  <div class="gl" id="glList">
+    <div class="row"><b>Theory of Change (ToC)</b><span>Teori Perubahan — penjelasan tentang bagaimana dan mengapa suatu intervensi diyakini menghasilkan perubahan tertentu.</span></div>
+    <div class="row"><b>Backward mapping</b><span>Pemetaan mundur — menyusun jalur perubahan dari tujuan akhir ke belakang.</span></div>
+    <div class="row"><b>Pathway of change</b><span>Jalur perubahan — rangkaian outcome yang saling terhubung menuju impact.</span></div>
+    <div class="row"><b>Precondition</b><span>Prasyarat — kondisi yang harus terpenuhi agar hasil di tingkat atasnya dapat terjadi.</span></div>
+    <div class="row"><b>Output</b><span>Keluaran — produk langsung aktivitas, berada dalam kendali organisasi.</span></div>
+    <div class="row"><b>Outcome</b><span>Hasil — perubahan pada pengetahuan, sikap, perilaku, praktik, relasi, atau kebijakan pihak lain.</span></div>
+    <div class="row"><b>Impact</b><span>Dampak — perubahan kondisi jangka panjang yang menjadi alasan keberadaan program.</span></div>
+    <div class="row"><b>Assumption</b><span>Asumsi — keyakinan atau kondisi yang harus benar agar rantai sebab-akibat berjalan.</span></div>
+    <div class="row"><b>Ceiling of accountability</b><span>Batas akuntabilitas — tingkat hasil tertinggi yang organisasi bersedia dinilai atasnya.</span></div>
+    <div class="row"><b>Contribution vs attribution</b><span>Kontribusi vs atribusi — klaim ikut menyumbang perubahan versus klaim menjadi penyebab tunggal.</span></div>
+    <div class="row"><b>Logframe</b><span>Kerangka kerja logis — matriks perencanaan dan pelaporan yang lazim disyaratkan donor.</span></div>
+    <div class="row"><b>MEAL</b><span>Monitoring, evaluasi, akuntabilitas, dan pembelajaran.</span></div>
+  </div>
+</section>
+
+<!-- ================= PUSTAKA ================= -->
+<section class="lesson" id="pustaka" data-group="Rujukan" data-num="§" data-nav="Daftar pustaka">
+  <div class="crumb">Daftar Pustaka</div>
+  <h2 class="title">Daftar Pustaka</h2>
+  <p class="lead">Disusun menurut abjad nama penulis atau lembaga. Seluruh tautan diperiksa pada Agustus 2026 oleh penyusun modul sumber.</p>
+
+  <h3>Sumber utama dan literatur rujukan</h3>
+  <div class="card ref">
+    <p>Anderson, A. A. (2005). <i>The Community Builder’s Approach to Theory of Change: A Practical Guide to Theory Development.</i> New York: The Aspen Institute Roundtable on Community Change.</p>
+    <p>BetterEvaluation. <i>Theory of Change.</i> <a href="https://www.betterevaluation.org/tools-resources/theory-change-0" target="_blank" rel="noopener">betterevaluation.org</a></p>
+    <p>Center for Theory of Change. <i>How Does Theory of Change Work?</i> <a href="https://www.theoryofchange.org/what-is-theory-of-change/how-does-theory-of-change-work/" target="_blank" rel="noopener">theoryofchange.org</a></p>
+    <p>Center for Theory of Change. <i>ToC Origins.</i> <a href="https://www.theoryofchange.org/what-is-theory-of-change/toc-background/toc-origins/" target="_blank" rel="noopener">theoryofchange.org</a></p>
+    <p>Change the Game Academy (Wilde Ganzen Foundation). <i>Theory of Change (ToC) — toolkit delapan langkah.</i> <a href="https://www.changethegameacademy.org/shortmodule/theory-of-change-toc/" target="_blank" rel="noopener">changethegameacademy.org</a></p>
+    <p>Funnell, S. C., &amp; Rogers, P. J. (2011). <i>Purposeful Program Theory: Effective Use of Theories of Change and Logic Models.</i> San Francisco: Jossey-Bass.</p>
+    <p>Government Analysis Function (UK). <i>The Theory of Change Process — Theory of Change Toolkit.</i> <a href="https://analysisfunction.civilservice.gov.uk/policy-store/the-analysis-function-theory-of-change-toolkit/" target="_blank" rel="noopener">analysisfunction.civilservice.gov.uk</a></p>
+    <p>INTRAC. (2024). <i>Theory of Change.</i> M&amp;E Universe. <a href="https://www.intrac.org/app/uploads/2024/11/Theory-of-Change.pdf" target="_blank" rel="noopener">intrac.org (PDF)</a></p>
+    <p>James, C. (2011). <i>Theory of Change Review: Report Commissioned by Comic Relief.</i> London: Comic Relief.</p>
+    <p>Learning for Action. <i>What is a Theory of Change?</i> — kriteria <i>meaningful, plausible, achievable, testable.</i> <a href="http://learningforaction.com/what-is-a-theory-of-change" target="_blank" rel="noopener">learningforaction.com</a></p>
+    <p>New Philanthropy Capital (NPC). <i>Theory of Change in Ten Steps.</i> <a href="https://www.thinknpc.org/resource-hub/ten-steps/" target="_blank" rel="noopener">thinknpc.org</a></p>
+    <p>New Philanthropy Capital (NPC). <i>Theory of Change: The Beginning of Making a Difference.</i> <a href="https://www.thinknpc.org/wp-content/uploads/2018/07/Theory-of-change2.pdf" target="_blank" rel="noopener">thinknpc.org (PDF)</a></p>
+    <p>Rogers, P. (2014). <i>Theory of Change.</i> Methodological Briefs: Impact Evaluation No. 2. Florence: UNICEF Office of Research. <a href="https://www.betterevaluation.org/sites/default/files/Theory_of_Change_ENG.pdf" target="_blank" rel="noopener">PDF</a></p>
+    <p>Stein, D., &amp; Valters, C. (2012). <i>Understanding Theory of Change in International Development: A Review of Existing Knowledge.</i> JSRP Paper 1. London: LSE Justice and Security Research Programme &amp; The Asia Foundation. <a href="https://assets.publishing.service.gov.uk/media/57a08a64ed915d622c0006ff/JSRP1-SteinValtersPN.pdf" target="_blank" rel="noopener">PDF</a></p>
+    <p>Taplin, D. H., Clark, H., Collins, E., &amp; Colby, D. C. (2013). <i>Theory of Change Technical Papers.</i> New York: ActKnowledge.</p>
+    <p>tools4dev. <i>What is a Theory of Change?</i> <a href="https://tools4dev.org/blog/what-is-a-theory-of-change/" target="_blank" rel="noopener">tools4dev.org</a></p>
+    <p>Valters, C. (2014). <i>Theories of Change in International Development: Communication, Learning, or Accountability?</i> JSRP Paper 17. London: LSE. <a href="https://www.gov.uk/dfid-research-outputs/theories-of-change-in-international-development-communication-learning-or-accountability" target="_blank" rel="noopener">gov.uk</a></p>
+    <p>van Es, M., Guijt, I., &amp; Vogel, I. (2015). <i>Theory of Change Thinking in Practice: A Stepwise Approach.</i> The Hague: Hivos.</p>
+    <p>Vogel, I. (2012). <i>Review of the Use of ‘Theory of Change’ in International Development: Review Report.</i> London: DFID. <a href="https://assets.publishing.service.gov.uk/media/57a08a5ded915d3cfd00071a/DFID_ToC_Review_VogelV7.pdf" target="_blank" rel="noopener">PDF</a></p>
+    <p>Weiss, C. H. (1995). <i>Nothing as Practical as Good Theory: Exploring Theory-Based Evaluation for Comprehensive Community Initiatives for Children and Families.</i> Dalam <i>New Approaches to Evaluating Community Initiatives.</i> Washington DC: Aspen Institute.</p>
+  </div>
+
+  <h3>Sumber berbahasa Indonesia</h3>
+  <div class="card ref">
+    <p>Dala Institute. <i>Cara Praktis Menyusun Theory of Change.</i> <a href="https://dala.institute/blogs/cara-praktis-menyusun-theory-of-change" target="_blank" rel="noopener">dala.institute</a></p>
+    <p>Dana Mitra Lingkungan (DML). <i>Theory of Change.</i> <a href="https://dml.or.id/theory-of-change/" target="_blank" rel="noopener">dml.or.id</a></p>
+    <p>Impact Labs. (2024). <i>Panduan Membuat Theory of Change (ToC) untuk Mendesain Program.</i> <a href="https://impactlabs.id/2024/10/17/theory-of-change-toc/" target="_blank" rel="noopener">impactlabs.id</a></p>
+    <p>International Detention Coalition. <i>Indonesia Theory of Change Workshop</i> — catatan lokakarya ToC di Jakarta bersama organisasi masyarakat sipil dan badan PBB. <a href="https://idcoalition.org/indonesia-theory-of-change/" target="_blank" rel="noopener">idcoalition.org</a></p>
+    <p>Monev Studio. <i>Memahami Teori Perubahan.</i> <a href="https://www.v1.monevstudio.org/memahami-teori-perubahan" target="_blank" rel="noopener">monevstudio.org</a></p>
+  </div>
+
+  <h3>Sumber yang tidak dapat diverifikasi</h3>
+  <div class="note warn">Halaman acara pada domain <code>event.logout.id</code> dengan jalur “toc-2026”. Tautan ini diberikan sebagai rujukan awal namun <b>tidak dapat diakses</b> pada saat penyusunan modul, sehingga isinya tidak digunakan dan tidak dikutip di bagian mana pun dokumen ini.</div>
+</section>
+
+</main>
+
+<script src="assets/quiz.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

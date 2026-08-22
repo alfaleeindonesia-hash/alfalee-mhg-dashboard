@@ -20,7 +20,13 @@
   a.card{display:block;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(11,31,58,.06);transition:.16s;position:relative;overflow:hidden;}
   a.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(11,31,58,.12);border-color:var(--gold);}
   a.card .edge{position:absolute;left:0;top:0;bottom:0;width:5px;}
-  .c1 .edge{background:var(--navy);} .c2 .edge{background:var(--steel);}
+  .c1 .edge{background:var(--navy);} .c2 .edge{background:var(--steel);} .c3 .edge{background:var(--gold);}
+  .c3 .go{color:var(--navy);}
+  .learn{margin-top:18px;}
+  .learn a.card{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;}
+  .learn .ic{font-size:30px;line-height:1;}
+  .learn .cols{display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;margin-bottom:12px;}
+  @media(max-width:680px){.learn a.card{grid-template-columns:1fr;} .learn .cols{grid-template-columns:1fr;}}
   .card .ic{font-size:26px;}
   .card h2{font-size:18px;color:var(--navy);margin:10px 0 4px;}
   .card p{font-size:13px;color:var(--muted);margin-bottom:12px;}
@@ -71,6 +77,7 @@
     <div class="chip">Dok <b>RGI/CMP/2026/07/001</b></div>
     <div class="chip">Target <b>Rp 204jt/bln</b></div>
     <div class="chip">IP <b>Muhammad Husein Gaza</b></div>
+    <div class="chip">Pembelajaran <b>Sekolah ToC</b></div>
   </div>
 
   <div class="cards">
@@ -89,6 +96,22 @@
       <p>Angka kinerja — ATI &amp; Engagement Rate 8 channel.</p>
       <ul><li>ATI 3-layer (Passive/Active/Sacrifice)</li><li>Engagement Rate per channel</li><li>Matriks channel × dimensi</li><li>IG Feed + IG Story live, filter per akun</li></ul>
       <span class="go">Buka →</span>
+    </a>
+  </div>
+
+  <div class="learn">
+    <a class="card c3" href="lms-toc/index.html">
+      <span class="edge"></span>
+      <div class="ic">🎓</div>
+      <div>
+        <h2>Sekolah ToC — Modul Belajar Theory of Change</h2>
+        <p>Sistem belajar internal untuk staf program, MEAL, dan penggalangan dana: 8 modul, 7 latihan berlembar kerja, kuis dan ujian akhir, perangkat kerja yang tersimpan otomatis, pustaka video, plus satu contoh proposal permohonan dana yang seluruh strukturnya dibangun dari ToC.</p>
+        <div class="cols">
+          <ul><li>Modul 1–8 + studi kasus &amp; latihan terpadu</li><li>Kanvas ToC, matriks asumsi, kerangka indikator MEAL</li></ul>
+          <ul><li>Daftar periksa kualitas &amp; rubrik penilaian</li><li>Contoh proposal INH berbasis ToC (dokumen latihan)</li></ul>
+        </div>
+        <span class="go">Mulai belajar →</span>
+      </div>
     </a>
   </div>
 
