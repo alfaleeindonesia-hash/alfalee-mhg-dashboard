@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kerangka Penggalian Data Yayasan — Alfalee</title>
+<style>
+  :root{--navy:#1B2A4A;--navy2:#24365C;--navy3:#0F1B33;--gold:#C9A227;--gold-l:#E8CE6C;--cream:#F7F4EC;--ink:#1B2430;--muted:#5B6675;--line:#DDE2EA;--steel:#3E6B9E;--auto:#2E9E6B;--warn:#C08A1E;--bad:#B0453B;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Roboto,-apple-system,sans-serif;background:radial-gradient(1000px 600px at 15% -10%,rgba(201,162,39,.10),transparent 60%),var(--cream);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.55;}
+  .wrap{max-width:1080px;margin:0 auto;padding:34px 20px 80px;}
+  a{color:var(--steel);}
+  .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-size:28px;color:var(--navy);margin:8px 0 6px;letter-spacing:-.01em;}
+  .sub{color:var(--muted);font-size:14px;max-width:760px;}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}
+  .home{font-size:12.5px;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 13px;color:var(--navy);font-weight:600;}
+  .home:hover{border-color:var(--gold);}
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 18px;border-bottom:1px solid var(--line);padding-bottom:10px;}
+  nav.tabs button{font:inherit;font-size:13px;font-weight:600;cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 13px;color:var(--muted);}
+  nav.tabs button:hover{border-color:var(--gold);color:var(--navy);}
+  nav.tabs button.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+  section.tab{display:none;} section.tab.on{display:block;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 3px rgba(11,31,58,.05);}
+  .card h2{font-size:19px;color:var(--navy);margin-bottom:6px;}
+  .card h3{font-size:15px;color:var(--navy);margin:16px 0 6px;}
+  .card p{font-size:13.5px;margin:6px 0;}
+  .card ul,.card ol{margin:8px 0 8px 20px;font-size:13.5px;}
+  .card li{margin:4px 0;}
+  .lead{color:var(--muted);font-size:13.5px;margin-bottom:10px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .box{border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 14px;background:#FFFDF6;font-size:13px;}
+  .box.bad{border-left-color:var(--bad);background:#FDF6F5;}
+  .box.ok{border-left-color:var(--auto);background:#F4FBF7;}
+  .box b{color:var(--navy);}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px;}
+  th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-size:11px;letter-spacing:.03em;text-transform:uppercase;font-weight:700;}
+  td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even) td{background:#FAFBFD;}
+  .tag{display:inline-block;font-size:9.5px;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:5px;color:#fff;letter-spacing:.04em;}
+  .t-pub{background:var(--auto);}.t-int{background:var(--steel);}.t-rah{background:var(--warn);}.t-sen{background:var(--bad);}
+  .div-head{display:flex;align-items:center;gap:12px;}
+  details.div{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+  details.div>summary{cursor:pointer;padding:14px 18px;font-weight:700;font-size:15px;color:var(--navy);list-style:none;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  details.div>summary::-webkit-details-marker{display:none;}
+  details.div>summary::before{content:"▸";color:var(--gold);font-size:12px;}
+  details.div[open]>summary::before{content:"▾";}
+  details.div .body{padding:0 18px 18px 18px;}
+  .num{font-size:11px;background:var(--gold);color:var(--navy);font-weight:800;border-radius:20px;padding:3px 9px;}
+  .pill{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:2px 9px;color:var(--muted);background:var(--cream);}
+  select,input,textarea{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:7px 9px;color:var(--ink);background:#fff;width:100%;}
+  select:focus,input:focus,textarea:focus{outline:2px solid var(--gold-l);border-color:var(--gold);}
+  label.f{display:block;font-size:11.5px;font-weight:700;color:var(--navy);margin:0 0 4px;text-transform:uppercase;letter-spacing:.04em;}
+  .field{margin-bottom:10px;}
+  button.btn{font:inherit;font-size:13px;font-weight:700;cursor:pointer;background:var(--navy);color:#fff;border:0;border-radius:8px;padding:9px 16px;}
+  button.btn:hover{background:var(--navy2);}
+  button.btn.alt{background:#fff;color:var(--navy);border:1px solid var(--line);}
+  button.btn.alt:hover{border-color:var(--gold);}
+  button.btn.danger{background:#fff;color:var(--bad);border:1px solid var(--line);}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .chk{display:flex;gap:9px;align-items:flex-start;font-size:13px;padding:5px 0;border-bottom:1px dashed var(--line);}
+  .chk input{width:16px;height:16px;margin-top:2px;flex:0 0 auto;accent-color:var(--gold);}
+  .chk.done span{color:var(--muted);text-decoration:line-through;}
+  .bar{height:8px;background:var(--line);border-radius:20px;overflow:hidden;flex:1;min-width:120px;}
+  .bar i{display:block;height:100%;background:var(--auto);}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .kpi .v{font-size:26px;font-weight:800;color:var(--navy);line-height:1.2;}
+  .kpi .l{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  .sc{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:13px;}
+  .sc .nm{flex:0 0 210px;}
+  .sc input[type=range]{flex:1;accent-color:var(--gold);}
+  .sc .vv{flex:0 0 26px;text-align:center;font-weight:800;color:var(--navy);}
+  .step{display:flex;gap:14px;margin-bottom:14px;}
+  .step .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .step .t b{color:var(--navy);font-size:14px;}
+  .step .t p{font-size:13px;color:var(--muted);margin-top:2px;}
+  .foot{font-size:12px;color:var(--muted);margin-top:26px;text-align:center;}
+  .q{font-size:13.5px;margin:5px 0 5px 0;padding-left:16px;position:relative;}
+  .q::before{content:"›";position:absolute;left:2px;color:var(--gold);font-weight:700;}
+  .warnbar{background:#FDF6F5;border:1px solid #E9C9C4;border-left:4px solid var(--bad);border-radius:0 10px 10px 0;padding:12px 14px;font-size:13px;margin-bottom:16px;}
+  @media print{nav.tabs,.home,button.btn{display:none;}section.tab{display:block!important;}body{background:#fff;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="eyebrow">Alfalee — Perangkat Tata Kelola</div>
+      <h1>Kerangka Penggalian Data Yayasan</h1>
+      <p class="sub">Metode terstruktur untuk membongkar, memetakan, dan memverifikasi data dari <b>seluruh divisi</b> — dari Program sampai Legal — agar yayasan punya satu sumber kebenaran, bukan sepuluh versi Excel.</p>
+    </div>
+    <a class="home" href="../index.html">← Beranda</a>
+  </div>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <section class="tab" id="t-prinsip"></section>
+  <section class="tab" id="t-divisi"></section>
+  <section class="tab" id="t-wawancara"></section>
+  <section class="tab" id="t-kamus"></section>
+  <section class="tab" id="t-matang"></section>
+  <section class="tab" id="t-roadmap"></section>
+  <section class="tab" id="t-etika"></section>
+  <section class="tab" id="t-ekspor"></section>
+
+  <p class="foot">Seluruh isian tersimpan hanya di peramban perangkat ini (<code>localStorage</code>). Tidak ada server, tidak ada data terkirim. Gunakan tab <b>Ekspor</b> untuk memindahkan hasil kerja.</p>
+</div>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
