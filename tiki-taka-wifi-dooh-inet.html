@@ -1,0 +1,245 @@
+<title>Tiki-Taka WIFI DOOH INET</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: single readable column; ownership bars -> transaction cards -> money scale -> timeline */
+:root{
+  --bg:#F6F7F9; --surface:#FFFFFF; --fg:#14181F; --muted:#5A6472; --line:#DDE1E7;
+  --wifi:#0E7C86; --wifi-soft:#DCF1F2;
+  --dooh:#C4500F; --dooh-soft:#FBE8DB;
+  --inet:#4A47C9; --inet-soft:#E6E5FA;
+  --other:#B8BFC9; --warn:#9A6700; --warn-soft:#FFF3CC;
+  --f-head:'Space Grotesk','Helvetica Neue',Arial,sans-serif;
+  --f-body:'Inter','Helvetica Neue',Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1318; --surface:#181D24; --fg:#EDF0F4; --muted:#9AA4B2; --line:#2A313B;
+  --wifi:#3BC1CC; --wifi-soft:#10333A;
+  --dooh:#F08B4C; --dooh-soft:#3B2417;
+  --inet:#9A98FF; --inet-soft:#25244F;
+  --other:#4A5360; --warn:#F2C14E; --warn-soft:#3A2F10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1318; --surface:#181D24; --fg:#EDF0F4; --muted:#9AA4B2; --line:#2A313B;
+  --wifi:#3BC1CC; --wifi-soft:#10333A;
+  --dooh:#F08B4C; --dooh-soft:#3B2417;
+  --inet:#9A98FF; --inet-soft:#25244F;
+  --other:#4A5360; --warn:#F2C14E; --warn-soft:#3A2F10; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-block:32px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-head);text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.1;letter-spacing:-.02em}
+h2{font-size:22px;margin-top:48px;letter-spacing:-.01em}
+h3{font-size:16px}
+.lead{color:var(--muted);max-width:62ch;margin:12px 0 0}
+.sec-sub{color:var(--muted);margin:6px 0 18px;max-width:62ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:20px;font-size:13px;font-weight:600}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:baseline}
+.c-wifi{--c:var(--wifi);--cs:var(--wifi-soft)}
+.c-dooh{--c:var(--dooh);--cs:var(--dooh-soft)}
+.c-inet{--c:var(--inet);--cs:var(--inet-soft)}
+
+/* ownership */
+.own{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.own-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+.own-card h3{color:var(--c);display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.own-card h3 small{font:500 12px var(--f-body);color:var(--muted)}
+.bar{display:flex;height:22px;border-radius:4px;overflow:hidden;margin:12px 0;background:var(--line);gap:2px}
+.bar i{display:block;height:100%}
+.s1{background:var(--c)} .s2{background:color-mix(in srgb,var(--c) 60%,var(--surface))}
+.s3{background:color-mix(in srgb,var(--c) 35%,var(--surface))} .s4{background:var(--other)}
+.rows{list-style:none;margin:0;padding:0;font-size:13.5px}
+.rows li{display:flex;gap:8px;align-items:center;padding:5px 0;border-top:1px solid var(--line)}
+.rows li:first-child{border-top:0}
+.rows b{margin-left:auto;font-variant-numeric:tabular-nums}
+.sw{width:10px;height:10px;border-radius:2px;flex:none}
+.note{font-size:13px;color:var(--muted);margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--line)}
+.note strong{color:var(--fg)}
+
+/* tx cards */
+.tx{display:grid;gap:12px}
+.tx-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.tx-top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}
+.chip{border-radius:6px;padding:6px 10px;font-weight:600;font-size:14px;background:var(--cs,var(--line));color:var(--fg);border:1px solid var(--c,var(--line))}
+.arrow{display:flex;flex-direction:column;align-items:center;min-width:110px;flex:0 1 auto}
+.arrow span{font:700 15px var(--f-head);font-variant-numeric:tabular-nums}
+.arrow svg{width:100%;height:12px;color:var(--muted)}
+.tx-card p{margin:0;font-size:14px}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--warn-soft);color:var(--warn);margin-top:8px}
+
+/* money */
+.money{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.m-row{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:6px 12px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.m-row:first-of-type{border-top:0}
+.m-label{font-size:13.5px;min-width:0}
+.m-track{display:flex;align-items:center;gap:8px;min-width:0}
+.m-bar{height:16px;border-radius:3px;background:var(--c);min-width:3px}
+.m-val{font:600 13px var(--f-body);font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:520px){.m-row{grid-template-columns:1fr}}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 18px 18px;min-width:0}
+.tl li::before{content:"";position:absolute;left:-26px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--c);border:2px solid var(--bg)}
+.tl time{font:700 13px var(--f-head);color:var(--c);letter-spacing:.04em}
+.tl p{margin:2px 0 0;font-size:14px}
+
+.explain{background:var(--warn-soft);border-radius:10px;padding:14px 16px;font-size:14px;margin-top:14px}
+.explain b{color:var(--warn)}
+.foot{margin-top:40px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+</style>
+
+<div class="wrap">
+  <h1>Tiki-Taka Transaksi<br>WIFI, DOOH, dan INET</h1>
+  <p class="lead">Tiga perusahaan tercatat di bursa yang saling berhubungan lewat saham, kontrak, dan uang. Halaman ini merangkum siapa pemiliknya, siapa berbisnis dengan siapa, dan transaksi besar yang terjadi.</p>
+  <div class="legend">
+    <span class="c-wifi"><span class="dot" style="background:var(--c)"></span>WIFI (internet)</span>
+    <span class="c-dooh"><span class="dot" style="background:var(--c)"></span>DOOH (iklan digital luar ruang)</span>
+    <span class="c-inet"><span class="dot" style="background:var(--c)"></span>INET (jaringan internet)</span>
+  </div>
+
+  <h2>1. Siapa pemilik saat IPO?</h2>
+  <p class="sec-sub">Pembagian saham pada saat masing-masing perusahaan pertama kali tercatat di bursa.</p>
+  <div class="own">
+    <div class="own-card c-wifi">
+      <h3>WIFI <small>IPO 2020</small></h3>
+      <div class="bar" role="img" aria-label="ISB 65,29 persen, PIS 6,16, IGM 6,16, lainnya 22,39">
+        <i class="s1" style="width:65.29%"></i><i class="s2" style="width:6.16%"></i><i class="s3" style="width:6.16%"></i><i class="s4" style="width:22.39%"></i>
+      </div>
+      <ul class="rows">
+        <li><span class="sw s1"></span>ISB<b>65,29%</b></li>
+        <li><span class="sw s2"></span>PIS (konversi utang)<b>6,16%</b></li>
+        <li><span class="sw s3"></span>IGM (konversi utang)<b>6,16%</b></li>
+        <li><span class="sw s4"></span>Pemegang lain<b>22,39%</b></li>
+      </ul>
+      <p class="note">Pemilik akhir ISB: <strong>Tinawati</strong></p>
+    </div>
+    <div class="own-card c-dooh">
+      <h3>DOOH <small>IPO 2023</small></h3>
+      <div class="bar" role="img" aria-label="PIS 79,69 persen, Faysal 0,31, publik 20">
+        <i class="s1" style="width:79.69%"></i><i class="s2" style="width:.31%;min-width:3px"></i><i class="s4" style="width:20%"></i>
+      </div>
+      <ul class="rows">
+        <li><span class="sw s1"></span>PIS<b>79,69%</b></li>
+        <li><span class="sw s2"></span>Faysal Deni Rahman<b>0,31%</b></li>
+        <li><span class="sw s4"></span>Publik<b>20%</b></li>
+      </ul>
+      <p class="note"><strong>Faysal</strong> mengendalikan DOOH lewat PIS. Sebelum IPO, PIS dimiliki 99% IUD dan 1% Faysal.</p>
+    </div>
+    <div class="own-card c-inet">
+      <h3>INET <small>IPO 2023</small></h3>
+      <div class="bar" role="img" aria-label="AKUN sekitar 80 persen, sisanya lain">
+        <i class="s1" style="width:80%"></i><i class="s4" style="width:20%"></i>
+      </div>
+      <ul class="rows">
+        <li><span class="sw s1"></span>AKUN<b>≈80%</b></li>
+        <li><span class="sw s4"></span>Sisanya (publik/lain)<b>≈20%</b></li>
+      </ul>
+      <p class="note">Pemilik akhir AKUN: <strong>Adhie M. Massardi</strong>. Adhie pernah memegang saham DOOH, lalu menjual 240 saham ke Faysal seharga Rp240 juta (2022).</p>
+    </div>
+  </div>
+
+  <h2>2. Siapa berbisnis dengan siapa?</h2>
+  <p class="sec-sub">Selain saham, ketiganya juga saling berkontrak.</p>
+  <div class="tx">
+    <div class="tx-card">
+      <div class="tx-top"><span>WIFI ↔ DOOH</span><span>sejak 2022</span></div>
+      <div class="flow">
+        <span class="chip c-wifi">WIFI</span>
+        <span class="arrow"><span>Rp9,435 M</span><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0 6H94M88 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        <span class="chip c-dooh">DOOH</span>
+      </div>
+      <p>DOOH memasang iklan di pasar, Tanah Abang, dan DAMRI untuk WIFI, lalu pemasaran internet di 2025. Per Juni 2023, WIFI masih berutang usaha Rp9,435 miliar ke DOOH.</p>
+    </div>
+    <div class="tx-card">
+      <div class="tx-top"><span>WIFI ↔ INET</span><span>IP Transit</span></div>
+      <div class="flow">
+        <span class="chip c-wifi">WIFI (via anak usaha)</span>
+        <span class="arrow"><span>Rp269,23 M</span><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0 6H94M88 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        <span class="chip c-inet">INET</span>
+      </div>
+      <p>Kerja sama IP Transit lewat anak usaha. Nilai jaminan PFI–JIA Rp269,2305 miliar setelah adendum 2026. Ada juga pembatalan kontrak dan pengembalian dana.</p>
+    </div>
+    <div class="tx-card">
+      <div class="tx-top"><span>IGM</span><span>pemain penghubung</span></div>
+      <p>Mendapat saham WIFI lewat konversi utang → membeli anak usaha WIFI (2025) → membeli saham Triuslive dari DOOH (2026). IGM muncul di dua sisi, sebagai pembeli dari WIFI dan dari DOOH.</p>
+    </div>
+  </div>
+
+  <h2>3. Transaksi besar 2024–2026</h2>
+  <p class="sec-sub">Siapa membeli apa dari siapa, dan berapa nilainya.</p>
+  <div class="tx">
+    <div class="tx-card">
+      <div class="tx-top"><span>2024</span><span>induk WIFI</span></div>
+      <div class="flow">
+        <span class="chip">Arsari Sentra Data (Hashim)</span>
+        <span class="arrow"><span>45% ISB</span><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M100 6H6M12 1L6 6l6 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        <span class="chip c-wifi">Tinawati</span>
+      </div>
+      <p>Yang dibeli adalah 45% dari ISB, bukan seluruh WIFI.</p>
+    </div>
+    <div class="tx-card">
+      <div class="tx-top"><span>Juli 2026</span><span>pergantian pengendali DOOH</span></div>
+      <div class="flow">
+        <span class="chip c-dooh">SII (99,90% Tinawati)</span>
+        <span class="arrow"><span>Rp197,34 M</span><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M100 6H6M12 1L6 6l6 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        <span class="chip c-dooh">PIS</span>
+      </div>
+      <p>SII membeli <b>51% DOOH</b> dari PIS. PIS tersisa 15,09%. Pengendali baru berarti kewajiban penawaran tender (MTO).</p>
+      <span class="tag">Memicu MTO</span>
+    </div>
+    <div class="tx-card">
+      <div class="tx-top"><span>September 2026</span><span>DOOH membeli INET</span></div>
+      <div class="flow">
+        <span class="chip c-dooh">CNI (anak usaha DOOH)</span>
+        <span class="arrow"><span>Rp2,0055 T</span><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M100 6H6M12 1L6 6l6 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        <span class="chip c-inet">AKUN</span>
+      </div>
+      <p>CNI berencana membeli <b>29,88% INET</b>. Setelah transaksi: AKUN 29,89% dan CNI 29,88%. AKUN direncanakan tetap menjadi pengendali (PSP), jadi tidak otomatis memicu MTO.</p>
+      <span class="tag">Direncanakan, bukan otomatis MTO</span>
+    </div>
+    <div class="tx-card">
+      <div class="tx-top"><span>Oktober 2026</span><span>induk WIFI</span></div>
+      <div class="flow">
+        <span class="chip">SGK</span>
+        <span class="arrow"><span>Rp4,06 T</span><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M100 6H6M12 1L6 6l6 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        <span class="chip c-wifi">ISB</span>
+      </div>
+      <p>ISB mengalihkan <b>26,667% WIFI</b> ke SGK, tetapi tetap dilaporkan sebagai pengendali (PSP).</p>
+    </div>
+  </div>
+  <div class="explain"><b>Apa itu MTO?</b> Mandatory Tender Offer: bila pengendali sebuah perusahaan tercatat berganti, pembeli wajib menawarkan pembelian ke pemegang saham publik. Itu sebabnya status "pengendali berganti atau tidak" menjadi inti dari tiap transaksi di atas.</div>
+
+  <h2>4. Seberapa besar uangnya?</h2>
+  <p class="sec-sub">Nilai dalam miliar rupiah, digambar dalam satu skala. Utang usaha WIFI ke DOOH sangat kecil dibanding transaksi saham dan pinjaman.</p>
+  <div class="money">
+    <div class="m-row c-wifi"><div class="m-label">Utang usaha WIFI ke DOOH (Juni 2023)</div><div class="m-track"><div class="m-bar" style="width:calc(9.435/5000*100%)"></div><span class="m-val">Rp9,4 M</span></div></div>
+    <div class="m-row c-dooh"><div class="m-label">SII beli 51% DOOH (Jul 2026)</div><div class="m-track"><div class="m-bar" style="width:calc(197.34/5000*100%)"></div><span class="m-val">Rp197,3 M</span></div></div>
+    <div class="m-row c-inet"><div class="m-label">Jaminan PFI–JIA (WIFI–INET)</div><div class="m-track"><div class="m-bar" style="width:calc(269.2305/5000*100%)"></div><span class="m-val">Rp269,2 M</span></div></div>
+    <div class="m-row c-inet"><div class="m-label">CNI beli 29,88% INET (Sep 2026)</div><div class="m-track"><div class="m-bar" style="width:calc(2005.5/5000*100%)"></div><span class="m-val">Rp2.005,5 M</span></div></div>
+    <div class="m-row c-wifi"><div class="m-label">ISB alihkan 26,667% WIFI ke SGK (Okt 2026)</div><div class="m-track"><div class="m-bar" style="width:calc(4060/5000*100%)"></div><span class="m-val">Rp4.060 M</span></div></div>
+    <div class="m-row c-dooh"><div class="m-label">Fasilitas pinjaman SII untuk DOOH</div><div class="m-track"><div class="m-bar" style="width:100%;max-width:calc(100% - 80px)"></div><span class="m-val">hingga Rp5.000 M</span></div></div>
+    <p class="note">Pinjaman SII: bunga 7,5%, tenor 10 tahun. DOOH juga merencanakan rights issue hingga 154,78 miliar saham baru.</p>
+  </div>
+
+  <h2>5. Urutan kejadian</h2>
+  <p class="sec-sub">Dari IPO sampai transaksi terakhir.</p>
+  <ul class="tl">
+    <li class="c-wifi"><time>2020</time><p>WIFI IPO. ISB pegang 65,29%. PIS dan IGM masing-masing dapat 6,16% dari konversi utang.</p></li>
+    <li class="c-dooh"><time>2022</time><p>Kontrak iklan WIFI–DOOH dimulai. Adhie menjual 240 saham DOOH ke Faysal (Rp240 juta).</p></li>
+    <li class="c-inet"><time>2023</time><p>DOOH dan INET IPO. Juni 2023: utang usaha WIFI ke DOOH Rp9,435 miliar.</p></li>
+    <li class="c-wifi"><time>2024</time><p>Arsari Sentra Data (Hashim) membeli 45% ISB dari Tinawati.</p></li>
+    <li class="c-dooh"><time>2024–2025</time><p>PIS berubah: dari 99% IUD + 1% Faysal menjadi 50% IUD + 50% Wisdom Crowd Indonesia.</p></li>
+    <li class="c-wifi"><time>2025</time><p>IGM membeli anak usaha WIFI. Kerja sama pemasaran internet WIFI–DOOH.</p></li>
+    <li class="c-dooh"><time>Juli 2026</time><p>SII (Tinawati) membeli 51% DOOH dari PIS, Rp197,34 miliar. MTO terpicu. IGM membeli saham Triuslive dari DOOH di tahun yang sama.</p></li>
+    <li class="c-inet"><time>September 2026</time><p>CNI (anak usaha DOOH) berencana membeli 29,88% INET dari AKUN, Rp2,0055 triliun.</p></li>
+    <li class="c-wifi"><time>Oktober 2026</time><p>ISB mengalihkan 26,667% WIFI ke SGK, Rp4,06 triliun. Tetap dilaporkan sebagai PSP.</p></li>
+  </ul>
+
+  <p class="foot">Sumber: ringkasan Stockbit (stockbit.com/post/37303832). Semua angka diambil apa adanya dari ringkasan tersebut. Persentase yang tidak disebut di sumber (misalnya sisa pemegang saham) ditandai "lain" dan tidak ditebak. Ini bukan saran investasi.</p>
+</div>
