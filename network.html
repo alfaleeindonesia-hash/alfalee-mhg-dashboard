@@ -1,0 +1,141 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Peta Jaringan WIFI DOOH INET</title>
+<style>
+body{margin:0;background:#fff;font-family:'Inter','Helvetica Neue',Arial,sans-serif;color:#14181F}
+svg text{font-family:'Inter','Helvetica Neue',Arial,sans-serif}
+</style></head><body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg" width="1800" height="1530" viewBox="0 0 1800 1530"></svg>
+<script>
+const NS='http://www.w3.org/2000/svg', s=document.getElementById('s');
+const C={wifi:'#0E7C86',dooh:'#C4500F',inet:'#4A47C9',person:'#8E4FB0',corp:'#2B4B7A',ink:'#14181F',mut:'#5A6472',tx:'#E07A00',biz:'#2F6FD0',old:'#9AA3AE'};
+function el(n,a,p=s,t){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!==undefined)e.textContent=t;p.appendChild(e);return e}
+// header
+el('rect',{x:0,y:0,width:1800,height:1530,fill:'#fff'});
+el('text',{x:50,y:62,'font-size':38,'font-weight':700,fill:C.ink},s,'Peta Jaringan: WIFI – DOOH – INET');
+el('text',{x:50,y:96,'font-size':18,fill:C.mut},s,'Siapa memegang siapa, siapa menjual ke siapa, dan apa yang berubah (2020 → Oktober 2026). Sumber: ringkasan Stockbit, angka apa adanya.');
+const N={
+ wifi:{x:520,y:660,r:62,c:C.wifi,t:'WIFI',k:'emiten'},
+ dooh:{x:1180,y:560,r:62,c:C.dooh,t:'DOOH',k:'emiten'},
+ inet:{x:1450,y:880,r:62,c:C.inet,t:'INET',k:'emiten'},
+ tina:{x:520,y:225,r:30,c:C.person,t:'Tinawati',k:'orang',sub:'pemilik akhir ISB & SII',lab:'top'},
+ hashim:{x:150,y:225,r:30,c:C.person,t:'Hashim',k:'orang',sub:'via Arsari Sentra Data',lab:'top'},
+ isb:{x:260,y:400,r:30,c:C.corp,t:'ISB',k:'corp',sub:'induk WIFI',lab:'left'},
+ sgk:{x:150,y:900,r:30,c:C.corp,t:'SGK',k:'corp'},
+ sii:{x:1300,y:225,r:30,c:C.corp,t:'SII',k:'corp',sub:'pinjaman & pembeli 51% DOOH',lab:'top'},
+ pis:{x:800,y:440,r:30,c:C.corp,t:'PIS',k:'corp'},
+ iud:{x:540,y:350,r:26,c:C.corp,t:'IUD',k:'corp',lab:'left'},
+ wci:{x:760,y:310,r:26,c:C.corp,t:'Wisdom Crowd Indonesia',k:'corp',lab:'top'},
+ faysal:{x:1080,y:470,r:30,c:C.person,t:'Faysal Deni Rahman',k:'orang',sub:'pengendali DOOH s.d. 2026',lab:'top'},
+ adhie:{x:1650,y:300,r:30,c:C.person,t:'Adhie M. Massardi',k:'orang',sub:'pemilik akhir AKUN',lab:'top'},
+ akun:{x:1650,y:640,r:30,c:C.corp,t:'AKUN',k:'corp',sub:'induk INET'},
+ cni:{x:1420,y:540,r:30,c:C.corp,t:'CNI',k:'corp',sub:'anak usaha DOOH',lab:'top'},
+ igm:{x:760,y:1010,r:30,c:C.corp,t:'IGM',k:'corp'}
+};
+function bd(a,b){const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);return{x:a.x+dx/d*(a.r+4),y:a.y+dy/d*(a.r+4)}}
+const labels=[];
+function edge(a,b,o){
+ const A=N[a],B=N[b],p=bd(A,B),q=bd(B,A);
+ const col={own:'#27303C',old:C.old,tx:C.tx,biz:C.biz}[o.k];
+ const w={own:3,old:2.5,tx:4,biz:2.5}[o.k];
+ const dash={own:'',old:'9 7',tx:'',biz:'2 7'}[o.k];
+ const c=o.c||0, dx=q.x-p.x, dy=q.y-p.y, d=Math.hypot(dx,dy);
+ const mx=(p.x+q.x)/2-dy/d*c*2, my=(p.y+q.y)/2+dx/d*c*2;
+ el('path',{d:`M${p.x} ${p.y}Q${mx} ${my} ${q.x} ${q.y}`,fill:'none',stroke:col,'stroke-width':w,'stroke-dasharray':dash,'stroke-linecap':'round','marker-end':o.k==='tx'?'url(#ar)':''});
+ const t=o.t??.5,u=1-t;
+ labels.push({x:u*u*p.x+2*u*t*mx+t*t*q.x+(o.ox||0),y:u*u*p.y+2*u*t*my+t*t*q.y+(o.oy||0),lines:o.l.split('\n'),col:o.k==='old'?C.mut:col,bold:o.k==='tx'||o.k==='own'});
+}
+const defs=el('defs',{});
+const m=el('marker',{id:'ar',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:7,markerHeight:7,orient:'auto-start-reverse'},defs);
+el('path',{d:'M0 0L10 5L0 10z',fill:C.tx},m);
+// ===== edges (drawn before nodes)
+edge('tina','isb',{k:'own',l:'pemilik akhir',t:.5});
+edge('tina','sii',{k:'own',l:'99,90%',t:.5});
+edge('tina','hashim',{k:'tx',l:'jual 45% ISB (2024)'});
+edge('hashim','isb',{k:'own',l:'45% ISB',t:.6,ox:-40});
+edge('isb','wifi',{k:'own',l:'65,29% (IPO 2020)\ntetap dilapor sbg PSP',t:.45,ox:70,oy:-10});
+edge('isb','sgk',{k:'tx',l:'alih 26,667% WIFI\nRp4,06 T (Okt 2026)',t:.5,ox:-20});
+edge('sgk','wifi',{k:'own',l:'26,667% WIFI (baru)',t:.5,ox:50});
+edge('pis','wifi',{k:'own',l:'6,16% (konversi utang)',t:.42,ox:-30});
+edge('igm','wifi',{k:'own',l:'6,16% (konversi utang)',t:.5,ox:-125,oy:10,c:-40});
+edge('wifi','igm',{k:'tx',l:'jual anak usaha (2025)',t:.5,ox:105,c:40});
+edge('iud','pis',{k:'old',l:'99% → 50%',t:.62,oy:26});
+edge('wci','pis',{k:'own',l:'0% → 50%\n(laporan 2024–25)',t:.5,ox:-70});
+edge('faysal','pis',{k:'old',l:'1% (pra-IPO)',t:.5,oy:-18});
+edge('pis','dooh',{k:'old',l:'79,69% → 15,09%',t:.5,oy:26});
+edge('faysal','dooh',{k:'own',l:'0,31%',t:.5,ox:34});
+edge('pis','sii',{k:'tx',l:'jual 51% DOOH · Rp197,34 M\n(Jul 2026) → memicu MTO',t:.4,ox:60,oy:-48});
+edge('sii','dooh',{k:'own',l:'51% (baru)',t:.6,ox:80,c:-22});
+edge('sii','dooh',{k:'biz',l:'pinjaman s.d. Rp5 T\nbunga 7,5% · 10 thn',t:.2,ox:105,c:22});
+edge('dooh','cni',{k:'own',l:'anak usaha',t:.5,oy:-18});
+edge('akun','cni',{k:'tx',l:'jual 29,88% INET\nRp2,0055 T\n(Sep 2026, rencana)',t:.5,ox:62,oy:-40});
+edge('cni','inet',{k:'own',l:'29,88% (rencana)',t:.5,ox:-80});
+edge('akun','inet',{k:'old',l:'≈80% → 29,89%',t:.5,ox:78,oy:6});
+edge('adhie','akun',{k:'own',l:'pemilik akhir',t:.5,ox:44});
+edge('adhie','faysal',{k:'tx',l:'jual 240 saham DOOH · Rp240 juta (2022)',t:.5,oy:-22});
+edge('wifi','dooh',{k:'biz',l:'kontrak iklan (2022) · pemasaran internet (2025)\nutang WIFI ke DOOH Rp9,435 M (Jun 2023)',t:.45,oy:46});
+edge('wifi','inet',{k:'biz',l:'IP Transit lewat anak usaha · jaminan PFI–JIA Rp269,23 M (2026)\nada pembatalan kontrak & pengembalian dana',t:.7,oy:58});
+edge('dooh','igm',{k:'tx',l:'jual saham Triuslive\n(2026)',t:.3,ox:90});
+// ===== nodes
+for(const k in N){const n=N[k];
+ if(n.k==='emiten'){
+  el('circle',{cx:n.x,cy:n.y,r:n.r+8,fill:n.c,opacity:.15});
+  el('circle',{cx:n.x,cy:n.y,r:n.r,fill:n.c});
+  el('text',{x:n.x,y:n.y+9,'text-anchor':'middle','font-size':26,'font-weight':700,fill:'#fff'},s,n.t);
+  const sub={wifi:'IPO 2020',dooh:'IPO 2023',inet:'IPO 2023'}[k];
+  el('text',{x:n.x,y:n.y+n.r+30,'text-anchor':'middle','font-size':16,fill:C.mut},s,sub);
+ } else {
+  el('circle',{cx:n.x,cy:n.y,r:n.r,fill:n.c});
+  const pos=n.lab==='top'?{x:n.x,y:n.y-n.r-26,a:'middle'}:n.lab==='left'?{x:n.x-n.r-12,y:n.y-2,a:'end'}:{x:n.x,y:n.y+n.r+20,a:'middle'};
+  const hl={'stroke':'#fff','stroke-width':6,'paint-order':'stroke','stroke-linejoin':'round'};
+  el('text',{x:pos.x,y:pos.y,'text-anchor':pos.a,'font-size':16,'font-weight':700,fill:C.ink,...hl},s,n.t);
+  if(n.sub)el('text',{x:pos.x,y:pos.y+18,'text-anchor':pos.a,'font-size':13,fill:C.mut,...hl},s,n.sub);
+}
+}
+// ===== labels (on top, with white backing)
+for(const L of labels){ if(!L.lines[0])continue;
+ const g=el('g',{});
+ const r=el('rect',{rx:5,fill:'#fff','fill-opacity':.92,stroke:'#E3E6EB'},g);
+ const t=el('text',{x:L.x,y:L.y,'text-anchor':'middle','font-size':13.5,'font-weight':L.bold?600:500,fill:L.col},g);
+ const lh=17, y0=L.y-(L.lines.length-1)*lh/2+5;
+ L.lines.forEach((ln,i)=>el('tspan',{x:L.x,y:y0+i*lh},t,ln));
+ const b=t.getBBox(); r.setAttribute('x',b.x-6);r.setAttribute('y',b.y-3);r.setAttribute('width',b.width+12);r.setAttribute('height',b.height+6);
+}
+// ===== legend
+let y=1160;
+el('line',{x1:50,x2:1750,y1:y-30,y2:y-30,stroke:'#E3E6EB','stroke-width':2});
+el('text',{x:50,y:y,'font-size':22,'font-weight':700,fill:C.ink},s,'Cara membaca gambar');
+const lg=[
+ ['own','Garis tebal hitam','Pemilik saham (kondisi terbaru atau baru)'],
+ ['old','Garis putus abu-abu','Kepemilikan lama yang mengecil (persen dulu → kini)'],
+ ['tx','Panah oranye','Transaksi: arah panah = saham/aset berpindah'],
+ ['biz','Garis titik biru','Hubungan bisnis: kontrak, utang, pinjaman']];
+lg.forEach((r,i)=>{const yy=y+34+i*34;
+ const col={own:'#27303C',old:C.old,tx:C.tx,biz:C.biz}[r[0]];
+ el('line',{x1:50,x2:130,y1:yy-5,y2:yy-5,stroke:col,'stroke-width':{own:3,old:2.5,tx:4,biz:2.5}[r[0]],'stroke-dasharray':{own:'',old:'9 7',tx:'',biz:'2 7'}[r[0]],'marker-end':r[0]==='tx'?'url(#ar)':''});
+ el('text',{x:146,y:yy,'font-size':16,'font-weight':600,fill:C.ink},s,r[1]);
+ el('text',{x:330,y:yy,'font-size':16,fill:C.mut},s,r[2]);
+});
+const nodes=[[C.wifi,'WIFI'],[C.dooh,'DOOH'],[C.inet,'INET'],[C.person,'Orang / pemilik akhir'],[C.corp,'Perusahaan pemegang saham']];
+let lx=900; nodes.forEach((n,i)=>{const yy=y+34+i*28; el('circle',{cx:lx+8,cy:yy-5,r:8,fill:n[0]});el('text',{x:lx+26,y:yy,'font-size':16,fill:C.ink},s,n[1]);});
+el('text',{x:1220,y:y+34,'font-size':16,'font-weight':600,fill:C.ink},s,'MTO');
+el('text',{x:1220,y:y+56,'font-size':15,fill:C.mut},s,'Mandatory Tender Offer: bila pengendali berganti,');
+el('text',{x:1220,y:y+76,'font-size':15,fill:C.mut},s,'pembeli wajib menawar saham publik.');
+el('text',{x:1220,y:y+100,'font-size':15,fill:C.mut},s,'PSP = Pemegang Saham Pengendali.');
+// ===== sebelum -> sesudah
+y=1370;
+el('line',{x1:50,x2:1750,y1:y-34,y2:y-34,stroke:'#E3E6EB','stroke-width':2});
+el('text',{x:50,y:y-4,'font-size':22,'font-weight':700,fill:C.ink},s,'Apa yang berubah di tiap emiten');
+const cards=[
+ [C.wifi,'WIFI','Induk ISB 65,29% (pemilik akhir Tinawati) · 2024: Arsari (Hashim) beli 45% ISB','Okt 2026: ISB alihkan 26,667% WIFI ke SGK (Rp4,06 T), tapi ISB tetap dilapor sebagai PSP'],
+ [C.dooh,'DOOH','PIS 79,69% (dikendalikan Faysal) · PIS: 99% IUD + 1% Faysal','Jul 2026: SII (Tinawati) 51%, PIS tersisa 15,09% · PIS kini 50% IUD + 50% Wisdom Crowd'],
+ [C.inet,'INET','AKUN ≈80% (pemilik akhir Adhie)','Sep 2026 (rencana): AKUN 29,89% + CNI 29,88%. AKUN tetap PSP, jadi tidak otomatis MTO']];
+cards.forEach((c,i)=>{const x=50+i*575;
+ el('rect',{x,y:y+8,width:555,height:118,rx:10,fill:'#F6F7F9',stroke:'#E3E6EB'});
+ el('rect',{x,y:y+8,width:8,height:118,rx:4,fill:c[0]});
+ el('text',{x:x+24,y:y+38,'font-size':20,'font-weight':700,fill:c[0]},s,c[1]);
+ el('text',{x:x+24,y:y+64,'font-size':13,'font-weight':600,fill:C.mut},s,'DULU');
+ const wrap=(t,yy,w)=>{const words=t.split(' ');let line='',ls=[];for(const wd of words){if((line+' '+wd).length>w){ls.push(line);line=wd}else line=(line?line+' ':'')+wd}ls.push(line);ls.forEach((l,j)=>el('text',{x:x+80,y:yy+j*17,'font-size':14,fill:C.ink},s,l));return ls.length};
+ wrap(c[2],y+64,56);
+ el('text',{x:x+24,y:y+102,'font-size':13,'font-weight':600,fill:C.tx},s,'KINI');
+ wrap(c[3],y+102,56);
+});
+</script></body></html>
