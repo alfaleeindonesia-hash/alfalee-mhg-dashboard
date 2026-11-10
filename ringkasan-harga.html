@@ -1,0 +1,139 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Ringkasan Harga</title>
+<style>body{margin:0;background:#fff;font-family:'Inter','Helvetica Neue',Arial,sans-serif}svg text{font-family:'Inter','Helvetica Neue',Arial,sans-serif}</style></head><body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg" width="1800" height="4000"></svg>
+<script>
+const NS='http://www.w3.org/2000/svg',s=document.getElementById('s');
+const K={wifi:'#0E7C86',dooh:'#C4500F',inet:'#4A47C9',ink:'#14181F',mut:'#5A6472',line:'#E3E6EB',up:'#1C8A4B',dn:'#C23B3B',navy:'#2B4B7A',tx:'#E07A00',soft:'#F6F7F9'};
+function el(n,a,t,p=s){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!==undefined)e.textContent=t;p.appendChild(e);return e}
+const T=(x,y,t,sz=15,w=400,c=K.ink,an='start')=>el('text',{x,y,'font-size':sz,'font-weight':w,fill:c,'text-anchor':an},t);
+const idr=n=>'Rp'+n.toLocaleString('id-ID');
+const fmtp=p=>(p>=0?'+':'−')+Math.abs(p).toLocaleString('id-ID',{maximumFractionDigits:0})+'%';
+let Y=0;
+// ---------- header
+T(50,70,'Tiki-Taka Harga: WIFI × DOOH × INET',40,700);
+T(50,106,'Siapa masuk di harga berapa, dan siapa yang sekarang untung atau rugi. Harga sekarang = penutupan 9 November 2026.',18,400,K.mut);
+T(50,132,'Sumber: ringkasan Stockbit. Angka apa adanya; persentase sudah dihitung ulang dan cocok.',15,400,K.mut);
+// legend
+Y=172;
+el('rect',{x:50,y:Y-16,width:1700,height:64,rx:10,fill:K.soft,stroke:K.line});
+el('rect',{x:70,y:Y+2,width:22,height:14,fill:K.up});T(100,Y+14,'Harga masuk lebih rendah dari harga sekarang (pembeli itu untung)',15);
+el('rect',{x:580,y:Y+2,width:22,height:14,fill:K.dn});T(610,Y+14,'Harga masuk lebih tinggi dari harga sekarang (pembeli itu rugi)',15);
+el('path',{d:`M1110 ${Y+9}l8-8 8 8-8 8z`,fill:'#fff',stroke:K.ink,'stroke-width':2});T(1134,Y+14,'Harga pasar saat transaksi',15);
+chip(1380,Y-4,'Ritel bisa ikut',false);chip(1380,Y+22,'Hanya pihak tertentu',true);
+function chip(x,y,t,hard){const w=t.length*7.2+18;el('rect',{x,y,width:w,height:20,rx:10,fill:hard?K.navy:'#fff',stroke:hard?K.navy:K.mut});T(x+w/2,y+14.5,t,12,600,hard?'#fff':K.mut,'middle')}
+// ---------- data
+const D={
+ wifi:{name:'WIFI',sub:'internet · IPO 2020',col:K.wifi,now:840,rows:[
+  ['IPO 2020','Mei 2020',530,0],['Waran I','2021–Des 2023',690,0],['Private placement ke ISB','18 Nov 2022',186,1],['Rights issue 4:5','Jul 2025',2000,0,2020],['ISB jual ke SGK','19 Okt 2026',2870,1,1025]]},
+ dooh:{name:'DOOH',sub:'iklan digital luar ruang · IPO 2023',col:K.dooh,now:212,rows:[
+  ['IPO','Mei 2023',100,0],['PIS jual (Rp75–78)','Jan 2024',76.5,1,null,'Rp75–78'],['PIS jual (Rp54–65)','Mar 2024',59.5,1,null,'Rp54–65'],['Waran I','s.d. Mei 2025',135,0],['PIS → Wisdom Crowd','Mar 2026',124,1],['SII beli 51% DOOH','30 Jul 2026',50,1,236],['Harga penawaran MTO','5 Okt–3 Nov 2026',148,0],['PIS jual ke BBS','9 Okt 2026',330,1,270],['PIS jual ke BBS','12 Okt 2026',336,1,304]]},
+ inet:{name:'INET',sub:'jaringan internet · IPO 2023',col:K.inet,now:171,rows:[
+  ['IPO','24 Jul 2023',101,0],['Waran I','Jan 2024–Jan 2026',91,0],['Rights issue 3:4','Jan 2026',250,0],['AKUN jual ke CNI (rencana)','1 Sep 2026',300,1,354],['Waran II','Jul 2026–Jul 2028',300,0]]}
+};
+// ---------- chart 1
+Y=290;
+T(50,Y,'1. Harga di setiap aksi korporasi',28,700);
+T(50,Y+28,'Makin panjang batang = makin mahal harga saat itu. Garis putus-putus = harga sekarang.',16,400,K.mut);
+Y+=60;
+for(const k in D){const d=D[k];
+ const x0=600,x1=1560,max={wifi:3200,dooh:400,inet:400}[k];
+ const sc=v=>x0+(x1-x0)*v/max;
+ const rh=60,h=rh*d.rows.length+64;
+ el('rect',{x:50,y:Y,width:1700,height:h,rx:10,fill:'#fff',stroke:K.line});
+ el('rect',{x:50,y:Y,width:8,height:h,rx:4,fill:d.col});
+ T(80,Y+34,d.name,26,700,d.col);T(180,Y+34,d.sub,15,400,K.mut);
+ d.rows.forEach((r,i)=>{const y=Y+60+i*rh;
+  T(80,y+22,r[0],16,600);T(80,y+42,r[1],13,400,K.mut);
+  chip(330,y+6,r[3]?'Hanya pihak tertentu':'Ritel bisa ikut',!!r[3]);
+  const col=r[2]<d.now?K.up:K.dn;
+  el('rect',{x:x0,y:y+8,width:Math.max(2,sc(r[2])-x0),height:24,rx:3,fill:col,opacity:.85});
+  T(sc(r[2])+10,y+26,r[5]||idr(r[2]),15,700);
+  if(r[4]){const mx=sc(r[4]);el('path',{d:`M${mx} ${y+3}l8 8-8 8-8-8z`,fill:'#fff',stroke:K.ink,'stroke-width':2});T(mx,y+54,'pasar '+idr(r[4]),12,500,K.mut,'middle');}
+ });
+ const nx=sc(d.now);el('line',{x1:nx,x2:nx,y1:Y+48,y2:Y+h-8,stroke:K.ink,'stroke-width':2,'stroke-dasharray':'6 5'});
+ T(nx+8,Y+50,'sekarang '+idr(d.now),14,700);
+ Y+=h+22;
+}
+// ---------- chart 2
+Y+=30;
+T(50,Y,'2. Kalau Anda beli di harga itu, hari ini untung atau rugi berapa persen?',28,700);
+T(50,Y+28,'Hijau = untung, merah = rugi. Dihitung dari harga sekarang dibanding harga di setiap aksi.',16,400,K.mut);
+Y+=60;
+for(const k in D){const d=D[k];
+ const pcts=d.rows.map(r=>(d.now/r[2]-1)*100);
+ const lo=Math.min(-10,Math.min(...pcts)),hi=Math.max(10,Math.max(...pcts));
+ const x0=600,x1=1560,sc=v=>x0+(x1-x0)*(v-lo)/(hi-lo),zx=sc(0);
+ const rh=46,h=rh*d.rows.length+60;
+ el('rect',{x:50,y:Y,width:1700,height:h,rx:10,fill:'#fff',stroke:K.line});
+ el('rect',{x:50,y:Y,width:8,height:h,rx:4,fill:d.col});
+ T(80,Y+34,d.name,26,700,d.col);T(180,Y+34,'harga sekarang '+idr(d.now),15,400,K.mut);
+ d.rows.forEach((r,i)=>{const y=Y+56+i*rh,p=pcts[i];
+  T(80,y+20,r[0],15,600);T(80,y+38,r[1],12,400,K.mut);
+  chip(380,y+4,r[3]?'Hanya pihak tertentu':'Ritel bisa ikut',!!r[3]);
+  const a=sc(Math.min(0,p)),b=sc(Math.max(0,p));
+  el('rect',{x:a,y:y+6,width:Math.max(2,b-a),height:24,rx:3,fill:p>=0?K.up:K.dn,opacity:.88});
+  const tx=p>=0?b+10:a-10;T(tx,y+24,(r[5]?'≈':'')+fmtp(p),15,700,p>=0?K.up:K.dn,p>=0?'start':'end');
+ });
+ el('line',{x1:zx,x2:zx,y1:Y+46,y2:Y+h-6,stroke:K.ink,'stroke-width':2});
+ T(zx,Y+44,'impas (0%)',13,600,K.mut,'middle');
+ Y+=h+22;
+}
+T(50,Y+4,'* Harga PIS Jan dan Mar 2024 dihitung dari titik tengah rentang harga.',13,400,K.mut);
+Y+=44;
+// ---------- chart 3 DOOH timeline
+T(50,Y,'3. DOOH selama MTO: apa yang terjadi di harga pasar?',28,700);
+T(50,Y+28,'Garis oranye = harga pasar pada tanggal-tanggal yang diketahui (bukan data harian). Segmen putus-putus = tidak ada data di antaranya.',16,400,K.mut);
+Y+=60;
+const CH=640;
+el('rect',{x:50,y:Y,width:1700,height:CH,rx:10,fill:'#fff',stroke:K.line});
+const px0=130,px1=1690,py0=Y+60,py1=Y+CH-70;
+const d0=Date.UTC(2026,6,28),d1=Date.UTC(2026,10,12);
+const dO=Date.UTC(2026,9,1);const dx=(m,d)=>{const t=Date.UTC(2026,m-1,d);return t<dO?px0+70:(px0+330)+(px1-(px0+330))*(t-dO)/(d1-dO)};
+const vy=v=>py1-(py1-py0)*v/400;
+for(const v of [0,100,200,300,400]){el('line',{x1:px0,x2:px1,y1:vy(v),y2:vy(v),stroke:K.line});T(px0-12,vy(v)+5,idr(v),13,400,K.mut,'end')}
+// MTO band
+el('rect',{x:dx(10,5),y:py0-20,width:dx(11,3)-dx(10,5),height:py1-py0+20,fill:'#FFF3CC',opacity:.7});
+T((dx(10,5)+dx(11,3))/2,py0-4,'Masa MTO (5 Okt – 3 Nov)',14,700,'#9A6700','middle');
+// ref lines
+el('line',{x1:px0,x2:px1,y1:vy(50),y2:vy(50),stroke:K.navy,'stroke-width':2.5,'stroke-dasharray':'8 6'});
+T(px0+8,vy(50)-8,'Rp50 = harga SII membeli 51% DOOH (30 Jul)',14,700,K.navy);
+el('line',{x1:px0,x2:px1,y1:vy(148),y2:vy(148),stroke:K.up,'stroke-width':2.5,'stroke-dasharray':'8 6'});
+T(px0+8,vy(148)-8,'Rp148 = harga tawar MTO (hanya berlaku 5 Okt – 3 Nov)',14,700,K.up);
+// market line
+const pts=[[7,30,236],[10,2,366],[10,5,352],[10,9,270],[10,12,304],[11,3,200],[11,9,212]];
+el('polyline',{points:pts.slice(0,2).map(p=>dx(p[0],p[1])+','+vy(p[2])).join(' '),fill:'none',stroke:K.dooh,'stroke-width':3,'stroke-dasharray':'3 8','stroke-linecap':'round'});
+el('polyline',{points:pts.slice(1).map(p=>dx(p[0],p[1])+','+vy(p[2])).join(' '),fill:'none',stroke:K.dooh,'stroke-width':3.5,'stroke-linejoin':'round'});
+el('line',{x1:px0+190,x2:px1-1500+px0+190,y1:py1,y2:py1,stroke:'#fff','stroke-width':0});
+T(px0+200,py1+22,'// Agu–Sep: tidak ada data',13,600,K.mut,'middle');
+const lab={0:['30 Jul','Rp236',-6,26],1:['2 Okt','Rp366',0,-14],2:['5 Okt','Rp352',16,-12],3:['9 Okt','Rp270',0,26],4:['12 Okt','Rp304',24,24],5:['3 Nov','Rp200',0,30],6:['9 Nov','Rp212',20,-14]};
+pts.forEach((p,i)=>{const x=dx(p[0],p[1]),y=vy(p[2]);el('circle',{cx:x,cy:y,r:7,fill:K.dooh,stroke:'#fff','stroke-width':2.5});
+ const l=lab[i];T(x+l[2],y+l[3],l[1],15,700,K.dooh,'middle');T(x,py1+22,l[0],13,500,K.mut,'middle');
+ el('line',{x1:x,x2:x,y1:py1,y2:py1+6,stroke:K.mut});});
+// BBS trades
+[[10,9,330],[10,12,336]].forEach((p,i)=>{const x=dx(p[0],p[1]),y=vy(p[2]);el('path',{d:`M${x} ${y-12}l12 12-12 12-12-12z`,fill:K.tx,stroke:'#fff','stroke-width':2});
+ if(i)T(x+18,y+5,'PIS→BBS Rp'+p[2],14,700,K.tx,'start');else T(x,y-20,'PIS→BBS Rp'+p[2],14,700,K.tx,'middle');});
+// callouts
+function note(x,y,w,lines,col){const h=lines.length*20+16;el('rect',{x,y,width:w,height:h,rx:8,fill:'#fff',stroke:col||K.line,'stroke-width':1.5});lines.forEach((l,i)=>T(x+12,y+24+i*20,l,14,i?400:700,i?K.ink:col||K.ink))}
+note(140,py0+345,300,['Pasar Rp236, tapi SII beli Rp50','Harga kendali 79% di bawah pasar.'],K.navy);
+note(450,py0+345,330,['Pengumuman MTO Rp148 (2 Okt)','Pasar Rp366: MTO 60% di bawah pasar.'],K.up);
+note(1330,py0+345,400,['Hasil MTO: nol saham ditenderkan','Tak ada yang mau jual di Rp148 saat','pasar Rp200–366.'],K.up);
+note(1330,py0+12,400,['Turun 43% selama MTO (352 → 200)','Belum tentu karena MTO. Pola harga','dan rencana RI 1:20 ikut berperan.'],K.dn);
+T(px0,Y+CH-14,'Sumbu waktu terputus: Agustus–September tidak ditampilkan karena tidak ada data di ringkasan.',12,400,K.mut);
+Y+=CH+40;
+// ---------- takeaway cards
+T(50,Y,'Kesimpulan untuk investor ritel',28,700);Y+=24;
+const cards=[
+ [K.up,'Harga termurah','SII membeli 51% DOOH di Rp50 padahal pasar Rp236. ISB masuk WIFI di Rp186 (PP 2022).'],
+ [K.dooh,'Harga keluar terbaik','ISB menjual ke SGK di Rp2.870 (pasar Rp1.025). PIS menjual ke BBS di Rp330–336 saat MTO. AKUN menjual ke CNI di Rp300 (rencana, pasar sekarang Rp171).'],
+ [K.dn,'Yang paling sering rugi','Pembeli RI WIFI (−58%), RI INET (−32%), dan pembeli DOOH saat MTO di Rp352–366 (−40%).'],
+ [K.navy,'Yang perlu diwaspadai','Rights issue DOOH 1:20 (potensi dilusi hingga 95,24%) dan harga RI yang belum final. Harga transaksi pengendali bukan target harga.']];
+cards.forEach((c,i)=>{const x=50+i*430,w=410;el('rect',{x,y:Y,width:w,height:160,rx:10,fill:K.soft,stroke:K.line});el('rect',{x,y:Y,width:w,height:8,rx:4,fill:c[0]});
+ T(x+20,Y+42,c[1],20,700,c[0]);
+ const words=c[2].split(' ');let line='',ys=Y+72;for(const wd of words){if((line+' '+wd).length>44){T(x+20,ys,line,15);ys+=22;line=wd}else line=(line?line+' ':'')+wd}T(x+20,ys,line,15);});
+Y+=200;
+T(50,Y,'Bukan saran investasi. Harga transaksi pengendali bisa memuat komponen lain (utang, perjanjian, premi kendali) yang tidak tampak di angka per saham.',14,400,K.mut);
+Y+=40;
+s.setAttribute('height',Y);s.setAttribute('viewBox','0 0 1800 '+Y);
+el('rect',{x:0,y:0,width:1800,height:Y,fill:'#fff'},undefined,s);s.insertBefore(s.lastChild,s.firstChild);
+document.title='h'+Y;
+</script></body></html>

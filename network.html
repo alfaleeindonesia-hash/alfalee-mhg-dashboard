@@ -11,23 +11,24 @@ function el(n,a,p=s,t){const e=document.createElementNS(NS,n);for(const k in a)e
 // header
 el('rect',{x:0,y:0,width:1800,height:1530,fill:'#fff'});
 el('text',{x:50,y:62,'font-size':38,'font-weight':700,fill:C.ink},s,'Peta Jaringan: WIFI – DOOH – INET');
-el('text',{x:50,y:96,'font-size':18,fill:C.mut},s,'Siapa memegang siapa, siapa menjual ke siapa, dan apa yang berubah (2020 → Oktober 2026). Sumber: ringkasan Stockbit, angka apa adanya.');
+el('text',{x:50,y:96,'font-size':18,fill:C.mut},s,'Siapa memegang siapa, siapa menjual ke siapa, dan apa yang berubah (2020 → Oktober 2026). Sumber: ringkasan Stockbit (data s.d. 9 Nov 2026). *≈3% = perkiraan hitung, bukan angka resmi.');
 const N={
  wifi:{x:520,y:660,r:62,c:C.wifi,t:'WIFI',k:'emiten'},
  dooh:{x:1180,y:560,r:62,c:C.dooh,t:'DOOH',k:'emiten'},
  inet:{x:1450,y:880,r:62,c:C.inet,t:'INET',k:'emiten'},
  tina:{x:520,y:225,r:30,c:C.person,t:'Tinawati',k:'orang',sub:'pemilik akhir ISB & SII',lab:'top'},
  hashim:{x:150,y:225,r:30,c:C.person,t:'Hashim',k:'orang',sub:'via Arsari Sentra Data',lab:'top'},
- isb:{x:260,y:400,r:30,c:C.corp,t:'ISB',k:'corp',sub:'induk WIFI',lab:'left'},
+ isb:{x:260,y:400,r:30,c:C.corp,t:'ISB',k:'corp',sub:'induk WIFI · kini 27,756%',lab:'left'},
  sgk:{x:150,y:900,r:30,c:C.corp,t:'SGK',k:'corp'},
  sii:{x:1300,y:225,r:30,c:C.corp,t:'SII',k:'corp',sub:'pinjaman & pembeli 51% DOOH',lab:'top'},
  pis:{x:800,y:440,r:30,c:C.corp,t:'PIS',k:'corp'},
- iud:{x:540,y:350,r:26,c:C.corp,t:'IUD',k:'corp',lab:'left'},
- wci:{x:760,y:310,r:26,c:C.corp,t:'Wisdom Crowd Indonesia',k:'corp',lab:'top'},
+ iud:{x:520,y:380,r:26,c:C.corp,t:'IUD',k:'corp',lab:'left'},
+ wci:{x:690,y:300,r:26,c:C.corp,t:'Wisdom Crowd Indonesia',k:'corp',lab:'left'},
  faysal:{x:1080,y:470,r:30,c:C.person,t:'Faysal Deni Rahman',k:'orang',sub:'pengendali DOOH s.d. 2026',lab:'top'},
  adhie:{x:1650,y:300,r:30,c:C.person,t:'Adhie M. Massardi',k:'orang',sub:'pemilik akhir AKUN',lab:'top'},
  akun:{x:1650,y:640,r:30,c:C.corp,t:'AKUN',k:'corp',sub:'induk INET'},
  cni:{x:1420,y:540,r:30,c:C.corp,t:'CNI',k:'corp',sub:'anak usaha DOOH',lab:'top'},
+ bbs:{x:880,y:330,r:26,c:C.corp,t:'BBS',k:'corp',sub:'pembeli 933 juta saham PIS',lab:'top'},
  igm:{x:760,y:1010,r:30,c:C.corp,t:'IGM',k:'corp'}
 };
 function bd(a,b){const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);return{x:a.x+dx/d*(a.r+4),y:a.y+dy/d*(a.r+4)}}
@@ -51,22 +52,23 @@ edge('tina','isb',{k:'own',l:'pemilik akhir',t:.5});
 edge('tina','sii',{k:'own',l:'99,90%',t:.5});
 edge('tina','hashim',{k:'tx',l:'jual 45% ISB (2024)'});
 edge('hashim','isb',{k:'own',l:'45% ISB',t:.6,ox:-40});
-edge('isb','wifi',{k:'own',l:'65,29% (IPO 2020)\ntetap dilapor sbg PSP',t:.45,ox:70,oy:-10});
-edge('isb','sgk',{k:'tx',l:'alih 26,667% WIFI\nRp4,06 T (Okt 2026)',t:.5,ox:-20});
-edge('sgk','wifi',{k:'own',l:'26,667% WIFI (baru)',t:.5,ox:50});
+edge('isb','wifi',{k:'own',l:'65,29% (IPO 2020) → 27,756%\ntetap dilapor sbg PSP',t:.45,ox:70,oy:-10});
+edge('isb','sgk',{k:'tx',l:'alih 26,667% WIFI · Rp2.870/saham\nRp4,06 T (19 Okt 2026)',t:.5,ox:-20});
+edge('sgk','wifi',{k:'own',l:'26,667% WIFI (baru)\n(ISB+SGK = 54,42%)',t:.5,ox:50});
 edge('pis','wifi',{k:'own',l:'6,16% (konversi utang)',t:.42,ox:-30});
 edge('igm','wifi',{k:'own',l:'6,16% (konversi utang)',t:.5,ox:-125,oy:10,c:-40});
 edge('wifi','igm',{k:'tx',l:'jual anak usaha (2025)',t:.5,ox:105,c:40});
 edge('iud','pis',{k:'old',l:'99% → 50%',t:.62,oy:26});
 edge('wci','pis',{k:'own',l:'0% → 50%\n(laporan 2024–25)',t:.5,ox:-70});
 edge('faysal','pis',{k:'old',l:'1% (pra-IPO)',t:.5,oy:-18});
-edge('pis','dooh',{k:'old',l:'79,69% → 15,09%',t:.5,oy:26});
+edge('pis','dooh',{k:'old',l:'79,69% → 15,09% → ≈3%*',t:.5,oy:26});
 edge('faysal','dooh',{k:'own',l:'0,31%',t:.5,ox:34});
-edge('pis','sii',{k:'tx',l:'jual 51% DOOH · Rp197,34 M\n(Jul 2026) → memicu MTO',t:.4,ox:60,oy:-48});
+edge('pis','bbs',{k:'tx',l:'Rp330–336',t:.5});
+edge('pis','sii',{k:'tx',l:'jual 51% DOOH · Rp50/saham\nRp197,34 M (30 Jul 2026)',t:.45,oy:34});
 edge('sii','dooh',{k:'own',l:'51% (baru)',t:.6,ox:80,c:-22});
 edge('sii','dooh',{k:'biz',l:'pinjaman s.d. Rp5 T\nbunga 7,5% · 10 thn',t:.2,ox:105,c:22});
 edge('dooh','cni',{k:'own',l:'anak usaha',t:.5,oy:-18});
-edge('akun','cni',{k:'tx',l:'jual 29,88% INET\nRp2,0055 T\n(Sep 2026, rencana)',t:.5,ox:62,oy:-40});
+edge('akun','cni',{k:'tx',l:'jual 29,88% INET · Rp300/saham\nRp2,0055 T (Sep 2026, rencana)',t:.5,ox:62,oy:-40});
 edge('cni','inet',{k:'own',l:'29,88% (rencana)',t:.5,ox:-80});
 edge('akun','inet',{k:'old',l:'≈80% → 29,89%',t:.5,ox:78,oy:6});
 edge('adhie','akun',{k:'own',l:'pemilik akhir',t:.5,ox:44});
@@ -84,7 +86,7 @@ for(const k in N){const n=N[k];
   el('text',{x:n.x,y:n.y+n.r+30,'text-anchor':'middle','font-size':16,fill:C.mut},s,sub);
  } else {
   el('circle',{cx:n.x,cy:n.y,r:n.r,fill:n.c});
-  const pos=n.lab==='top'?{x:n.x,y:n.y-n.r-26,a:'middle'}:n.lab==='left'?{x:n.x-n.r-12,y:n.y-2,a:'end'}:{x:n.x,y:n.y+n.r+20,a:'middle'};
+  const pos=n.lab==='top'?{x:n.x,y:n.y-n.r-26,a:'middle'}:n.lab==='left'?{x:n.x-n.r-12,y:n.y-2,a:'end'}:n.lab==='right'?{x:n.x+n.r+12,y:n.y-2,a:'start'}:{x:n.x,y:n.y+n.r+20,a:'middle'};
   const hl={'stroke':'#fff','stroke-width':6,'paint-order':'stroke','stroke-linejoin':'round'};
   el('text',{x:pos.x,y:pos.y,'text-anchor':pos.a,'font-size':16,'font-weight':700,fill:C.ink,...hl},s,n.t);
   if(n.sub)el('text',{x:pos.x,y:pos.y+18,'text-anchor':pos.a,'font-size':13,fill:C.mut,...hl},s,n.sub);
@@ -125,9 +127,9 @@ y=1370;
 el('line',{x1:50,x2:1750,y1:y-34,y2:y-34,stroke:'#E3E6EB','stroke-width':2});
 el('text',{x:50,y:y-4,'font-size':22,'font-weight':700,fill:C.ink},s,'Apa yang berubah di tiap emiten');
 const cards=[
- [C.wifi,'WIFI','Induk ISB 65,29% (pemilik akhir Tinawati) · 2024: Arsari (Hashim) beli 45% ISB','Okt 2026: ISB alihkan 26,667% WIFI ke SGK (Rp4,06 T), tapi ISB tetap dilapor sebagai PSP'],
- [C.dooh,'DOOH','PIS 79,69% (dikendalikan Faysal) · PIS: 99% IUD + 1% Faysal','Jul 2026: SII (Tinawati) 51%, PIS tersisa 15,09% · PIS kini 50% IUD + 50% Wisdom Crowd'],
- [C.inet,'INET','AKUN ≈80% (pemilik akhir Adhie)','Sep 2026 (rencana): AKUN 29,89% + CNI 29,88%. AKUN tetap PSP, jadi tidak otomatis MTO']];
+ [C.wifi,'WIFI','Induk ISB 65,29% (pemilik akhir Tinawati) · 2024: Arsari (Hashim) beli 45% ISB','ISB 27,756% + SGK 26,667% (Rp2.870/saham, Rp4,06 T). ISB tetap dilapor sebagai PSP, tanpa MTO'],
+ [C.dooh,'DOOH','PIS 79,69% (dikendalikan Faysal) · PIS: 99% IUD + 1% Faysal','SII 51% (Rp50/saham) · PIS jual ±12% ke BBS (sisa ≈3%*) · MTO Rp148: nol saham · RI 1:20 direncanakan'],
+ [C.inet,'INET','AKUN ≈80% (pemilik akhir Adhie)','RI Jan 2026 Rp250 · Sep 2026 (rencana): AKUN 29,89% + CNI 29,88% (Rp300). AKUN tetap PSP, tanpa MTO']];
 cards.forEach((c,i)=>{const x=50+i*575;
  el('rect',{x,y:y+8,width:555,height:118,rx:10,fill:'#F6F7F9',stroke:'#E3E6EB'});
  el('rect',{x,y:y+8,width:8,height:118,rx:4,fill:c[0]});
